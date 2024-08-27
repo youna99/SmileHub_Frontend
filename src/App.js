@@ -1,11 +1,15 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
+import { RootRouter } from './app/rootRouter';
 
 function App() {
-  return (
-    <div className="App">
-
-    </div>
-  );
+    return (
+        <div className="App">
+            <BrowserRouter>
+                <RootRouter />
+            </BrowserRouter>
+        </div>
+    );
 }
 
 export default App;
