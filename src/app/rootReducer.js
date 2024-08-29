@@ -1,7 +1,8 @@
 import { combineReducers } from '@reduxjs/toolkit';
+import userReducer from '../features/User/store/userSlice';
 
 const rootReducer = combineReducers({
-    // user: userSlice, // 유저 관련
+    user: userReducer,
 });
 
 export default rootReducer;

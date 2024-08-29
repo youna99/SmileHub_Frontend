@@ -7,4 +7,4 @@ const rootStore = configureStore({
     },
 });
 
-module.exports = rootStore;
+export default rootStore;
