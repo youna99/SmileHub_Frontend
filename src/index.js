@@ -8,11 +8,11 @@ import rootStore from './app/rootStore';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <React.StrictMode>
-        <Provider store={rootStore}>
-            <App />
-        </Provider>
-    </React.StrictMode>,
+  <React.StrictMode>
+    <Provider store={rootStore}>
+      <App />
+    </Provider>
+  </React.StrictMode>,
 );
 
 reportWebVitals();
