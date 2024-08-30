@@ -12,9 +12,12 @@ const initialState = {
     gender: '',
     address: {
       postcode: '', // 우편번호
-      address: '', // 기본주소 ex) 경기 성남시 분당구 판교역로 166
-      detailAddress: '', // 상세 주소 (예: 아파트 동, 호수)
+      address: '', // 기본주소 (예: 경기 성남시 분당구 판교역로 166)
+      detailAddress: '', // 상세 주소 (예: 아파트 동, 호수) // depth4
       extraAddress: '', // 참고항목 (예: 법정동, 건물명)
+      sido: '', // depth1
+      sigungu: '', // depth2
+      bname: '', // depth3
     },
   },
   isAuthenticated: false, // 로그인 여부
@@ -29,20 +32,28 @@ const userSlice = createSlice({
     // 업데이트된 필드만 관리
     setUserField: (state, action) => {
       const { field, value } = action.payload;
-      console.log('field >>>', field);
-      console.log('value >>>', value);
+      console.log('field >>', field);
+      console.log('value >>', value);
 
       // 'address.'로 시작하는 필드인지 확인
       if (field.startsWith('address.')) {
-        // 'address.' 이후의 부분을 추출하여 address 객체의 특정 필드를 가리킴
-        const addressField = field.split('.')[1];
-        console.log('addressField >>>', addressField);
+        // 구조 분해 할당을 사용하여 addressField 추출
+        const [, addressField] = field.split('.');
+        console.log('addressField', addressField);
 
-        state.currentUser.address[addressField] = value;
+        // 구조 분해 할당을 사용하여 address 필드 업데이트
+        state.currentUser.address = {
+          ...state.currentUser.address,
+          [addressField]: value,
+        };
       } else {
         // 'address.'가 아닌 다른 필드일 경우 currentUser 객체의 해당 필드를 업데이트
-        state.currentUser[field] = value;
+        state.currentUser = {
+          ...state.currentUser,
+          [field]: value,
+        };
       }
+      console.log('state.currentUser.address >>> ', state.currentUser.address);
     },
 
     registerUser: (state) => {
@@ -67,6 +78,9 @@ const userSlice = createSlice({
             address: '',
             detailAddress: '',
             extraAddress: '',
+            sido: '',
+            sigungu: '',
+            bname: '',
           },
         };
         state.error = null;
@@ -106,6 +120,9 @@ const userSlice = createSlice({
           address: '',
           detailAddress: '',
           extraAddress: '',
+          sido: '',
+          sigungu: '',
+          bname: '',
         },
       };
       state.isAuthenticated = false;
