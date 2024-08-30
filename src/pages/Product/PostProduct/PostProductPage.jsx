@@ -3,7 +3,7 @@ import React from 'react';
 export default function PostProductPage() {
   return (
     <main>
-      <div className="max-w-2xl mx-auto p-6 ">
+      <div className="max-w-5xl mx-auto p-6 ">
         <h1 className="text-center text-xl font-bold">판매글 작성페이지</h1>
         <form className="bg-white p-4 rounded ">
           <div className="mb-4">
