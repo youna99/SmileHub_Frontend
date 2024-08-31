@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   users: [], // 기존 등록 사용자의 목록
+  // users: [{ email: 'happy@naver.com', password: 'qwer1234' }], // 기존 등록 사용자의 목록
   // 현재 사용 중인 사용자 정보
   currentUser: {
     email: '',
@@ -85,7 +86,7 @@ const userSlice = createSlice({
         };
         state.error = null;
       } else {
-        state.error = 'Email already exists';
+        state.error = '이미 가입된 사용자입니다.';
       }
     },
 
@@ -100,9 +101,10 @@ const userSlice = createSlice({
         state.currentUser = user;
         state.isAuthenticated = true;
         state.error = null;
+        console.log('로그인 성공', user);
       } else {
         state.isAuthenticated = false;
-        state.error = 'Invalid email or password';
+        state.error = '이메일 또는 비밀번호가 일치하지 않습니다.';
       }
     },
 
