@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import LoginPage from '../../../pages/User/LoginPage';
+import LoginPage from '../../../../pages/User/LoginPage';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../store/userSlice';
+import { loginUser } from '../../store/userSlice';
 import { useNavigate } from 'react-router-dom';
 
 export const LoginContainer = () => {

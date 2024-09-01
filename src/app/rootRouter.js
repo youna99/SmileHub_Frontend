@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import MainPage from '../pages/MainPage';
 import RegisterContainer from '../features/User/container/RegisterContainer';
-import { LoginContainer } from '../features/User/container/LoginContainer';
+import { LoginContainer } from '../features/User/login/container/LoginContainer';
 
 export const RootRouter = () => {
   return (
