@@ -7,7 +7,7 @@ import {
   setPrice,
   setImages,
   postProduct,
-} from '../store/ProudctSlice';
+} from '../../store/proudctSlice';
 
 export const useProduct = () => {
   const dispatch = useDispatch();
