@@ -4,22 +4,44 @@ const initialState = {
   users: [], // 기존 등록 사용자의 목록
   // users: [{ email: 'happy@naver.com', password: 'qwer1234' }],
   // 현재 사용 중인 사용자 정보
+  // currentUser: {
+  //   userId: '',
+  //   email: '',
+  //   password: '',
+  //   confirmPassword: '',
+  //   nickname: '',
+  //   age: '',
+  //   gender: '',
+  //   address: {
+  //     postcode: '', // 우편번호
+  //     address: '', // 기본주소 (예: 경기 성남시 분당구 판교역로 166)
+  //     detailAddress: '', // 상세 주소 (예: 아파트 동, 호수) // depth4
+  //     extraAddress: '', // 참고항목 (예: 법정동, 건물명)
+  //     sido: '', // depth1
+  //     sigungu: '', // depth2
+  //     bname: '', // depth3
+  //   },
+  //   profile_image: '',
+  // },
   currentUser: {
-    email: '',
-    password: '',
-    confirmPassword: '',
-    nickname: '',
-    age: '',
+    userId: '1',
+    email: 'happy@naver.com',
+    password: 'qwer1234',
+    confirmPassword: 'qwer1234',
+    nickname: '기쁨이',
+    age: '12',
     gender: '',
     address: {
-      postcode: '', // 우편번호
-      address: '', // 기본주소 (예: 경기 성남시 분당구 판교역로 166)
-      detailAddress: '', // 상세 주소 (예: 아파트 동, 호수) // depth4
-      extraAddress: '', // 참고항목 (예: 법정동, 건물명)
-      sido: '', // depth1
-      sigungu: '', // depth2
-      bname: '', // depth3
+      postcode: '07371', // 우편번호
+      address: '서울 영등포구 경인로 702', // 기본주소 (예: 경기 성남시 분당구 판교역로 166)
+      detailAddress: '2층', // 상세 주소 (예: 아파트 동, 호수) // depth4
+      extraAddress: '문래동1가', // 참고항목 (예: 법정동, 건물명)
+      sido: '서울', // depth1
+      sigungu: '영등포구', // depth2
+      bname: '문래동1가', // depth3
     },
+    profile_image: '',
+    temp: '36.5',
   },
   isAuthenticated: false, // 로그인 여부
   isActive: false, // 활동 정지 여부
