@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   users: [], // 기존 등록 사용자의 목록
-  // users: [{ email: 'happy@naver.com', password: 'qwer1234' }], // 기존 등록 사용자의 목록
+  // users: [{ email: 'happy@naver.com', password: 'qwer1234' }],
   // 현재 사용 중인 사용자 정보
   currentUser: {
     email: '',
@@ -22,6 +22,8 @@ const initialState = {
     },
   },
   isAuthenticated: false, // 로그인 여부
+  isActive: false, // 활동 정지 여부
+  isAdmin: false, // 관리자 여부
   error: null,
 };
 
