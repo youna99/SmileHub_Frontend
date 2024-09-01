@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  registerUser,
-  setUserField,
-} from '../../../features/User/store/userSlice';
-import RegisterPage from '../../../pages/User/RegisterPage';
+import { registerUser, setUserField } from '../../store/userSlice';
+import RegisterPage from '../../../../pages/User/RegisterPage';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
