@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useProduct } from '../../../features/Product/PostProduct/hooks/productHook';
+import { ImageDropZone } from '../../../shared/ImageDropZone';
+import axios from 'axios';
 
 export default function PostProductPage() {
   const { setProduct } = useProduct();
+  const [images, setImages] = useState([]);
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -16,28 +18,34 @@ export default function PostProductPage() {
       description: '',
       tags: '',
       price: '',
+      priceOffer: false,
     },
   });
 
-  const [productName, category, description, tags, price] = watch([
-    'productName',
-    'category',
-    'description',
-    'tags',
-    'price',
-  ]);
+  const postProduct = async (data) => {
+    try {
+      // redux 전역 상태 셋팅이라 무관함
+      setProduct.setImages(data.images);
+      setProduct.setProductName(data.productName);
+      setProduct.setCategory(data.category);
+      setProduct.setDescription(data.description);
+      setProduct.setTags(data.tags);
+      setProduct.setPrice(data.price);
+      setProduct.setPriceOffer(data.priceOffer);
+      // 상품 등록 액션 호출
+      setProduct.postProduct();
 
-  const postProductSubmit = (data) => {
-    setProduct.setProductName(data.productName);
-    setProduct.setCategory(data.category);
-    setProduct.setDescription(data.description);
-    setProduct.setTags(data.tags);
-    setProduct.setPrice(data.price);
-    // 이미지 처리 추가 필요
-    // 예: setProduct.setImages(data.images);
-    // 상품 등록 액션 호출
-    setProduct.postProduct();
-    console.log(data); // 제출된 데이터 확인용
+      console.log('postproductData', data); // 제출된 데이터 확인용
+
+      // const res = await axios.post('http://localhost:8000/postproduct', {
+      //   productName: data,
+      //   category: '',
+      //   description: '',
+      //   tags: '',
+      //   price: '',
+      //   priceOffer: '',
+      // });
+    } catch (error) {}
   };
 
   return (
@@ -46,15 +54,9 @@ export default function PostProductPage() {
         <h1 className="text-center text-xl font-bold">판매글 작성페이지</h1>
         <form
           className="bg-white p-4 rounded"
-          onSubmit={handleSubmit(postProductSubmit)}
+          onSubmit={handleSubmit(postProduct)}
         >
-          <div className="mb-4">
-            <label className="block text-gray-700">상품 이미지 / 총 10장</label>
-            <div className="h-32 bg-gray-200 flex items-center justify-center">
-              이미지 등록
-            </div>
-          </div>
-
+          <ImageDropZone images={images} setImages={setImages} />
           <div className="mb-4">
             <label className="block text-gray-700">상품명</label>
             <input
@@ -63,7 +65,6 @@ export default function PostProductPage() {
               {...register('productName', { required: '제품명은 필수입니다.' })}
               id="productName"
               name="productName"
-              // type=""
               placeholder="제품명을 입력해주세요"
             />
             {errors.productName && (
@@ -107,8 +108,8 @@ export default function PostProductPage() {
               className="border border-gray-300 rounded w-full p-2"
               {...register('tags', { required: '태그는 필수입니다.' })}
             />
-            {errors.price && (
-              <p className="text-red-500">{errors.price.message}</p>
+            {errors.pritagsce && (
+              <p className="text-red-500">{errors.tags.message}</p>
             )}
           </div>
 
@@ -122,6 +123,11 @@ export default function PostProductPage() {
             {errors.price && (
               <p className="text-red-500">{errors.price.message}</p>
             )}
+            <input
+              type="checkbox"
+              {...register('priceOffer')}
+              className="mr-2"
+            />
             <span className="text-gray-500">가격 제안 받기</span>
           </div>
 
