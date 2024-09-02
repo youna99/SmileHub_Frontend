@@ -1,18 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  images: [],
   productName: '',
   category: '',
   description: '',
   tags: '',
   price: '',
-  images: [],
+  priceOffer: '',
 };
 
 const productSlice = createSlice({
   name: 'product',
   initialState,
   reducers: {
+    // 이미지 설정
+    setImages: (state, action) => {
+      state.images = action.payload;
+    },
     // 상품명 설정
     setProductName: (state, action) => {
       state.productName = action.payload;
@@ -33,20 +38,21 @@ const productSlice = createSlice({
     setPrice: (state, action) => {
       state.price = action.payload;
     },
-    // 이미지 설정
-    setImages: (state, action) => {
-      state.images = action.payload;
+    // 가격 제안 설정
+    setPriceOffer: (state, action) => {
+      state.price = action.payload;
     },
     // 상품추가
     postProduct: (state) => {
       // 상품 추가 로직 또는 API 호출을 여기에 추가할 수 있습니다.
       console.log('상품 추가:', {
+        images: state.images,
         productName: state.productName,
         category: state.category,
         description: state.description,
         tags: state.tages,
         price: state.price,
-        images: state.images,
+        priceOffer: state.priceOffer,
       });
       // 초기 상태로 리셋
       return initialState;
@@ -56,12 +62,13 @@ const productSlice = createSlice({
 });
 
 export const {
+  setImages,
   setProductName,
   setCategory,
   setDescription,
   setTags,
   setPrice,
-  setImages,
+  setPriceOffer,
   postProduct,
   resetProduct,
 } = productSlice.actions;
