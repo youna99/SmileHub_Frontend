@@ -1,21 +1,39 @@
 import React from 'react';
-import { Avatar, Tabs } from 'flowbite-react';
+import { Avatar, Tabs, Button } from 'flowbite-react';
 import { useSelector } from 'react-redux';
-import UserEditContainer from '../../features/User/mypage/container/UserEditContainer';
+import { useNavigate } from 'react-router-dom';
+import UserSellList from '../../features/User/mypage/components/UserSellList';
+import UserBuyList from '../../features/User/mypage/components/UserBuyList';
+import LikeList from '../../features/User/mypage/components/LikeList';
 
 const MyPage = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
+  const navigate = useNavigate();
+
+  const handleEdit = () => {
+    navigate('/mypageEdit');
+  };
   return (
     <>
-      <main className="flex justify-center py-10 w-full">
-        <div className="flex items-center space-x-4 w-full max-w-3xl border p-6 bg-gray-200 mx-auto">
-          <Avatar img="" size="xl" />
-          <div className="space-y-2 pl-8">
-            <div className="text-2xl font-bold">{currentUser.nickname}</div>
-            <div className="text-lg text-gray-700">{currentUser.temp}</div>
+      <section className="flex justify-center py-10 w-full">
+        <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4 w-full max-w-3xl border p-6 bg-gray-200 mx-auto">
+          <Avatar img={currentUser.avatarUrl || ''} size="xl" />
+          <div className="flex flex-1 flex-col justify-between pl-0 sm:pl-8">
+            <div>
+              <div className="text-2xl font-bold pb-3">
+                {currentUser.nickname}
+              </div>
+              <div className="text-lg text-gray-700">{currentUser.temp}</div>
+            </div>
+            <div className="self-start sm:self-end mt-4 sm:mt-0">
+              <Button color="gray" onClick={handleEdit}>
+                내 정보 수정
+              </Button>
+            </div>
           </div>
         </div>
-      </main>
+      </section>
+
       <nav>
         <div className="overflow-x-auto flex justify-center w-full">
           <Tabs
@@ -24,31 +42,33 @@ const MyPage = () => {
             className="flex items-center w-full max-w-3xl mx-auto"
           >
             <Tabs.Item active title="찜 목록">
-              <span className="font-medium text-gray-800 dark:text-white">
-                Profile tab's associated content
-              </span>
-              . Clicking another tab will toggle the visibility of this one for
-              the next. The tab JavaScript swaps classes to control the content
-              visibility and styling.
+              <LikeList />
             </Tabs.Item>
             <Tabs.Item title="판매내역">
-              <span className="font-medium text-gray-800 dark:text-white">
-                Dashboard tab's associated content
-              </span>
-              . Clicking another tab will toggle the visibility of this one for
-              the next. The tab JavaScript swaps classes to control the content
-              visibility and styling.
+              <div className="flex flex-wrap">
+                <div className="w-full sm:w-1/2 p-2">
+                  <UserSellList />
+                </div>
+                <div className="w-full sm:w-1/2 p-2">
+                  <UserSellList />
+                </div>
+                <div className="w-full sm:w-1/2 p-2">
+                  <UserSellList />
+                </div>
+              </div>
             </Tabs.Item>
             <Tabs.Item title="구매내역">
-              <span className="font-medium text-gray-800 dark:text-white">
-                Settings tab's associated content
-              </span>
-              . Clicking another tab will toggle the visibility of this one for
-              the next. The tab JavaScript swaps classes to control the content
-              visibility and styling.
-            </Tabs.Item>
-            <Tabs.Item title="내 정보 수정">
-              <UserEditContainer />
+              <div className="flex flex-wrap">
+                <div className="w-full sm:w-1/2 p-2">
+                  <UserBuyList />
+                </div>
+                <div className="w-full sm:w-1/2 p-2">
+                  <UserBuyList />
+                </div>
+                <div className="w-full sm:w-1/2 p-2">
+                  <UserBuyList />
+                </div>
+              </div>
             </Tabs.Item>
           </Tabs>
         </div>

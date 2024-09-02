@@ -17,9 +17,13 @@ const UserEdit = ({
   currentUser,
   isChangingPassword,
   setIsChangingPassword,
+  navigate,
 }) => {
   return (
     <>
+      <div className="flex justify-between items-center px-5 py-3 bg-gray-100">
+        <button onClick={() => navigate(-1)}>뒤로가기</button>
+      </div>
       <section className="max-w-3xl mx-auto p-6">
         <h1 className="text-3xl font-bold mb-4">내 정보 수정</h1>
         <div className="border-b-2 border-gray-300 mb-4" />

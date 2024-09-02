@@ -88,6 +88,7 @@ const UserEditContainer = () => {
       currentUser={currentUser}
       isChangingPassword={isChangingPassword}
       setIsChangingPassword={setIsChangingPassword}
+      navigate={navigate}
     />
   );
 };
