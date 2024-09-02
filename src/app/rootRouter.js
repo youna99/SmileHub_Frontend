@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import LoginPage from '../pages/User/LoginPage';
 import MainPage from '../pages/MainPage';
-import PostProductPage from '../pages/Product/PostProduct/PostProductPage';
+import PostProductPage from '../features/Product/PostProduct/container/PostProductPage';
 
 export const RootRouter = () => {
   return (
