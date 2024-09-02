@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import UserEdit from '../components/UserEdit';
-import { useDispatch, useSelector } from 'react-redux';
-import { setUserField } from '../../store/userSlice';
+import { useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const UserEditContainer = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // 주소 modal 상태관리
-  const [isPasswordMatch, setIsPasswordMatch] = useState(false); // 기존 비밀번호가 맞는지 확인
+  const [isChangingPassword, setIsChangingPassword] = useState(false); // 비밀번호 변경 여부 확인 상태
+  const [isPasswordMatch, setIsPasswordMatch] = useState(false); // 기존 비밀번호가 맞는지 확인 상태
   const currentUser = useSelector((state) => state.user.currentUser);
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // useForm 설정
   const {
@@ -47,33 +48,31 @@ const UserEditContainer = () => {
 
   // 수정하기
   const onSubmit = async (data) => {
-    console.log('data', data);
+    // 비밀번호가 변경되지 않았다면 password 필드를 삭제
+    const { password, ...rest } = data;
 
-    Object.keys(data).forEach((key) => {
-      dispatch(setUserField({ field: key, value: data[key] }));
-    });
+    // 비밀번호를 변경할 때만 서버에 보냄
+    const updatedData = {
+      ...rest,
+      ...(isChangingPassword && { password }), // 비밀번호 변경 시만 포함
+    };
+
     try {
       const res = await axios.patch(
         `http://localhost:8000/user/${currentUser.userId}`,
-        {
-          password: data.password,
-          nickname: data.nickname,
-          age: data.age,
-          gender: data.gender,
-          depth1: data.address.sido,
-          depth2: data.address.sigungu,
-          depth3: data.address.bname,
-          depth4: data.address.detailAddress,
-        },
+        updatedData,
       );
 
       if (res.status === 200) {
         alert('정보가 수정되었습니다.');
+        navigate('/mypage');
       }
     } catch (error) {
       console.error('회원정보 수정 실패', error);
+      alert('정보 수정에 실패하였습니다.');
     }
   };
+
   return (
     <UserEdit
       isModalOpen={isModalOpen}
@@ -87,6 +86,8 @@ const UserEditContainer = () => {
       handleOldPasswordCorrect={handleOldPasswordCorrect}
       onSubmit={onSubmit}
       currentUser={currentUser}
+      isChangingPassword={isChangingPassword}
+      setIsChangingPassword={setIsChangingPassword}
     />
   );
 };

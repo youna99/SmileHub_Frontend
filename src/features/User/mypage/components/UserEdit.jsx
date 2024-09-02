@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Label, TextInput, Radio } from 'flowbite-react';
+import { Button, Label, TextInput, Radio, Checkbox } from 'flowbite-react';
 import AddressSearch from '../../Register/components/AddressSearch';
 
 const UserEdit = ({
@@ -15,10 +15,14 @@ const UserEdit = ({
   handleOldPasswordCorrect,
   onSubmit,
   currentUser,
+  isChangingPassword,
+  setIsChangingPassword,
 }) => {
   return (
     <>
-      <div className="max-w-3xl mx-auto p-6">
+      <section className="max-w-3xl mx-auto p-6">
+        <h1 className="text-3xl font-bold mb-4">내 정보 수정</h1>
+        <div className="border-b-2 border-gray-300 mb-4" />
         <form
           className="flex flex-col gap-4 w-full"
           onSubmit={handleSubmit(onSubmit)}
@@ -29,6 +33,14 @@ const UserEdit = ({
             </div>
             <p>{currentUser.email}</p>
           </div>
+          <div className="flex items-center gap-2">
+            <Checkbox
+              id="changePassword"
+              checked={isChangingPassword}
+              onChange={(e) => setIsChangingPassword(e.target.checked)}
+            />
+            <Label htmlFor="changePassword">비밀번호 변경하기</Label>
+          </div>
           <div>
             <div className="mb-2 block">
               <Label htmlFor="old-password" value="기존 비밀번호 확인" />
@@ -38,15 +50,19 @@ const UserEdit = ({
                 id="old-password"
                 type="password"
                 {...register('oldPassword', {
-                  required: '기존 비밀번호를 입력해 주세요.',
+                  required: isChangingPassword
+                    ? '기존 비밀번호를 입력해 주세요.'
+                    : false,
                 })}
                 shadow
                 className="w-3/4"
+                disabled={!isChangingPassword} // 비밀번호 변경 시에만 활성화
               />
               <Button
                 type="button"
                 onClick={handleOldPasswordCorrect}
                 className="w-1/4 ml-3"
+                disabled={!isChangingPassword} // 비밀번호 변경 시에만 활성화
               >
                 확인
               </Button>
@@ -65,7 +81,9 @@ const UserEdit = ({
                   id="password"
                   type="password"
                   {...register('password', {
-                    required: '새로운 비밀번호를 입력해주세요.',
+                    required: isChangingPassword
+                      ? '새로운 비밀번호를 입력해주세요.'
+                      : false,
                     minLength: {
                       value: 6,
                       message: '비밀번호는 최소 6자 이상이어야 합니다.',
@@ -88,9 +106,13 @@ const UserEdit = ({
                   id="repeat-password"
                   type="password"
                   {...register('confirmPassword', {
-                    required: '비밀번호 확인은 필수입니다.',
+                    required: isChangingPassword
+                      ? '비밀번호 확인은 필수입니다.'
+                      : false,
                     validate: (value) =>
-                      value === password || '비밀번호가 일치하지 않습니다.',
+                      isChangingPassword
+                        ? value === password || '비밀번호가 일치하지 않습니다.'
+                        : true,
                   })}
                   shadow
                 />
@@ -211,7 +233,7 @@ const UserEdit = ({
             setValue={setValue}
           />
         </form>
-      </div>
+      </section>
     </>
   );
 };
