@@ -60,25 +60,26 @@ const userSlice = createSlice({
       console.log('field >>', field);
       console.log('value >>', value);
 
-      // 'address.'로 시작하는 필드인지 확인
-      if (field.startsWith('address.')) {
-        // 구조 분해 할당을 사용하여 addressField 추출
+      if (field === 'profile_image') {
+        state.currentUser.profile_image = value; // 프로필 이미지 업데이트
+      } else if (field.startsWith('address.')) {
+        // 주소 업데이트
         const [, addressField] = field.split('.');
-        console.log('addressField', addressField);
-
-        // 구조 분해 할당을 사용하여 address 필드 업데이트
         state.currentUser.address = {
           ...state.currentUser.address,
           [addressField]: value,
         };
       } else {
-        // 'address.'가 아닌 다른 필드일 경우 currentUser 객체의 해당 필드를 업데이트
         state.currentUser = {
           ...state.currentUser,
           [field]: value,
         };
       }
       console.log('state.currentUser.address >>> ', state.currentUser.address);
+      console.log(
+        'state.currentUser.profile_image >>> ',
+        state.currentUser.profile_image,
+      );
     },
 
     registerUser: (state) => {
@@ -132,7 +133,7 @@ const userSlice = createSlice({
       }
     },
 
-    // 현재 사용자 정보 초기화
+    // 현재 사용자 정보 초기화(로그아웃)
     logout: (state) => {
       state.currentUser = {
         email: '',
@@ -153,9 +154,40 @@ const userSlice = createSlice({
       };
       state.isAuthenticated = false;
     },
+
+    // 회원 탈퇴
+    deleteUser: (state) => {
+      // 현재 로그인된 사용자의 이메일을 기준으로 users 배열에서 제거
+      state.users = state.users.filter(
+        (user) => user.email !== user.currentUser.email,
+      );
+
+      // currentUser 정보 초기화 및 로그아웃 처리
+      state.currentUser = {
+        email: '',
+        password: '',
+        confirmPassword: '',
+        nickname: '',
+        age: '',
+        gender: '',
+        address: {
+          postcode: '',
+          address: '',
+          detailAddress: '',
+          extraAddress: '',
+          sido: '',
+          sigungu: '',
+          bname: '',
+        },
+        profile_image: '',
+        temp: '',
+      };
+      state.isAuthenticated = false;
+      state.error = null;
+    },
   },
 });
 
-export const { setUserField, registerUser, loginUser, logout } =
+export const { setUserField, registerUser, loginUser, logout, deleteUser } =
   userSlice.actions;
 export default userSlice.reducer;
