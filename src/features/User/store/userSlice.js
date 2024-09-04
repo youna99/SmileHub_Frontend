@@ -4,22 +4,44 @@ const initialState = {
   users: [], // 기존 등록 사용자의 목록
   // users: [{ email: 'happy@naver.com', password: 'qwer1234' }],
   // 현재 사용 중인 사용자 정보
+  // currentUser: {
+  //   userId: '',
+  //   email: '',
+  //   password: '',
+  //   confirmPassword: '',
+  //   nickname: '',
+  //   age: '',
+  //   gender: '',
+  //   address: {
+  //     postcode: '', // 우편번호
+  //     address: '', // 기본주소 (예: 경기 성남시 분당구 판교역로 166)
+  //     detailAddress: '', // 상세 주소 (예: 아파트 동, 호수) // depth4
+  //     extraAddress: '', // 참고항목 (예: 법정동, 건물명)
+  //     sido: '', // depth1
+  //     sigungu: '', // depth2
+  //     bname: '', // depth3
+  //   },
+  //   profile_image: '',
+  // },
   currentUser: {
-    email: '',
-    password: '',
-    confirmPassword: '',
-    nickname: '',
-    age: '',
+    userId: '1',
+    email: 'happy@naver.com',
+    password: 'qwer1234',
+    confirmPassword: 'qwer1234',
+    nickname: '기쁨이',
+    age: '12',
     gender: '',
     address: {
-      postcode: '', // 우편번호
-      address: '', // 기본주소 (예: 경기 성남시 분당구 판교역로 166)
-      detailAddress: '', // 상세 주소 (예: 아파트 동, 호수) // depth4
-      extraAddress: '', // 참고항목 (예: 법정동, 건물명)
-      sido: '', // depth1
-      sigungu: '', // depth2
-      bname: '', // depth3
+      postcode: '07371', // 우편번호
+      address: '서울 영등포구 경인로 702', // 기본주소 (예: 경기 성남시 분당구 판교역로 166)
+      detailAddress: '2층', // 상세 주소 (예: 아파트 동, 호수) // depth4
+      extraAddress: '문래동1가', // 참고항목 (예: 법정동, 건물명)
+      sido: '서울', // depth1
+      sigungu: '영등포구', // depth2
+      bname: '문래동1가', // depth3
     },
+    profile_image: '',
+    temp: '36.5',
   },
   isAuthenticated: false, // 로그인 여부
   isActive: false, // 활동 정지 여부
@@ -38,25 +60,26 @@ const userSlice = createSlice({
       console.log('field >>', field);
       console.log('value >>', value);
 
-      // 'address.'로 시작하는 필드인지 확인
-      if (field.startsWith('address.')) {
-        // 구조 분해 할당을 사용하여 addressField 추출
+      if (field === 'profile_image') {
+        state.currentUser.profile_image = value; // 프로필 이미지 업데이트
+      } else if (field.startsWith('address.')) {
+        // 주소 업데이트
         const [, addressField] = field.split('.');
-        console.log('addressField', addressField);
-
-        // 구조 분해 할당을 사용하여 address 필드 업데이트
         state.currentUser.address = {
           ...state.currentUser.address,
           [addressField]: value,
         };
       } else {
-        // 'address.'가 아닌 다른 필드일 경우 currentUser 객체의 해당 필드를 업데이트
         state.currentUser = {
           ...state.currentUser,
           [field]: value,
         };
       }
       console.log('state.currentUser.address >>> ', state.currentUser.address);
+      console.log(
+        'state.currentUser.profile_image >>> ',
+        state.currentUser.profile_image,
+      );
     },
 
     registerUser: (state) => {
@@ -110,7 +133,7 @@ const userSlice = createSlice({
       }
     },
 
-    // 현재 사용자 정보 초기화
+    // 현재 사용자 정보 초기화(로그아웃)
     logout: (state) => {
       state.currentUser = {
         email: '',
@@ -131,9 +154,40 @@ const userSlice = createSlice({
       };
       state.isAuthenticated = false;
     },
+
+    // 회원 탈퇴
+    deleteUser: (state) => {
+      // 현재 로그인된 사용자의 이메일을 기준으로 users 배열에서 제거
+      state.users = state.users.filter(
+        (user) => user.email !== user.currentUser.email,
+      );
+
+      // currentUser 정보 초기화 및 로그아웃 처리
+      state.currentUser = {
+        email: '',
+        password: '',
+        confirmPassword: '',
+        nickname: '',
+        age: '',
+        gender: '',
+        address: {
+          postcode: '',
+          address: '',
+          detailAddress: '',
+          extraAddress: '',
+          sido: '',
+          sigungu: '',
+          bname: '',
+        },
+        profile_image: '',
+        temp: '',
+      };
+      state.isAuthenticated = false;
+      state.error = null;
+    },
   },
 });
 
-export const { setUserField, registerUser, loginUser, logout } =
+export const { setUserField, registerUser, loginUser, logout, deleteUser } =
   userSlice.actions;
 export default userSlice.reducer;
