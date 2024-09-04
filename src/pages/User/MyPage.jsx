@@ -35,17 +35,23 @@ const MyPage = ({
             </div>
           </div>
           <div className="flex flex-1 flex-col justify-between pl-0 sm:pl-8">
-            <div>
-              <div className="text-2xl font-bold pb-3">
-                {currentUser.nickname}
+            <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
+              <div className="mb-2 sm:mb-0">
+                <div className="text-2xl font-bold pb-1">
+                  {currentUser.nickname}
+                </div>
+                <div className="text-lg text-gray-700">{currentUser.temp}</div>
               </div>
-              <div className="text-lg text-gray-700">{currentUser.temp}</div>
+              <div className="flex space-x-2">
+                <Button onClick={handleEdit}>내 정보 수정</Button>
+                <Button onClick={handleDelete}>회원 탈퇴</Button>
+              </div>
             </div>
-            <div className="self-start sm:self-end mt-4 sm:mt-0">
-              <Button onClick={handleEdit} className="mb-2">
-                내 정보 수정
-              </Button>
-              <Button onClick={handleDelete}>회원 탈퇴</Button>
+            <div className="border bg-white rounded-lg p-4 mt-4 w-full">
+              <div className="flex flex-col sm:flex-row justify-between items-center">
+                <div className="mb-2 sm:mb-0">현재 머니: 100000</div>
+                <Button className="w-full sm:w-auto">충전하기</Button>
+              </div>
             </div>
           </div>
         </div>
