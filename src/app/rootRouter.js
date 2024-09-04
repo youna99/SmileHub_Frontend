@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import MainPage from '../pages/MainPage';
 import PostProductPage from '../features/Product/PostProduct/container/PostProductPage';
 import RegisterContainer from '../features/User/Register/container/RegisterContainer';
+import { LoginContainer } from '../features/User/login/container/LoginContainer';
 
 export const RootRouter = () => {
   return (
