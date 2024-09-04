@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // 초기 상태
 const initialState = {
+  money: '500000',
   sells: [
     {
       userid: '1',
@@ -93,9 +94,18 @@ const myPageSlice = createSlice({
     updatePaymentStatus: (state, action) => {
       state.isPayment = action.payload;
     },
+
+    // 현재 머니 업데이트
+    updateMoney: (state, action) => {
+      state.money = action.payload;
+    },
   },
 });
 
-export const { updateSellsStatus, updateBuysStatus, updatePaymentStatus } =
-  myPageSlice.actions;
+export const {
+  updateSellsStatus,
+  updateBuysStatus,
+  updatePaymentStatus,
+  updateMoney,
+} = myPageSlice.actions;
 export default myPageSlice.reducer;
