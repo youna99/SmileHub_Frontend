@@ -21,10 +21,8 @@ export default function Header() {
               <span className="block text-sm">UserName</span>
             </Dropdown.Header>
             <Dropdown.Item>
-              <Link>Mypage</Link>
+              <Link to="/mypage">Mypage</Link>
             </Dropdown.Item>
-            <Dropdown.Item>Settings</Dropdown.Item>
-            <Dropdown.Item>Earnings</Dropdown.Item>
             <Dropdown.Divider />
             <Dropdown.Item>Sign out</Dropdown.Item>
           </Dropdown>
