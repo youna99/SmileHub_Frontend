@@ -59,6 +59,20 @@ const RegisterPage = ({
                   value: 6,
                   message: '비밀번호는 최소 6자 이상이어야 합니다.',
                 },
+                validate: {
+                  hasNumber: (value) =>
+                    /[0-9]/.test(value) ||
+                    '비밀번호에는 최소 하나의 숫자가 포함되어야 합니다.',
+                  hasSpecialChar: (value) =>
+                    /[!@#$%^&*(),.?":{}|<>]/.test(value) ||
+                    '비밀번호에는 최소 하나의 특수문자가 포함되어야 합니다.',
+                  hasUpperCase: (value) =>
+                    /[A-Z]/.test(value) ||
+                    '비밀번호에는 최소 하나의 대문자가 포함되어야 합니다.',
+                  hasLowerCase: (value) =>
+                    /[a-z]/.test(value) ||
+                    '비밀번호에는 최소 하나의 소문자가 포함되어야 합니다.',
+                },
               })}
               shadow
             />
@@ -109,6 +123,10 @@ const RegisterPage = ({
               type="number"
               {...register('age', {
                 valueAsNumber: true,
+                min: {
+                  value: 1,
+                  message: '유효한 나이를 입력하세요.',
+                },
               })}
               shadow
             />
