@@ -23,9 +23,9 @@ const initialState = {
     },
     profile_image: '',
     temp: '',
+    isActive: false, // 활동 정지 여부
+    isAdmin: false, // 관리자 여부
   },
-  isActive: false, // 활동 정지 여부
-  isAdmin: false, // 관리자 여부
   error: null,
   // currentUser: {
   //   userId: '1',
@@ -61,8 +61,6 @@ const userSlice = createSlice({
     // 업데이트된 필드만 관리
     setUserField: (state, action) => {
       const { field, value } = action.payload;
-      console.log('field >>', field);
-      console.log('value >>', value);
 
       if (field === 'profile_image') {
         state.currentUser.profile_image = value; // 프로필 이미지 업데이트
@@ -79,16 +77,17 @@ const userSlice = createSlice({
           [field]: value,
         };
       }
-      console.log('state.currentUser.address >>> ', state.currentUser.address);
-      console.log(
-        'state.currentUser.profile_image >>> ',
-        state.currentUser.profile_image,
-      );
+      // console.log('state.currentUser.address >>> ', state.currentUser.address);
+      // console.log(
+      // 'state.currentUser.profile_image >>> ',
+      // state.currentUser.profile_image,
+      // );
     },
 
     setUserFields: (state, action) => {
       const updates = action.payload;
       state.currentUser = { ...state.currentUser, ...updates };
+      console.log('updates >>', updates);
     },
 
     registerUser: (state) => {
@@ -102,6 +101,7 @@ const userSlice = createSlice({
       if (!exists) {
         state.users.push({ ...state.currentUser });
         state.currentUser = {
+          userId: '',
           email: '',
           password: '',
           confirmPassword: '',
@@ -117,6 +117,10 @@ const userSlice = createSlice({
             sigungu: '',
             bname: '',
           },
+          profile_image: '',
+          temp: '',
+          isActive: false,
+          isAdmin: false,
         };
         state.error = null;
       } else {
@@ -155,34 +159,7 @@ const userSlice = createSlice({
     // 현재 사용자 정보 초기화(로그아웃)
     logout: (state) => {
       state.currentUser = {
-        email: '',
-        password: '',
-        confirmPassword: '',
-        nickname: '',
-        age: '',
-        gender: '',
-        address: {
-          postcode: '',
-          address: '',
-          detailAddress: '',
-          extraAddress: '',
-          sido: '',
-          sigungu: '',
-          bname: '',
-        },
-      };
-      state.isAuthenticated = false;
-    },
-
-    // 회원 탈퇴
-    deleteUser: (state) => {
-      // 현재 로그인된 사용자의 이메일을 기준으로 users 배열에서 제거
-      state.users = state.users.filter(
-        (user) => user.email !== user.currentUser.email,
-      );
-
-      // currentUser 정보 초기화 및 로그아웃 처리
-      state.currentUser = {
+        userId: '',
         email: '',
         password: '',
         confirmPassword: '',
@@ -200,8 +177,42 @@ const userSlice = createSlice({
         },
         profile_image: '',
         temp: '',
+        isActive: false,
+        isAdmin: false,
       };
-      state.isAuthenticated = false;
+      state.error = null;
+    },
+
+    // 회원 탈퇴
+    deleteUser: (state) => {
+      // 현재 로그인된 사용자의 이메일을 기준으로 users 배열에서 제거
+      state.users = state.users.filter(
+        (user) => user.email !== state.currentUser.email,
+      );
+
+      // currentUser 정보 초기화 및 로그아웃 처리
+      state.currentUser = {
+        userId: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        nickname: '',
+        age: '',
+        gender: '',
+        address: {
+          postcode: '',
+          address: '',
+          detailAddress: '',
+          extraAddress: '',
+          sido: '',
+          sigungu: '',
+          bname: '',
+        },
+        profile_image: '',
+        temp: '',
+        isActive: false,
+        isAdmin: false,
+      };
       state.error = null;
     },
   },
