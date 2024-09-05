@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import UserEdit from '../components/UserEdit';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { setUserFields } from '../../store/userSlice';
 
 const UserEditContainer = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // 주소 modal 상태관리
@@ -11,6 +12,7 @@ const UserEditContainer = () => {
   const [isPasswordMatch, setIsPasswordMatch] = useState(false); // 기존 비밀번호가 맞는지 확인 상태
   const currentUser = useSelector((state) => state.user.currentUser);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // useForm 설정
   const {
@@ -57,14 +59,22 @@ const UserEditContainer = () => {
       ...(isChangingPassword && { password }), // 비밀번호 변경 시만 포함
     };
 
+    // 로컬 스토리지에서 토큰 가져오기
+    const token = localStorage.getItem('token');
     try {
       const res = await axios.patch(
         `http://localhost:8000/user/${currentUser.userId}`,
         updatedData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
 
       if (res.status === 200) {
         alert('정보가 수정되었습니다.');
+        dispatch(setUserFields(updatedData));
         navigate('/mypage');
       }
     } catch (error) {
