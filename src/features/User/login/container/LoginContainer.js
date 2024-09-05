@@ -9,16 +9,16 @@ export const LoginContainer = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const error = useSelector((state) => state.user.error);
-  // const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  const isAuthenticated = useSelector((state) => state.user.isActive);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     navigate('/');
-  //   }
-  // }, [isAuthenticated, navigate]);
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,15 +40,19 @@ export const LoginContainer = () => {
       // dispatch(setUserField({ field: 'address', value: user.address }));
       dispatch(
         setUserFields({
-          email: user.email,
+          userId: user.userId,
           nickname: user.nickname,
+          email: user.email,
           gender: user.gender,
           age: user.age,
-          address: user.address,
-          profile_image: user.profile_image,
           temp: user.temp,
-          isActive: user.isActive,
+          profile_image: user.profile_image,
           money: user.money,
+          sido: user.Locations.depth1,
+          sigungu: user.Locations.depth2,
+          bname: user.Locations.depth3,
+          detailAddress: user.Locations.depth4,
+          isActive: user.Active.isActive,
         }),
       );
 
@@ -64,8 +68,6 @@ export const LoginContainer = () => {
         }),
       );
     }
-    dispatch(loginUser({ email, password }));
-    console.log('로그인 시도 >>', { email, password });
   };
   return (
     <LoginPage
