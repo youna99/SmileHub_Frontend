@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerUser, setUserField } from '../../store/userSlice';
+import { registerUser, setUserFields } from '../../store/userSlice';
 import RegisterPage from '../../../../pages/User/RegisterPage';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -9,7 +9,6 @@ import axios from 'axios';
 const RegisterContainer = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // 주소 modal 상태관리
   const currentUser = useSelector((state) => state.user.currentUser);
-  console.log('currentUser >>>', currentUser);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -34,25 +33,52 @@ const RegisterContainer = () => {
   const onSubmit = async (data) => {
     console.log('data >>', data);
 
-    Object.keys(data).forEach((key) => {
-      dispatch(setUserField({ field: key, value: data[key] }));
-    });
+    // 성별 변환
+    let genderValue;
+    if (data.gender === 'male') {
+      genderValue = 1; // 남성
+    } else if (data.gender === 'female') {
+      genderValue = 0; // 여성
+    } else {
+      genderValue = null; // default인 경우 null로 설정
+    }
 
     try {
       const res = await axios.post('http://localhost:8000/user', {
+        nickname: data.nickname,
         email: data.email,
         password: data.password,
-        nickname: data.nickname,
+        gender: genderValue,
         age: data.age,
-        gender: data.gender,
+        profile_image: null, // 기본값
         depth1: data.address.sido,
         depth2: data.address.sigungu,
         depth3: data.address.bname,
         depth4: data.address.detailAddress,
+        isActive: 1, // 기본값
+        isAdmin: 0, // 기본값
       });
 
       if (res.status === 201) {
-        // 사용자 등록
+        dispatch(
+          setUserFields({
+            userId: res.data.newUser.userId,
+            nickname: data.nickname,
+            email: data.email,
+            gender: genderValue,
+            age: data.age,
+            profile_image: null, // 기본값
+            sido: data.address.sido,
+            sigungu: data.address.sigungu,
+            bname: data.address.bname,
+            detailAddress: data.address.detailAddress,
+            postcode: data.address.postcode,
+            address: data.address.address,
+            extraAddress: data.address.extraAddress,
+            isActive: 1, // 기본값
+            isAdmin: 0, // 기본값
+          }),
+        );
         dispatch(registerUser());
         alert('회원가입이 완료되었습니다.');
         reset();
@@ -63,6 +89,48 @@ const RegisterContainer = () => {
       alert('회원가입을 실패했습니다. 다시 시도해 주세요.');
     }
   };
+
+  // const onSubmit = async (data) => {
+  //   console.log('data >>', data);
+
+  //   let genderValue;
+  //   if (data.gender === 'male') {
+  //     genderValue = 1; // 남성
+  //   } else if (data.gender === 'female') {
+  //     genderValue = 0; // 여성
+  //   } else {
+  //     genderValue = null; // default인 경우 null로 설정
+  //   }
+  //   console.log('genderValue >>', genderValue);
+  // Object.keys(data).forEach((key) => {
+  //   dispatch(setUserField({ field: key, value: data[key] }));
+  // });
+
+  //   dispatch(
+  //     setUserFields({
+  //       nickname: data.nickname,
+  //       email: data.email,
+  //       gender: genderValue,
+  //       age: data.age,
+  //       profile_image: null, // 기본값
+  //       sido: data.address.sido,
+  //       sigungu: data.address.sigungu,
+  //       bname: data.address.bname,
+  //       detailAddress: data.address.detailAddress,
+  //       postcode: data.address.postcode,
+  //       address: data.address.address,
+  //       extraAddress: data.address.extraAddress,
+  //       isActive: 1, // 기본값
+  //       isAdmin: 0, // 기본값
+  //     }),
+  //   );
+
+  //   // 사용자 등록
+  //   dispatch(registerUser());
+  //   alert('회원가입이 완료되었습니다.');
+  //   reset();
+  // };
+
   return (
     <RegisterPage
       isModalOpen={isModalOpen}
