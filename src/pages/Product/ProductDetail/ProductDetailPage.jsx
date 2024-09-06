@@ -2,6 +2,7 @@ import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css'; // 스타일 import
 import { Navigation, Pagination } from 'swiper/modules';
+import ProductTab from './ProductTab';
 
 export default function MyComponent() {
   //   const [images, setImages] = useState([]);
@@ -102,13 +103,7 @@ export default function MyComponent() {
             </div>
           </div>
         </div>
-        <div className="flex flex-wrap gap-10 px-7 py-8 mt-5 text-3xl text-black bg-zinc-300 max-md:px-5">
-          <div>새상품 최저가</div>
-          <div className="grow shrink w-[118px]">새상품 리뷰</div>
-          <div className="grow shrink w-[605px] max-md:max-w-full">
-            거래후기
-          </div>
-        </div>
+        <ProductTab />
       </div>
     </main>
   );
