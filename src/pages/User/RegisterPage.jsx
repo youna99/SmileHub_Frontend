@@ -13,6 +13,12 @@ const RegisterPage = ({
   onSubmit,
   currentUser,
   navigate,
+  checkEmail,
+  setCheckEmail,
+  checkNickname,
+  setCheckNickname,
+  handleCheckEmail,
+  handleCheckNickname,
 }) => {
   return (
     <>
@@ -31,6 +37,7 @@ const RegisterPage = ({
             </div>
             <div className="flex flex-col sm:flex-row sm:justify-between gap-2">
               <TextInput
+                className="w-full sm:w-4/5"
                 id="email"
                 type="email"
                 placeholder="example@naver.com"
@@ -42,9 +49,12 @@ const RegisterPage = ({
                   },
                 })}
                 shadow
-                className="w-full sm:w-4/5"
+                value={checkEmail}
+                onChange={(e) => setCheckEmail(e.target.value)}
               />
-              <Button className="w-full sm:w-auto">중복 확인</Button>
+              <Button className="w-full sm:w-auto" onClick={handleCheckEmail}>
+                중복 확인
+              </Button>
             </div>
             {errors.email && (
               <p className="text-red-500">{errors.email.message}</p>
@@ -52,7 +62,10 @@ const RegisterPage = ({
           </div>
           <div>
             <div className="mb-2 block">
-              <Label htmlFor="password" value="비밀번호" />
+              <Label
+                htmlFor="password"
+                value="비밀번호 (최소 하나의 대문자, 소문자, 숫자, 특수문자 포함 필수)"
+              />
             </div>
             <TextInput
               id="password"
@@ -108,15 +121,22 @@ const RegisterPage = ({
             </div>
             <div className="flex flex-col sm:flex-row sm:justify-between gap-2">
               <TextInput
+                className="w-full sm:w-4/5"
                 id="nickname"
                 type="text"
                 {...register('nickname', {
                   required: '닉네임은 필수 입력 항목입니다.',
                 })}
                 shadow
-                className="w-full sm:w-4/5"
+                value={checkNickname}
+                onChange={(e) => setCheckNickname(e.target.value)}
               />
-              <Button className="w-full sm:w-auto">중복 확인</Button>
+              <Button
+                className="w-full sm:w-auto"
+                onClick={handleCheckNickname}
+              >
+                중복 확인
+              </Button>
             </div>
             {errors.nickname && (
               <p className="text-red-500">{errors.nickname.message}</p>

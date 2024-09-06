@@ -61,6 +61,8 @@ const userSlice = createSlice({
     // 업데이트된 필드만 관리
     setUserField: (state, action) => {
       const { field, value } = action.payload;
+      // console.log('fiedl', field);
+      // console.log('value', value);
 
       if (field === 'profile_image') {
         state.currentUser.profile_image = value; // 프로필 이미지 업데이트
@@ -71,11 +73,12 @@ const userSlice = createSlice({
           ...state.currentUser.address,
           [addressField]: value,
         };
-      } else {
-        state.currentUser = {
-          ...state.currentUser,
-          [field]: value,
-        };
+      } else if (field === 'error') {
+        // state.currentUser = {
+        //   ...state.currentUser,
+        //   [field]: value,
+        // };
+        state.error = value;
       }
       // console.log('state.currentUser.address >>> ', state.currentUser.address);
       // console.log(
