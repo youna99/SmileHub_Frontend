@@ -50,7 +50,7 @@ const RegisterContainer = () => {
         password: data.password,
         gender: genderValue,
         age: data.age,
-        profile_image: null, // 기본값
+        profileImage: null, // 기본값
         depth1: data.address.sido,
         depth2: data.address.sigungu,
         depth3: data.address.bname,
@@ -58,6 +58,7 @@ const RegisterContainer = () => {
         isActive: 1, // 기본값
         isAdmin: 0, // 기본값
       });
+      console.log('res >>', res);
 
       if (res.status === 201) {
         dispatch(
