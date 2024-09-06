@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import LoginPage from '../../../../pages/User/LoginPage';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser, setUserField, setUserFields } from '../../store/userSlice';
+import { setUserField, setUserFields } from '../../store/userSlice';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -30,14 +30,13 @@ export const LoginContainer = () => {
       });
       const { token, user } = res.data;
 
+      console.log('user', user);
+      console.log('token', token);
+
       // 토큰 로컬 스토리지에 저장
       localStorage.setItem('token', token);
 
       // Redux 업데이트
-      // dispatch(setUserField({ field: 'email', value: user.email }));
-      // dispatch(setUserField({ field: 'nickname', value: user.nickname }));
-      // dispatch(setUserField({ field: 'age', value: user.age }));
-      // dispatch(setUserField({ field: 'address', value: user.address }));
       dispatch(
         setUserFields({
           userId: user.userId,
@@ -48,10 +47,10 @@ export const LoginContainer = () => {
           temp: user.temp,
           profile_image: user.profile_image,
           money: user.money,
-          sido: user.Locations.depth1,
-          sigungu: user.Locations.depth2,
-          bname: user.Locations.depth3,
-          detailAddress: user.Locations.depth4,
+          sido: user.Locations[0].depth1,
+          sigungu: user.Locations[0].depth2,
+          bname: user.Locations[0].depth3,
+          detailAddress: user.Locations[0].depth4,
           isActive: user.Active.isActive,
         }),
       );
