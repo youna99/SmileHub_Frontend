@@ -7,7 +7,7 @@ export default function Header() {
     <div>
       <Navbar fluid rounded>
         <Navbar.Brand href="/">
-          <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+          <span className="self-center whitespace-nowrap text-xl font-semibold">
             SeSAC-2st
           </span>
         </Navbar.Brand>
@@ -20,6 +20,9 @@ export default function Header() {
             <Dropdown.Header>
               <span className="block text-sm">UserName</span>
             </Dropdown.Header>
+            <Dropdown.Item>
+              <Link to="/login">Login</Link>
+            </Dropdown.Item>
             <Dropdown.Item>
               <Link to="/mypage">Mypage</Link>
             </Dropdown.Item>
