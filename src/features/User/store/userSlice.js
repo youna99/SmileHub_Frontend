@@ -117,7 +117,7 @@ const userSlice = createSlice({
             sigungu: '',
             bname: '',
           },
-          profile_image: '',
+          profileImage: '',
           temp: '',
           isActive: false,
           isAdmin: false,

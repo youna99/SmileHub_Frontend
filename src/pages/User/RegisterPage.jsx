@@ -29,19 +29,23 @@ const RegisterPage = ({
             <div className="mb-2 block">
               <Label htmlFor="email" value="아이디(이메일)" />
             </div>
-            <TextInput
-              id="email"
-              type="email"
-              placeholder="example@naver.com"
-              {...register('email', {
-                required: '아이디(이메일)은 필수 입력 항목입니다.',
-                pattern: {
-                  value: /^\S+@\S+$/i,
-                  message: '이메일 형식에 맞춰서 입력해주세요.',
-                },
-              })}
-              shadow
-            />
+            <div className="flex flex-col sm:flex-row sm:justify-between gap-2">
+              <TextInput
+                id="email"
+                type="email"
+                placeholder="example@naver.com"
+                {...register('email', {
+                  required: '아이디(이메일)은 필수 입력 항목입니다.',
+                  pattern: {
+                    value: /^\S+@\S+$/i,
+                    message: '이메일 형식에 맞춰서 입력해주세요.',
+                  },
+                })}
+                shadow
+                className="w-full sm:w-4/5"
+              />
+              <Button className="w-full sm:w-auto">중복 확인</Button>
+            </div>
             {errors.email && (
               <p className="text-red-500">{errors.email.message}</p>
             )}
@@ -102,14 +106,18 @@ const RegisterPage = ({
             <div className="mb-2 block">
               <Label htmlFor="nickname" value="닉네임" />
             </div>
-            <TextInput
-              id="nickname"
-              type="text"
-              {...register('nickname', {
-                required: '닉네임은 필수 입력 항목입니다.',
-              })}
-              shadow
-            />
+            <div className="flex flex-col sm:flex-row sm:justify-between gap-2">
+              <TextInput
+                id="nickname"
+                type="text"
+                {...register('nickname', {
+                  required: '닉네임은 필수 입력 항목입니다.',
+                })}
+                shadow
+                className="w-full sm:w-4/5"
+              />
+              <Button className="w-full sm:w-auto">중복 확인</Button>
+            </div>
             {errors.nickname && (
               <p className="text-red-500">{errors.nickname.message}</p>
             )}
@@ -166,7 +174,7 @@ const RegisterPage = ({
             <div className="mb-2 block">
               <Label htmlFor="address" value="주소" />
             </div>
-            <div className="flex">
+            <div className="flex gap-2 pb-2">
               <TextInput
                 className="w-1/2"
                 type="text"
@@ -181,8 +189,9 @@ const RegisterPage = ({
               placeholder="주소"
               value={currentUser.address.address}
               {...register('address.address')}
+              className="pb-2"
             />
-            <div className="flex">
+            <div className="flex gap-2">
               <TextInput
                 className="w-1/2"
                 placeholder="상세주소"
