@@ -9,6 +9,7 @@ export const LoginContainer = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const error = useSelector((state) => state.user.error);
+
   const isAuthenticated = useSelector((state) => state.user.isActive);
 
   const [email, setEmail] = useState('');
@@ -63,7 +64,7 @@ export const LoginContainer = () => {
       dispatch(
         setUserField({
           field: 'error',
-          value: '로그인에 실패했습니다. 다시 시도해주세요.',
+          value: '아이디 또는 비밀번호가 일치하지않습니다.',
         }),
       );
     }
