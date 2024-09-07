@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import PostComment from './PostComment';
 
 const ProductTab = () => {
   const newProductPriceRef = useRef(null); // 새상품 최저가
@@ -50,6 +51,12 @@ const ProductTab = () => {
         <h2 className="text-2xl">거래후기</h2>
         {/* 거래 후기 내용 */}
         <p>여기에 거래 후기 내용이 들어갑니다.</p>
+
+        {/* 댓글 작성 폼 */}
+        <PostComment />
+
+        {/* 댓글 내역 */}
+        {/* <CommentSection /> */}
       </div>
     </div>
   );
