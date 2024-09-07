@@ -50,9 +50,21 @@ const MyPageContainer = () => {
         try {
           const userId = currentUser.userId;
           const newProfileImage = images[0];
-          await axios.patch(`http://localhost:8000/user/${userId}`, {
-            profile_image: newProfileImage,
-          });
+
+          // 로컬 스토리지에서 토큰 가져오기
+          const token = localStorage.getItem('token');
+
+          await axios.patch(
+            `http://localhost:8000/user/${userId}`,
+            {
+              profile_image: newProfileImage,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
+          );
 
           // 프로필 이미지 업데이트
           dispatch(
