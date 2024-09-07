@@ -21,10 +21,11 @@ const initialState = {
       sigungu: '', // depth2
       bname: '', // depth3
     },
-    profile_image: '',
+    profileImage: '',
     temp: '',
     isActive: false, // 활동 정지 여부
     isAdmin: false, // 관리자 여부
+    isAuthenticated: false, // 로그인 성공 여부 추가
   },
   error: null,
   // currentUser: {
@@ -44,12 +45,11 @@ const initialState = {
   //     sigungu: '영등포구', // depth2
   //     bname: '문래동1가', // depth3
   //   },
-  //   profile_image: '',
+  //   profileImage: '',
   //   temp: '36.5',
+  //   isActive: false, // 활동 정지 여부
+  //   isAdmin: false, // 관리자 여부
   // },
-  // isAuthenticated: false, // 로그인 여부
-  // isActive: false, // 활동 정지 여부
-  // isAdmin: false, // 관리자 여부
   // error: null,
 };
 
@@ -64,8 +64,8 @@ const userSlice = createSlice({
       // console.log('fiedl', field);
       // console.log('value', value);
 
-      if (field === 'profile_image') {
-        state.currentUser.profile_image = value; // 프로필 이미지 업데이트
+      if (field === 'profileImage') {
+        state.currentUser.profileImage = value; // 프로필 이미지 업데이트
       } else if (field.startsWith('address.')) {
         // 주소 업데이트
         const [, addressField] = field.split('.');
@@ -82,8 +82,8 @@ const userSlice = createSlice({
       }
       // console.log('state.currentUser.address >>> ', state.currentUser.address);
       // console.log(
-      // 'state.currentUser.profile_image >>> ',
-      // state.currentUser.profile_image,
+      // 'state.currentUser.profileImage >>> ',
+      // state.currentUser.profileImage,
       // );
     },
 
@@ -124,6 +124,7 @@ const userSlice = createSlice({
           temp: '',
           isActive: false,
           isAdmin: false,
+          isAuthenticated: false,
         };
         state.error = null;
       } else {
@@ -161,6 +162,7 @@ const userSlice = createSlice({
 
     // 현재 사용자 정보 초기화(로그아웃)
     logout: (state) => {
+      console.log('Logging out, resetting state:', state.currentUser);
       state.currentUser = {
         userId: '',
         email: '',
@@ -178,10 +180,11 @@ const userSlice = createSlice({
           sigungu: '',
           bname: '',
         },
-        profile_image: '',
+        profileImage: '',
         temp: '',
         isActive: false,
         isAdmin: false,
+        isAuthenticated: false,
       };
       state.error = null;
     },
@@ -211,10 +214,11 @@ const userSlice = createSlice({
           sigungu: '',
           bname: '',
         },
-        profile_image: '',
+        profileImage: '',
         temp: '',
         isActive: false,
         isAdmin: false,
+        isAuthenticated: false,
       };
       state.error = null;
     },

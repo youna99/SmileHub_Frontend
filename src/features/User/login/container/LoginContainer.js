@@ -10,7 +10,9 @@ export const LoginContainer = () => {
   const dispatch = useDispatch();
   const error = useSelector((state) => state.user.error);
 
-  const isAuthenticated = useSelector((state) => state.user.isActive);
+  const isAuthenticated = useSelector(
+    (state) => state.user.currentUser.isAuthenticated,
+  );
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -53,6 +55,7 @@ export const LoginContainer = () => {
           bname: user.Locations[0].depth3,
           detailAddress: user.Locations[0].depth4,
           isActive: user.Active.isActive,
+          isAuthenticated: true, // 로그인 성공 시 true
         }),
       );
 
