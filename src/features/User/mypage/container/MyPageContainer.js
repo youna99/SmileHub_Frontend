@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { deleteUser, setUserField } from '../../store/userSlice';
@@ -62,19 +62,23 @@ const MyPageContainer = () => {
       if (images.length > 0) {
         try {
           const userId = currentUser.userId;
-          const newProfileImage = images[0];
-          console.log('newProfileImage >>>', newProfileImage);
+          const newProfileImageFile = images[0]; // 선택된 이미지 파일
+          console.log('newProfileImage >>>', newProfileImageFile);
 
           // 로컬 스토리지에서 토큰 가져오기
           const token = localStorage.getItem('token');
 
+          // FormData 객체 생성
+          const formData = new FormData();
+          formData.append('profileImage', newProfileImageFile); // 파일을 FormData에 추가
+          console.log('formData >>', formData);
+
           await axios.post(
             `http://localhost:8000/uploadImg/user/${userId}`,
-            {
-              profileImage: newProfileImage,
-            },
+            formData,
             {
               headers: {
+                'Content-Type': 'multipart/form-data', // 헤더 설정
                 Authorization: token,
               },
             },
@@ -82,7 +86,7 @@ const MyPageContainer = () => {
 
           // 프로필 이미지 업데이트
           dispatch(
-            setUserField({ field: 'profileImage', value: newProfileImage }),
+            setUserField({ field: 'profileImage', value: newProfileImageFile }),
           );
           setProfileEdit(false);
           console.log('프로필 수정 성공');
@@ -103,7 +107,7 @@ const MyPageContainer = () => {
   // 프로필 수정 시 취소 버튼 클릭
   const handleCancel = () => {
     setProfileEdit(false);
-    setImages([originalProfileImage]);
+    setImages([originalProfileImage]); // 원래 프로필 이미지로 상태 복원
   };
 
   return (
