@@ -9,9 +9,9 @@ const ChatRoomList = ({ chatRooms, handleSelectRoom }) => {
           onClick={() => handleSelectRoom(room.roomId)}
           className="p-4 mb-2 bg-white rounded-lg shadow cursor-pointer hover:bg-gray-200"
         >
-          <h3 className="font-semibold">{room.productName}</h3>
+          <h3 className="font-semibold">{room.Product.productName}</h3>
           <p className="text-sm text-gray-500">
-            {room.lastMessage ? room.lastMessage : 'No messages yet'}
+            {room.lastMessage ? room.lastMessage : '아직 메세지가 없습니다.'}
           </p>
         </div>
       ))}

@@ -7,6 +7,7 @@ const ChatRoom = ({
   handleKeyPress,
   handleSendMessage,
   currentUser,
+  messagesEndRef,
 }) => {
   return (
     <div className="flex flex-col h-full p-4 bg-gray-100">
@@ -24,10 +25,11 @@ const ChatRoom = ({
                   : 'bg-gray-300 text-black'
               }`}
             >
-              {msg.content}
+              {msg.messageText}
             </div>
           </div>
         ))}
+        <div ref={messagesEndRef} /> {/* 자동 스크롤 위치 */}
       </div>
 
       {/* 메시지 입력 인풋 */}
