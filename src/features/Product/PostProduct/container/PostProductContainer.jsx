@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useProduct } from '../hooks/productHook';
 import ProductPage from '../../../../pages/Product/PostProduct/PostProductPage';
+import axios from 'axios';
 
 export default function PostProductContainer() {
   const { setProduct } = useProduct();
@@ -38,10 +39,14 @@ export default function PostProductContainer() {
       console.log('postproductData', { ...data, images }); // 제출된 데이터 확인용
 
       // 서버에 데이터 전송
-      // const res = await axios.post('http://localhost:8000/postproduct', {
-      //   ...data,
-      //   images,
-      // });
+      const res = await axios.post('http://localhost:8000/product/write', {
+        productName: data.productName,
+        userId: 2,
+        categoryId: 1,
+        content: data.description,
+        price: data.price,
+      });
+      console.log('postProduct ->', res.data);
     } catch (error) {
       console.error('Error posting product:', error);
     }
