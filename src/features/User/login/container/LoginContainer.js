@@ -10,9 +10,7 @@ export const LoginContainer = () => {
   const dispatch = useDispatch();
   const error = useSelector((state) => state.user.error);
 
-  const isAuthenticated = useSelector(
-    (state) => state.user.currentUser.isAuthenticated,
-  );
+  const isAuthenticated = useSelector((state) => state.user.isActive);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
