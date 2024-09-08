@@ -6,7 +6,6 @@ import userReducer from '../features/User/store/userSlice';
 const rootReducer = combineReducers({
   product: productReducer,
   user: userReducer,
-  mypage: mypageReducer,
 });
 
 export default rootReducer;
