@@ -17,6 +17,7 @@ export const RootRouter = () => {
       <Route path="/mypageEdit" element={<UserEditContainer />} />
       <Route path="/postproduct" element={<PostProductPage />} />
       <Route path="/chat" element={<ChatPage />} />
+      <Route path="/chat/:roomId" element={<ChatPage />} />
     </Routes>
   );
 };

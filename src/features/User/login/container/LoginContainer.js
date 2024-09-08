@@ -9,6 +9,7 @@ export const LoginContainer = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const error = useSelector((state) => state.user.error);
+
   const isAuthenticated = useSelector((state) => state.user.isActive);
 
   const [email, setEmail] = useState('');
@@ -45,13 +46,16 @@ export const LoginContainer = () => {
           gender: user.gender,
           age: user.age,
           temp: user.temp,
-          profile_image: user.profile_image,
+          profileImage: user.profileImage,
           money: user.money,
-          sido: user.Locations[0].depth1,
-          sigungu: user.Locations[0].depth2,
-          bname: user.Locations[0].depth3,
-          detailAddress: user.Locations[0].depth4,
+          address: {
+            sido: user.Locations[0].depth1,
+            sigungu: user.Locations[0].depth2,
+            bname: user.Locations[0].depth3,
+            detailAddress: user.Locations[0].depth4,
+          },
           isActive: user.Active.isActive,
+          isAuthenticated: true, // 로그인 성공 시 true
         }),
       );
 
@@ -63,7 +67,7 @@ export const LoginContainer = () => {
       dispatch(
         setUserField({
           field: 'error',
-          value: '로그인에 실패했습니다. 다시 시도해주세요.',
+          value: '아이디 또는 비밀번호가 일치하지않습니다.',
         }),
       );
     }
