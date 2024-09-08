@@ -50,7 +50,11 @@ export default function Header() {
               inline
               // label={<Avatar alt="User profile" img={profileImage} rounded />}
               label={
-                <Avatar alt="User profile" img="/images/profile.png" rounded />
+                <Avatar
+                  alt="User profile"
+                  img={profileImage ? profileImage : '/images/profile.png'}
+                  rounded
+                />
               }
             >
               <Dropdown.Header>
@@ -66,20 +70,12 @@ export default function Header() {
             <Navbar.Toggle />
           </div>
         ) : (
-          <>
-            <Link
-              to="/login"
-              className="text-sm text-gray-700 hover:text-gray-900"
-            >
-              로그인
-            </Link>
-            <Link
-              to="/register"
-              className="ml-4 text-gray-700 hover:text-gray-900"
-            >
-              회원가입
-            </Link>
-          </>
+          <Link
+            to="/login"
+            className="text-sm text-gray-700 hover:text-gray-900"
+          >
+            로그인/회원가입
+          </Link>
         )}
 
         <Navbar.Collapse>
