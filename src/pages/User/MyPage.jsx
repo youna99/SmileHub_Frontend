@@ -3,6 +3,7 @@ import { Avatar, Tabs, Button } from 'flowbite-react';
 import UserSellList from '../../features/User/mypage/components/UserSellList';
 import UserBuyList from '../../features/User/mypage/components/UserBuyList';
 import LikeList from '../../features/User/mypage/components/LikeList';
+import Modal from '../../features/User/mypage/components/Modal';
 import { ImageDropZone } from '../../shared/ImageDropZone';
 
 const MyPage = ({
@@ -16,6 +17,9 @@ const MyPage = ({
   handleDelete,
   sells,
   buys,
+  openModal,
+  isModalOpen,
+  closeModal,
 }) => {
   return (
     <>
@@ -50,7 +54,10 @@ const MyPage = ({
             <div className="border bg-white rounded-lg p-4 mt-4 w-full">
               <div className="flex flex-col sm:flex-row justify-between items-center">
                 <div className="mb-2 sm:mb-0">현재 머니: 100000</div>
-                <Button className="w-full sm:w-auto">충전하기</Button>
+                <Button className="w-full sm:w-auto" onClick={openModal}>
+                  충전하기
+                </Button>
+                <Modal isOpen={isModalOpen} closeModal={closeModal} />
               </div>
             </div>
           </div>
