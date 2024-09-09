@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Avatar, Tabs, Button } from 'flowbite-react';
 import UserSellList from '../../features/User/mypage/components/UserSellList';
 import UserBuyList from '../../features/User/mypage/components/UserBuyList';
 import LikeList from '../../features/User/mypage/components/LikeList';
-import Modal from '../../features/User/mypage/components/Modal';
+import MoneyMoal from '../../features/User/mypage/components/MoneyMoal';
 import { ImageDropZone } from '../../shared/ImageDropZone';
 
 const MyPage = ({
@@ -15,10 +15,17 @@ const MyPage = ({
   handleCancel,
   handleEdit,
   handleDelete,
-  openModal,
-  isModalOpen,
-  closeModal,
 }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false); // 충전하기 버튼 클릭시 모달 상태 관리
+
+  // 충전하기 버튼 클릭시
+  const openModal = () => {
+    console.log('충전하기 버튼 클릭');
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   return (
     <>
       <section className="flex justify-center py-10 w-full">
@@ -58,11 +65,12 @@ const MyPage = ({
             </div>
             <div className="border bg-white rounded-lg p-4 mt-4 w-full">
               <div className="flex flex-col sm:flex-row justify-between items-center">
-                <div className="mb-2 sm:mb-0">현재 머니: 100000</div>
+                <div className="mb-2 sm:mb-0">
+                  현재 머니: {currentUser.money}
+                </div>
                 <Button className="w-full sm:w-auto" onClick={openModal}>
                   충전하기
                 </Button>
-                <Modal isOpen={isModalOpen} closeModal={closeModal} />
               </div>
             </div>
           </div>
@@ -92,6 +100,9 @@ const MyPage = ({
           </Tabs>
         </div>
       </nav>
+
+      {/* MoneyMoal 컴포넌트 추가 */}
+      <MoneyMoal isModalOpen={isModalOpen} closeModal={closeModal} />
     </>
   );
 };

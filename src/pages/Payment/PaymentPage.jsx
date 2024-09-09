@@ -4,9 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import AddressSearch from '../../features/User/Register/components/AddressSearch';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import MoneyMoal from '../../features/User/mypage/components/MoneyMoal';
+import { pay } from '../../features/User/store/userSlice';
 
 const PaymentPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // 주소 modal 상태관리
+  const [isMoneyModal, setIsMoneyModal] = useState(false); // 충전하기 버튼 클릭시 모달 상태 관리
   const [temporaryAddress, setTemporaryAddress] = useState(''); // 일회성 주소 상태
   const [temporaryDetailAddress, setTemporaryDetailAddress] = useState(''); // 상세 주소 상태
   const [isDetailAddressComplete, setIsDetailAddressComplete] = useState(false); // 상세 주소 입력 완료 상태
@@ -20,7 +23,7 @@ const PaymentPage = () => {
   }); // 각각 동의 상태
 
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const address = useSelector((state) => state.user.currentUser.address);
   const detailAddress = useSelector(
@@ -31,6 +34,7 @@ const PaymentPage = () => {
 
   const location = useLocation();
   const productId = location.state?.productId; // 상세 페이지에서 전달받은 productId
+
   useEffect(() => {
     const fetchOrder = async () => {
       if (productId) {
@@ -98,8 +102,17 @@ const PaymentPage = () => {
     });
   };
 
+  // 충전하기 버튼 클릭시
+  const openModal = () => {
+    console.log('충전하기 버튼 클릭');
+    setIsMoneyModal(true);
+  };
+  const closeModal = () => {
+    setIsMoneyModal(false);
+  };
+
   // 결제하기
-  const handlePayment = () => {
+  const handlePayment = async () => {
     // 유효성 검사
     if (!moneyInput || isNaN(moneyInput) || Number(moneyInput) <= 0) {
       setError('유효한 금액을 입력하세요.');
@@ -117,13 +130,33 @@ const PaymentPage = () => {
       return;
     }
 
-    alert('결제가 완료되었습니다.');
-    navigate('/mypage');
+    const token = localStorage.getItem('token'); // 토큰 가져오기
+    // const productId = location.state?.productId; // 상세페이지의 productId 가져오기
+    const productId = 9;
 
-    // dispatch(updateMoney(money - Number(moneyInput)));
-    setMoneyInput('');
-    setError('');
-    setCheckError('');
+    try {
+      const res = await axios.post(
+        `http://localhost:8000/mypage/payment`,
+        {
+          productId,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        },
+      );
+      if (res.status === 200) {
+        dispatch(pay(moneyInput));
+        alert('결제가 완료되었습니다.');
+        setMoneyInput('');
+        setError('');
+        setCheckError('');
+        navigate('/mypage');
+      }
+    } catch (error) {
+      console.error('결제중 오류', error);
+    }
   };
 
   return (
@@ -198,7 +231,10 @@ const PaymentPage = () => {
                   (사용 가능 : {money} 원)
                 </span>
               </div>
-              <div className="text-blue-500 cursor-pointer text-sm sm:text-base">
+              <div
+                className="text-blue-500 cursor-pointer text-sm sm:text-base"
+                onClick={openModal}
+              >
                 충전하기
               </div>
             </div>
@@ -283,6 +319,8 @@ const PaymentPage = () => {
           >
             결제하기
           </Button>
+
+          <MoneyMoal isModalOpen={isMoneyModal} closeModal={closeModal} />
 
           <AddressSearch
             isOpen={isModalOpen}

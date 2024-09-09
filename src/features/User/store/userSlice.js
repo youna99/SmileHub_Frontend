@@ -195,6 +195,10 @@ const userSlice = createSlice({
       const amount = action.payload; // 충전할 금액
       state.currentUser.money += amount;
     },
+    pay: (state, action) => {
+      const amount = action.payload; // 결제할 금액
+      state.currentUser.money -= amount;
+    },
   },
 });
 
@@ -205,5 +209,7 @@ export const {
   loginUser,
   logout,
   deleteUser,
+  addMoney,
+  pay,
 } = userSlice.actions;
 export default userSlice.reducer;
