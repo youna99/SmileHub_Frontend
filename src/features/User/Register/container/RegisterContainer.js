@@ -68,6 +68,7 @@ const RegisterContainer = () => {
             userId: res.data.newUser.userId,
             nickname: data.nickname,
             email: data.email,
+            password: data.password,
             gender: genderValue,
             age: data.age,
             profile_image: null, // 기본값
