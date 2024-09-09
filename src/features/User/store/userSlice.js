@@ -4,49 +4,53 @@ const initialState = {
   users: [], // 기존 등록 사용자의 목록
   // users: [{ email: 'happy@naver.com', password: 'qwer1234' }],
   // 현재 사용 중인 사용자 정보
-  // currentUser: {
-  //   userId: '',
-  //   email: '',
-  //   password: '',
-  //   confirmPassword: '',
-  //   nickname: '',
-  //   age: '',
-  //   gender: '',
-  //   address: {
-  //     postcode: '', // 우편번호
-  //     address: '', // 기본주소 (예: 경기 성남시 분당구 판교역로 166)
-  //     detailAddress: '', // 상세 주소 (예: 아파트 동, 호수) // depth4
-  //     extraAddress: '', // 참고항목 (예: 법정동, 건물명)
-  //     sido: '', // depth1
-  //     sigungu: '', // depth2
-  //     bname: '', // depth3
-  //   },
-  //   profile_image: '',
-  // },
   currentUser: {
-    userId: '1',
-    email: 'happy@naver.com',
-    password: 'qwer1234',
-    confirmPassword: 'qwer1234',
-    nickname: '기쁨이',
-    age: '12',
+    userId: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    nickname: '',
+    age: '',
     gender: '',
     address: {
-      postcode: '07371', // 우편번호
-      address: '서울 영등포구 경인로 702', // 기본주소 (예: 경기 성남시 분당구 판교역로 166)
-      detailAddress: '2층', // 상세 주소 (예: 아파트 동, 호수) // depth4
-      extraAddress: '문래동1가', // 참고항목 (예: 법정동, 건물명)
-      sido: '서울', // depth1
-      sigungu: '영등포구', // depth2
-      bname: '문래동1가', // depth3
+      postcode: '', // 우편번호
+      address: '', // 기본주소 (예: 경기 성남시 분당구 판교역로 166)
+      detailAddress: '', // 상세 주소 (예: 아파트 동, 호수) // depth4
+      extraAddress: '', // 참고항목 (예: 법정동, 건물명)
+      sido: '', // depth1
+      sigungu: '', // depth2
+      bname: '', // depth3
     },
-    profile_image: '',
-    temp: '36.5',
+    profileImage: '',
+    temp: '',
+    isActive: false, // 활동 정지 여부
+    isAdmin: false, // 관리자 여부
+    isAuthenticated: false, // 로그인 성공 여부 추가
   },
-  isAuthenticated: false, // 로그인 여부
-  isActive: false, // 활동 정지 여부
-  isAdmin: false, // 관리자 여부
   error: null,
+  // currentUser: {
+  //   userId: '1',
+  //   email: 'happy@naver.com',
+  //   password: 'qwer1234',
+  //   confirmPassword: 'qwer1234',
+  //   nickname: '기쁨이',
+  //   age: '12',
+  //   gender: '',
+  //   address: {
+  //     postcode: '07371', // 우편번호
+  //     address: '서울 영등포구 경인로 702', // 기본주소 (예: 경기 성남시 분당구 판교역로 166)
+  //     detailAddress: '2층', // 상세 주소 (예: 아파트 동, 호수) // depth4
+  //     extraAddress: '문래동1가', // 참고항목 (예: 법정동, 건물명)
+  //     sido: '서울', // depth1
+  //     sigungu: '영등포구', // depth2
+  //     bname: '문래동1가', // depth3
+  //   },
+  //   profileImage: '',
+  //   temp: '36.5',
+  //   isActive: false, // 활동 정지 여부
+  //   isAdmin: false, // 관리자 여부
+  // },
+  // error: null,
 };
 
 // 슬라이스 생성
@@ -57,11 +61,11 @@ const userSlice = createSlice({
     // 업데이트된 필드만 관리
     setUserField: (state, action) => {
       const { field, value } = action.payload;
-      console.log('field >>', field);
-      console.log('value >>', value);
+      // console.log('fiedl', field);
+      // console.log('value', value);
 
-      if (field === 'profile_image') {
-        state.currentUser.profile_image = value; // 프로필 이미지 업데이트
+      if (field === 'profileImage') {
+        state.currentUser.profileImage = value; // 프로필 이미지 업데이트
       } else if (field.startsWith('address.')) {
         // 주소 업데이트
         const [, addressField] = field.split('.');
@@ -69,17 +73,24 @@ const userSlice = createSlice({
           ...state.currentUser.address,
           [addressField]: value,
         };
-      } else {
-        state.currentUser = {
-          ...state.currentUser,
-          [field]: value,
-        };
+      } else if (field === 'error') {
+        // state.currentUser = {
+        //   ...state.currentUser,
+        //   [field]: value,
+        // };
+        state.error = value;
       }
-      console.log('state.currentUser.address >>> ', state.currentUser.address);
-      console.log(
-        'state.currentUser.profile_image >>> ',
-        state.currentUser.profile_image,
-      );
+      // console.log('state.currentUser.address >>> ', state.currentUser.address);
+      // console.log(
+      // 'state.currentUser.profileImage >>> ',
+      // state.currentUser.profileImage,
+      // );
+    },
+
+    setUserFields: (state, action) => {
+      const updates = action.payload;
+      state.currentUser = { ...state.currentUser, ...updates };
+      console.log('updates >>', updates);
     },
 
     registerUser: (state) => {
@@ -93,6 +104,7 @@ const userSlice = createSlice({
       if (!exists) {
         state.users.push({ ...state.currentUser });
         state.currentUser = {
+          userId: '',
           email: '',
           password: '',
           confirmPassword: '',
@@ -108,6 +120,11 @@ const userSlice = createSlice({
             sigungu: '',
             bname: '',
           },
+          profileImage: '',
+          temp: '',
+          isActive: false,
+          isAdmin: false,
+          isAuthenticated: false,
         };
         state.error = null;
       } else {
@@ -116,26 +133,38 @@ const userSlice = createSlice({
     },
 
     // 이메일과 비밀번호로 로그인
-    loginUser: (state, action) => {
-      const user = state.users.find(
-        (user) =>
-          user.email === action.payload.email &&
-          user.password === action.payload.password,
-      );
-      if (user) {
-        state.currentUser = user;
-        state.isAuthenticated = true;
-        state.error = null;
-        console.log('로그인 성공', user);
-      } else {
-        state.isAuthenticated = false;
-        state.error = '이메일 또는 비밀번호가 일치하지 않습니다.';
-      }
-    },
+    // loginUser: (state, action) => {
+    //   const user = state.users.find(
+    //     (user) =>
+    //       user.email === action.payload.email &&
+    //       user.password === action.payload.password,
+    //   );
+    //   if (user) {
+    //     state.currentUser = {
+    //       ...state.currentUser, // 현재 상태를 유지한 채 필요한 필드를 업데이트
+    //       userId: user.userId,
+    //       email: user.email,
+    //       nickname: user.nickname,
+    //       age: user.age,
+    //       gender: user.gender,
+    //       address: { ...user.address },
+    //       profile_image: user.profile_image,
+    //       temp: user.temp,
+    //     };
+    //     state.isAuthenticated = true;
+    //     state.error = null;
+    //     console.log('로그인 성공', user);
+    //   } else {
+    //     state.isAuthenticated = false;
+    //     state.error = '이메일 또는 비밀번호가 일치하지 않습니다.';
+    //   }
+    // },
 
     // 현재 사용자 정보 초기화(로그아웃)
     logout: (state) => {
+      console.log('Logging out, resetting state:', state.currentUser);
       state.currentUser = {
+        userId: '',
         email: '',
         password: '',
         confirmPassword: '',
@@ -151,19 +180,25 @@ const userSlice = createSlice({
           sigungu: '',
           bname: '',
         },
+        profileImage: '',
+        temp: '',
+        isActive: false,
+        isAdmin: false,
+        isAuthenticated: false,
       };
-      state.isAuthenticated = false;
+      state.error = null;
     },
 
     // 회원 탈퇴
     deleteUser: (state) => {
       // 현재 로그인된 사용자의 이메일을 기준으로 users 배열에서 제거
       state.users = state.users.filter(
-        (user) => user.email !== user.currentUser.email,
+        (user) => user.email !== state.currentUser.email,
       );
 
       // currentUser 정보 초기화 및 로그아웃 처리
       state.currentUser = {
+        userId: '',
         email: '',
         password: '',
         confirmPassword: '',
@@ -179,15 +214,23 @@ const userSlice = createSlice({
           sigungu: '',
           bname: '',
         },
-        profile_image: '',
+        profileImage: '',
         temp: '',
+        isActive: false,
+        isAdmin: false,
+        isAuthenticated: false,
       };
-      state.isAuthenticated = false;
       state.error = null;
     },
   },
 });
 
-export const { setUserField, registerUser, loginUser, logout, deleteUser } =
-  userSlice.actions;
+export const {
+  setUserField,
+  setUserFields,
+  registerUser,
+  loginUser,
+  logout,
+  deleteUser,
+} = userSlice.actions;
 export default userSlice.reducer;

@@ -13,6 +13,12 @@ const RegisterPage = ({
   onSubmit,
   currentUser,
   navigate,
+  checkEmail,
+  setCheckEmail,
+  checkNickname,
+  setCheckNickname,
+  handleCheckEmail,
+  handleCheckNickname,
 }) => {
   return (
     <>
@@ -29,26 +35,37 @@ const RegisterPage = ({
             <div className="mb-2 block">
               <Label htmlFor="email" value="아이디(이메일)" />
             </div>
-            <TextInput
-              id="email"
-              type="email"
-              placeholder="example@naver.com"
-              {...register('email', {
-                required: '아이디(이메일)은 필수 입력 항목입니다.',
-                pattern: {
-                  value: /^\S+@\S+$/i,
-                  message: '이메일 형식에 맞춰서 입력해주세요.',
-                },
-              })}
-              shadow
-            />
+            <div className="flex flex-col sm:flex-row sm:justify-between gap-2">
+              <TextInput
+                className="w-full sm:w-4/5"
+                id="email"
+                type="email"
+                placeholder="example@naver.com"
+                {...register('email', {
+                  required: '아이디(이메일)은 필수 입력 항목입니다.',
+                  pattern: {
+                    value: /^\S+@\S+$/i,
+                    message: '이메일 형식에 맞춰서 입력해주세요.',
+                  },
+                })}
+                shadow
+                value={checkEmail}
+                onChange={(e) => setCheckEmail(e.target.value)}
+              />
+              <Button className="w-full sm:w-auto" onClick={handleCheckEmail}>
+                중복 확인
+              </Button>
+            </div>
             {errors.email && (
               <p className="text-red-500">{errors.email.message}</p>
             )}
           </div>
           <div>
             <div className="mb-2 block">
-              <Label htmlFor="password" value="비밀번호" />
+              <Label
+                htmlFor="password"
+                value="비밀번호 (최소 하나의 대문자, 소문자, 숫자, 특수문자 포함 필수)"
+              />
             </div>
             <TextInput
               id="password"
@@ -58,6 +75,20 @@ const RegisterPage = ({
                 minLength: {
                   value: 6,
                   message: '비밀번호는 최소 6자 이상이어야 합니다.',
+                },
+                validate: {
+                  hasNumber: (value) =>
+                    /[0-9]/.test(value) ||
+                    '비밀번호에는 최소 하나의 숫자가 포함되어야 합니다.',
+                  hasSpecialChar: (value) =>
+                    /[!@#$%^&*(),.?":{}|<>]/.test(value) ||
+                    '비밀번호에는 최소 하나의 특수문자가 포함되어야 합니다.',
+                  hasUpperCase: (value) =>
+                    /[A-Z]/.test(value) ||
+                    '비밀번호에는 최소 하나의 대문자가 포함되어야 합니다.',
+                  hasLowerCase: (value) =>
+                    /[a-z]/.test(value) ||
+                    '비밀번호에는 최소 하나의 소문자가 포함되어야 합니다.',
                 },
               })}
               shadow
@@ -88,14 +119,25 @@ const RegisterPage = ({
             <div className="mb-2 block">
               <Label htmlFor="nickname" value="닉네임" />
             </div>
-            <TextInput
-              id="nickname"
-              type="text"
-              {...register('nickname', {
-                required: '닉네임은 필수 입력 항목입니다.',
-              })}
-              shadow
-            />
+            <div className="flex flex-col sm:flex-row sm:justify-between gap-2">
+              <TextInput
+                className="w-full sm:w-4/5"
+                id="nickname"
+                type="text"
+                {...register('nickname', {
+                  required: '닉네임은 필수 입력 항목입니다.',
+                })}
+                shadow
+                value={checkNickname}
+                onChange={(e) => setCheckNickname(e.target.value)}
+              />
+              <Button
+                className="w-full sm:w-auto"
+                onClick={handleCheckNickname}
+              >
+                중복 확인
+              </Button>
+            </div>
             {errors.nickname && (
               <p className="text-red-500">{errors.nickname.message}</p>
             )}
@@ -109,6 +151,10 @@ const RegisterPage = ({
               type="number"
               {...register('age', {
                 valueAsNumber: true,
+                min: {
+                  value: 1,
+                  message: '유효한 나이를 입력하세요.',
+                },
               })}
               shadow
             />
@@ -148,7 +194,7 @@ const RegisterPage = ({
             <div className="mb-2 block">
               <Label htmlFor="address" value="주소" />
             </div>
-            <div className="flex">
+            <div className="flex gap-2 pb-2">
               <TextInput
                 className="w-1/2"
                 type="text"
@@ -163,8 +209,9 @@ const RegisterPage = ({
               placeholder="주소"
               value={currentUser.address.address}
               {...register('address.address')}
+              className="pb-2"
             />
-            <div className="flex">
+            <div className="flex gap-2">
               <TextInput
                 className="w-1/2"
                 placeholder="상세주소"
