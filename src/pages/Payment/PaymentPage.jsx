@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Avatar, TextInput, Label, Checkbox } from 'flowbite-react';
 import { useDispatch, useSelector } from 'react-redux';
 import AddressSearch from '../../features/User/Register/components/AddressSearch';
-import { updateMoney } from '../../features/User/store/myPageSlice';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const PaymentPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // 주소 modal 상태관리
@@ -20,16 +20,38 @@ const PaymentPage = () => {
   }); // 각각 동의 상태
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const address = useSelector(
-    (state) => state.user.currentUser.address.address,
-  );
+  const address = useSelector((state) => state.user.currentUser.address);
   const detailAddress = useSelector(
     (state) => state.user.currentUser.address.detailAddress,
   );
   const nickname = useSelector((state) => state.user.currentUser.nickname);
-  const money = useSelector((state) => state.mypage.money);
+  const money = useSelector((status) => status.user.currentUser.money);
+
+  const location = useLocation();
+  const productId = location.state?.productId; // 상세 페이지에서 전달받은 productId
+  useEffect(() => {
+    const fetchOrder = async () => {
+      if (productId) {
+        try {
+          const token = localStorage.getItem('token'); // 토큰 가져오기
+          const res = await axios.get(
+            `http://localhost:8000/product/order?productId=${productId}`,
+            {
+              headers: {
+                Authorization: token,
+              },
+            },
+          );
+          console.log('상품 정보: ', res.data);
+        } catch (error) {
+          console.error('결제할 상품 불러오기 실패', error);
+        }
+      }
+    };
+    fetchOrder();
+  }, [productId]);
 
   // 주소 변경 클릭시
   const handleAddressChange = (newAddress) => {
@@ -98,7 +120,7 @@ const PaymentPage = () => {
     alert('결제가 완료되었습니다.');
     navigate('/mypage');
 
-    dispatch(updateMoney(money - Number(moneyInput)));
+    // dispatch(updateMoney(money - Number(moneyInput)));
     setMoneyInput('');
     setError('');
     setCheckError('');
@@ -142,7 +164,7 @@ const PaymentPage = () => {
               <div className="mt-1 sm:mt-2 text-sm sm:text-base">
                 {temporaryAddress
                   ? `${temporaryAddress}${isDetailAddressComplete ? `, ${temporaryDetailAddress}` : ''}`
-                  : `${address}, ${detailAddress}`}
+                  : `${address.sido} ${address.sigungu} ${address.bname} ${detailAddress}`}
               </div>
 
               {!isDetailAddressComplete && temporaryAddress && (
