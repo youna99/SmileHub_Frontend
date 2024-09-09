@@ -5,7 +5,6 @@ import persistStore from 'redux-persist/es/persistStore';
 import { combineReducers } from '@reduxjs/toolkit';
 import userReducer from '../features/User/store/userSlice';
 import productReducer from '../features/Product/store/proudctSlice';
-import mypageReducer from '../features/User/store/myPageSlice';
 import chatRoomReducer from '../features/Chat/ChatRoom/store/chatRoomSlice';
 import chatRoomListReducer from '../features/Chat/ChatRoomList/store/chatRoomListSlice';
 
@@ -23,7 +22,6 @@ const persistedUserReducer = persistReducer(persistConfig, userReducer);
 const rootReducer = combineReducers({
   product: productReducer,
   user: persistedUserReducer, // persistedUserReducer 사용
-  mypage: mypageReducer,
   chat: chatRoomReducer,
   chatRoomList: chatRoomListReducer,
 });
