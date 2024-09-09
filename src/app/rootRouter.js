@@ -6,6 +6,7 @@ import { LoginContainer } from '../features/User/login/container/LoginContainer'
 import UserEditContainer from '../features/User/mypage/container/UserEditContainer';
 import MyPageContainer from '../features/User/mypage/container/MyPageContainer';
 import ChatPage from '../pages/Chat/ChatPage';
+import AdminPage from '../pages/Admin/AdminPage';
 
 export const RootRouter = () => {
   return (
@@ -18,6 +19,7 @@ export const RootRouter = () => {
       <Route path="/postproduct" element={<PostProductPage />} />
       <Route path="/chat" element={<ChatPage />} />
       <Route path="/chat/:roomId" element={<ChatPage />} />
+      <Route path="/admin" element={<AdminPage />} />
     </Routes>
   );
 };

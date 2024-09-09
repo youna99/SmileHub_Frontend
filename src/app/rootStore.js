@@ -8,6 +8,8 @@ import productReducer from '../features/Product/store/proudctSlice';
 import mypageReducer from '../features/User/store/myPageSlice';
 import chatRoomReducer from '../features/Chat/ChatRoom/store/chatRoomSlice';
 import chatRoomListReducer from '../features/Chat/ChatRoomList/store/chatRoomListSlice';
+import productTabReducer from '../features/Admin/ProductTab/store/productTabSlice';
+import userTabReducer from '../features/Admin/UserTab/store/userTabSlice';
 
 // persistReducer 설정
 const persistConfig = {
@@ -26,6 +28,8 @@ const rootReducer = combineReducers({
   mypage: mypageReducer,
   chat: chatRoomReducer,
   chatRoomList: chatRoomListReducer,
+  productTab: productTabReducer,
+  userTab: userTabReducer,
 });
 
 const store = configureStore({
