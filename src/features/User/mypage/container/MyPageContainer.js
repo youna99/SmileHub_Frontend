@@ -9,6 +9,7 @@ const MyPageContainer = () => {
   const [images, setImages] = useState([]); // 이미지 상태 관리
   const [profileEdit, setProfileEdit] = useState(false); // 프로필 수정 상태 관리
   const [originalProfileImage, setOriginalProfileImage] = useState(''); // 원본 프로필 이미지 저장 상태 관리
+  const [isModalOpen, setIsModalOpen] = useState(false); // 충전하기 버튼 클릭시 모달 상태 관리
   const currentUser = useSelector((state) => state.user.currentUser);
   // const sells = useSelector((state) => state.mypage.sells);
   // const buys = useSelector((state) => state.mypage.buys);
@@ -109,7 +110,14 @@ const MyPageContainer = () => {
     setProfileEdit(false);
     setImages([originalProfileImage]); // 원래 프로필 이미지로 상태 복원
   };
-
+  // 충전하기 버튼 클릭시
+  const openModal = () => {
+    console.log('충전하기 버튼 클릭');
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   return (
     <MyPage
       profileEdit={profileEdit}
@@ -120,8 +128,9 @@ const MyPageContainer = () => {
       handleCancel={handleCancel}
       handleEdit={handleEdit}
       handleDelete={handleDelete}
-      // sells={sells}
-      // buys={buys}
+      openModal={openModal}
+      isModalOpen={isModalOpen}
+      closeModal={closeModal}
     />
   );
 };
