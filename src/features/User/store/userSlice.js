@@ -23,6 +23,7 @@ const initialState = {
     },
     profileImage: '',
     temp: '',
+    money: 0,
     isActive: false, // 활동 정지 여부
     isAdmin: false, // 관리자 여부
     isAuthenticated: false, // 로그인 성공 여부 추가
@@ -74,10 +75,6 @@ const userSlice = createSlice({
           [addressField]: value,
         };
       } else if (field === 'error') {
-        // state.currentUser = {
-        //   ...state.currentUser,
-        //   [field]: value,
-        // };
         state.error = value;
       }
       // console.log('state.currentUser.address >>> ', state.currentUser.address);
@@ -131,34 +128,6 @@ const userSlice = createSlice({
         state.error = '이미 가입된 사용자입니다.';
       }
     },
-
-    // 이메일과 비밀번호로 로그인
-    // loginUser: (state, action) => {
-    //   const user = state.users.find(
-    //     (user) =>
-    //       user.email === action.payload.email &&
-    //       user.password === action.payload.password,
-    //   );
-    //   if (user) {
-    //     state.currentUser = {
-    //       ...state.currentUser, // 현재 상태를 유지한 채 필요한 필드를 업데이트
-    //       userId: user.userId,
-    //       email: user.email,
-    //       nickname: user.nickname,
-    //       age: user.age,
-    //       gender: user.gender,
-    //       address: { ...user.address },
-    //       profile_image: user.profile_image,
-    //       temp: user.temp,
-    //     };
-    //     state.isAuthenticated = true;
-    //     state.error = null;
-    //     console.log('로그인 성공', user);
-    //   } else {
-    //     state.isAuthenticated = false;
-    //     state.error = '이메일 또는 비밀번호가 일치하지 않습니다.';
-    //   }
-    // },
 
     // 현재 사용자 정보 초기화(로그아웃)
     logout: (state) => {
@@ -221,6 +190,10 @@ const userSlice = createSlice({
         isAuthenticated: false,
       };
       state.error = null;
+    },
+    addMoney: (state, action) => {
+      const amount = action.payload; // 충전할 금액
+      state.currentUser.money += amount;
     },
   },
 });
