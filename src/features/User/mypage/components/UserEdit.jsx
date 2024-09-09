@@ -142,8 +142,7 @@ const UserEdit = ({
                       </p>
                     )}
                   </div>
-
-                  {/* <div>
+                  <div>
                     <div className="mb-2 block">
                       <Label
                         htmlFor="repeat-password"
@@ -166,7 +165,7 @@ const UserEdit = ({
                         {errors.confirmPassword.message}
                       </p>
                     )}
-                  </div> */}
+                  </div>
                 </>
               )}
               <div>

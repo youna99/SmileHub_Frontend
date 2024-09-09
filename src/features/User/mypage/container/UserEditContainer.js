@@ -143,7 +143,7 @@ const UserEditContainer = () => {
       handleSubmit={handleSubmit}
       errors={errors}
       setValue={setValue}
-      password={newPassword}
+      newPassword={newPassword}
       onSubmit={onSubmit}
       currentUser={currentUser}
       isChangingPassword={isChangingPassword}
