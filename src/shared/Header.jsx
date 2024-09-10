@@ -39,7 +39,7 @@ export default function Header() {
     <nav>
       <Navbar fluid rounded>
         <Navbar.Brand href="/">
-          <span className="self-center whitespace-nowrap text-xl font-semibold">
+          <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
             SeSAC-2st
           </span>
         </Navbar.Brand>
@@ -82,7 +82,7 @@ export default function Header() {
           <Navbar.Link href="/" active>
             홈
           </Navbar.Link>
-          <Navbar.Link href="#">판매글쓰기</Navbar.Link>
+          <Navbar.Link href="/">판매글쓰기</Navbar.Link>
         </Navbar.Collapse>
       </Navbar>
     </nav>

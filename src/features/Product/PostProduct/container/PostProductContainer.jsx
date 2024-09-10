@@ -1,11 +1,12 @@
-// PostProductPage.jsx
+// PostProductContainer.jsx
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useProduct } from '../hooks/productHook';
+// import { useProduct } from '../hooks/productHook';
 import ProductPage from '../../../../pages/Product/PostProduct/PostProductPage';
+import axios from 'axios';
 
 export default function PostProductContainer() {
-  const { setProduct } = useProduct();
+  // const { setProduct } = useProduct();
   const [images, setImages] = useState([]);
   const {
     register,
@@ -24,24 +25,26 @@ export default function PostProductContainer() {
 
   const postProduct = async (data) => {
     try {
-      // redux 전역 상태 셋팅
-      setProduct.setImages(images); // images를 사용해야 함
-      setProduct.setProductName(data.productName);
-      setProduct.setCategory(data.category);
-      setProduct.setDescription(data.description);
-      setProduct.setTags(data.tags);
-      setProduct.setPrice(data.price);
-      setProduct.setPriceOffer(data.priceOffer);
-      // 상품 등록 액션 호출
-      setProduct.postProduct();
-
-      console.log('postproductData', { ...data, images }); // 제출된 데이터 확인용
+      // setProduct.setImages(images); // images를 사용해야 함
+      // setProduct.setProductName(data.productName);
+      // setProduct.setCategory(data.category);
+      // setProduct.setDescription(data.description);
+      // setProduct.setTags(data.tags);
+      // setProduct.setPrice(data.price);
+      // setProduct.setPriceOffer(data.priceOffer);
+      // // 상품 등록 액션 호출
+      // setProduct.postProduct();
 
       // 서버에 데이터 전송
-      // const res = await axios.post('http://localhost:8000/postproduct', {
-      //   ...data,
-      //   images,
-      // });
+      const res = await axios.post('http://localhost:8000/product/write', {
+        imgFileArr: data.images,
+        productName: data.productName,
+        userId: 2,
+        categoryId: 1,
+        content: data.description,
+        price: data.price,
+      });
+      console.log('postProduct ->', res.data);
     } catch (error) {
       console.error('Error posting product:', error);
     }
