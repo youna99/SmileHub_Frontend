@@ -28,6 +28,7 @@ export default function ProductDetailPage() {
     setIsLiked(!isLiked); // 찜 상태 토글
   };
 
+  // 상세 정보 불러오기
   useEffect(() => {
     const fetchProductDetail = async () => {
       try {
@@ -45,14 +46,10 @@ export default function ProductDetailPage() {
     fetchProductDetail();
   }, [productId]);
 
-  if (loading) {
-    return <div>로딩 중...</div>;
-  }
+  if (loading) return <div>로딩 중...</div>;
 
   // 오류가 발생했을 때
-  if (error) {
-    return <div>오류 발생: {error}</div>;
-  }
+  if (error) return <div>오류 발생: {error}</div>;
 
   //   useEffect(() => {
   //     const fetchImages = async () => {
@@ -67,6 +64,16 @@ export default function ProductDetailPage() {
 
   //     fetchImages();
   //   }, []);
+
+  const reportUser = (data) => {
+    try {
+      const res = axios.post('http://localhost:8000/product/report', {
+        userId: 2,
+        productId: 3,
+      });
+      console.log(res.data);
+    } catch (error) {}
+  };
 
   return (
     <main>
@@ -103,8 +110,11 @@ export default function ProductDetailPage() {
                   {fetchProduct.price} 원
                 </p>
                 <hr />
-                <div className="flex items-center mb-2">
+                <div className="flex justify-between mb-2">
                   <span className="text-gray-500">5일 전</span>
+                  <button className="text-gray-500" onClick={reportUser}>
+                    신고
+                  </button>
                 </div>
                 <div className="flex gap-4 mt-4">
                   {' '}
