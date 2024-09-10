@@ -4,6 +4,7 @@ import RegisterContainer from '../features/User/Register/container/RegisterConta
 import { LoginContainer } from '../features/User/login/container/LoginContainer';
 import UserEditContainer from '../features/User/mypage/container/UserEditContainer';
 import MyPageContainer from '../features/User/mypage/container/MyPageContainer';
+import PaymentPage from '../pages/Payment/PaymentPage';
 import ChatPage from '../pages/Chat/ChatPage';
 import AdminPage from '../pages/Admin/AdminPage';
 

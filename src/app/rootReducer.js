@@ -1,4 +1,5 @@
 import { combineReducers } from '@reduxjs/toolkit';
+import userReducer from '../features/User/store/userSlice';
 import productReducer from '../features/Product/store/proudctSlice';
 import userReducer from '../features/User/store/userSlice';
 import chatRoomReducer from '../features/Chat/ChatRoom/store/chatRoomSlice';
