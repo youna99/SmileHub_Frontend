@@ -2,9 +2,9 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useProduct } from '../hooks/productHook';
-import ProductForm from '../../../../pages/Product/PostProduct/PostProductPage';
+import ProductPage from '../../../../pages/Product/PostProduct/PostProductPage';
 
-export default function PostProductPage() {
+export default function PostProductContainer() {
   const { setProduct } = useProduct();
   const [images, setImages] = useState([]);
   const {
@@ -51,7 +51,7 @@ export default function PostProductPage() {
     <main>
       <div className="max-w-5xl mx-auto p-6 ">
         <h1 className="text-center text-xl font-bold">판매글 작성페이지</h1>
-        <ProductForm
+        <ProductPage
           register={register}
           handleSubmit={handleSubmit}
           errors={errors}

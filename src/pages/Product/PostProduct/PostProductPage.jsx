@@ -1,7 +1,7 @@
 import React from 'react';
 import { ImageDropZone } from '../../../shared/ImageDropZone';
 
-const PostProductForm = ({
+const PostProductPage = ({
   register,
   handleSubmit,
   errors,
@@ -88,4 +88,4 @@ const PostProductForm = ({
   );
 };
 
-export default PostProductForm;
+export default PostProductPage;
