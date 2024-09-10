@@ -39,7 +39,7 @@ export default function Header() {
     <nav>
       <Navbar fluid rounded>
         <Navbar.Brand href="/">
-          <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+          <span className="self-center whitespace-nowrap text-xl font-semibold">
             SeSAC-2st
           </span>
         </Navbar.Brand>
@@ -73,11 +73,23 @@ export default function Header() {
           <Link
             to="/login"
             className="text-sm text-gray-700 hover:text-gray-900"
-          >
-            로그인/회원가입
+          > 
+            로그인/회원가
           </Link>
-        )}
-
+            <Dropdown.Header>
+              <span className="block text-sm">UserName</span>
+            </Dropdown.Header>
+            <Dropdown.Item>
+              <Link to="/login">Login</Link>
+            </Dropdown.Item>
+            <Dropdown.Item>
+              <Link to="/mypage">Mypage</Link>
+            </Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item>Sign out</Dropdown.Item>
+          </Dropdown>
+          <Navbar.Toggle />
+        </div>
         <Navbar.Collapse>
           <Navbar.Link href="/" active>
             홈
