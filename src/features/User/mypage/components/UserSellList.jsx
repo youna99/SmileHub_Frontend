@@ -72,6 +72,8 @@ const UserSellList = ({ fetchSellsList }) => {
           },
         },
       );
+      console.log('res?', res.data);
+
       if (res.status === 200) {
         fetchSells(); // 판매 내역 업데이트
       }
