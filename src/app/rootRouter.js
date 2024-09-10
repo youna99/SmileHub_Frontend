@@ -4,8 +4,8 @@ import RegisterContainer from '../features/User/Register/container/RegisterConta
 import { LoginContainer } from '../features/User/login/container/LoginContainer';
 import UserEditContainer from '../features/User/mypage/container/UserEditContainer';
 import MyPageContainer from '../features/User/mypage/container/MyPageContainer';
-import Header from '../shared/Header';
-import PostProductContainer from '../features/Product/PostProduct/container/PostProductContainer';
+import ChatPage from '../pages/Chat/ChatPage';
+import AdminPage from '../pages/Admin/AdminPage';
 
 export const RootRouter = () => {
   const location = useLocation();
@@ -22,6 +22,9 @@ export const RootRouter = () => {
         <Route path="/mypage" element={<MyPageContainer />} />
         <Route path="/mypageEdit" element={<UserEditContainer />} />
         <Route path="/postproduct" element={<PostProductContainer />} />
+        <Route path="/chat" element={<ChatPage />} />
+        <Route path="/chat/:roomId" element={<ChatPage />} />
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
     </>
   );
