@@ -76,7 +76,7 @@ const LikeList = () => {
                   img={
                     product.ProductImages.length === 0 ||
                     !product.ProductImages[0].productImage
-                      ? '/images/likeN.png'
+                      ? '/images/product.png'
                       : product.ProductImages[0].productImage
                   }
                   size="lg"

@@ -35,6 +35,7 @@ export const RootRouter = () => {
         <Route path="/chat/:roomId" element={<ChatPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/*" element={<PageNotFound />} />
+        <Route path="/payment" element={<PaymentPage />} />
       </Routes>
     </>
   );

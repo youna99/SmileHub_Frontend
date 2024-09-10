@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Avatar } from 'flowbite-react';
+import { Avatar } from 'flowbite-react';
 import axios from 'axios';
 
 const UserSellList = ({ fetchSellsList }) => {
@@ -109,60 +109,61 @@ const UserSellList = ({ fetchSellsList }) => {
       <section className="border-b border-gray-200">
         <div className="flex flex-col p-4">
           {sells.length > 0 ? (
-            <div className="flex flex-wrap">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {sells.map((sell) => (
                 <div
                   key={sell.productId}
-                  className="flex items-center mb-4 w-full sm:w-1/2"
+                  className="flex items-center bg-white shadow-md p-4 rounded-lg"
                 >
                   <Avatar
                     img={
                       sell.ProductImages.length === 0 ||
                       !sell.ProductImages[0].productImage
-                        ? '/images/likeN.png'
+                        ? '/images/product.png'
                         : sell.ProductImages[0].productImage
                     }
                     size="lg"
                     className="flex items-center justify-center rounded-lg"
                   />
-
-                  <div className="ml-4 flex-1">
-                    <h2 className="text-lg">{sell.productName}</h2>
-                    <p className="text-xl font-bold text-gray-800 mt-1">
+                  <div className="ml-6 flex-1">
+                    <h2 className="text-lg font-semibold">
+                      {sell.productName}
+                    </h2>
+                    <p className="text-xl font-bold text-gray-800 mt-2">
                       {sell.price}원
                     </p>
-                    <p>{sell.status}</p>
+                    <p className="text-gray-500 mt-1">{sell.status}</p>
                   </div>
+
                   {sell.status === '판매중' && (
-                    <div className="flex flex-col space-y-2">
-                      <Button
-                        color="gray"
-                        className="mr-2"
+                    <div className="flex flex-col space-y-2 ml-4">
+                      <button
+                        className="px-4 py-2 bg-gray-200 text-[#101820] hover:bg-[#FEE715] hover:text-[#101820] rounded-md transition-colors duration-300"
                         onClick={() => handleAcceptSell(sell.productId)}
                       >
                         수락
-                      </Button>
-                      <Button
-                        color="gray"
+                      </button>
+                      <button
+                        className="px-4 py-2 bg-gray-200 text-[#101820] hover:bg-red-500 hover:text-white rounded-md transition-colors duration-300"
                         onClick={() => handleRejectSell(sell.productId)}
                       >
                         거절
-                      </Button>
+                      </button>
                     </div>
                   )}
                   {sell.status === '배송대기중' && (
-                    <Button
-                      color="gray"
+                    <button
+                      className="px-2 py-1 bg-gray-200 text-[#101820] hover:bg-[#FEE715] hover:text-[#101820] rounded-md ml-4 transition-colors duration-300"
                       onClick={() => handleCompleteSell(sell.productId)}
                     >
                       발송 완료
-                    </Button>
+                    </button>
                   )}
                 </div>
               ))}
             </div>
           ) : (
-            <p>판매 내역이 없습니다.</p>
+            <p className="text-center text-gray-600">판매 내역이 없습니다.</p>
           )}
         </div>
       </section>
