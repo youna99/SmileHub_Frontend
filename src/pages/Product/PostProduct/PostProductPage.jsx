@@ -10,14 +10,14 @@
 // }) => {
 //   return (
 
-// PostProduct.jsx
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { TestImageDropZone } from '../../../shared/TestImageDropZone';
 
 export default function PostProduct() {
-  const [images, setImages] = useState(['']);
+  const [imageFiles, setImageFiles] = useState(['']);
+
   const {
     register,
     handleSubmit,
@@ -33,17 +33,54 @@ export default function PostProduct() {
     },
   });
 
+  // 이미지 파일 설정 함수 (자식 컴포넌트로 전달)
+  // 여기서 newFiles는 자식 컴포넌트에서 전달하는 newImageFiles
+  // 즉, 추가된 이미지 파일들
+  // setImageFiles로 기존 파일들에 새로운 이미지 파일들을 스프레드 연산자로 추가 한 후,
+  // ImageFiles 상태 업데이트
+  const handleSetImageFiles = useCallback((newFiles) => {
+    setImageFiles((prevFiles) => [...prevFiles, ...newFiles]);
+  }, []);
+
   const postProduct = async (data) => {
+    // setImageFiles(data); /// 지우고
     try {
-      const res = await axios.post('http://localhost:8000/product/write', {
-        imgFileArr: images, // images를 여기에 사용
-        productName: data.productName,
-        userId: 2,
-        categoryId: 1,
-        content: data.description,
-        price: data.price,
+      // FormData 객체 생성 - 파일 전송
+      const formData = new FormData();
+
+      // 이미지 파일들을 FormData에 추가
+      imageFiles.forEach((files) => {
+        formData.append('images', files);
       });
-      console.log('postProduct ->', res.data);
+
+      // 폼의 텍스트 데이터를 FormData에 추가
+      formData.append('productName', data.productName);
+      formData.append('categoryId', data.category); // 카테고리도 폼에서 받아오는 경우
+      formData.append('userId', data.userId); // userId도 폼에서 받아오는 경우
+      formData.append('content', data.description);
+      formData.append('price', data.price);
+
+      const res = await axios.post(
+        'http://localhost:8000/product/write',
+        formData,
+        // {
+        //   productName: data.productName,
+        //   categoryId: 1,
+        //   userId: 2,
+        //   content: data.description,
+        //   price: data.price,
+        //   // images: formData.images.map((file) => file.name),
+        // },
+        {
+          // Content-type 명시적으로 설정.
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+
+      console.log('응답 >>>>> ', res);
+      console.log('응답 Data >>>>> ', res.data);
     } catch (error) {
       console.error('Error posting product:', error);
     }
@@ -56,8 +93,13 @@ export default function PostProduct() {
         <form
           className="bg-white p-4 rounded"
           onSubmit={handleSubmit(postProduct)}
+          encType="multipart/form-data"
         >
-          <TestImageDropZone images={images} setImages={setImages} />
+          {/* <input type="file" name="productImg1" accept="image/*" required /> */}
+          <TestImageDropZone
+            // 바꾼 이름으로 다시 Props!
+            handleSetImageFiles={handleSetImageFiles}
+          />
           <div className="mb-4">
             <label className="block text-gray-700">상품명</label>
             <input
