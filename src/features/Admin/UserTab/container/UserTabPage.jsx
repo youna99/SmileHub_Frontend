@@ -2,11 +2,47 @@ import React, { useState, useEffect } from 'react';
 import UserSearchForm from '../components/UserSearchForm';
 import UserList from '../components/UserList';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setUsers, updateUserStatus, removeUser } from '../store/userTabSlice';
 
 const UserTabPage = () => {
   const users = useSelector((state) => state.userTab.users);
+  const dispatch = useDispatch();
   const [searchResults, setSearchResults] = useState(users);
   const [currentFilteredResults, setCurrentFilteredResults] = useState(users); // 라디오 필터링된 결과
+
+  useEffect(() => {
+    console.log(
+      "🚀 ~ useEffect ~ localStorage.getItem('token'):",
+      localStorage.getItem('token'),
+    );
+    axios
+      .get(`http://localhost:8000/user/list`, {
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+      })
+      .then((response) => {
+        const users = response.data.users.map((user) => ({
+          userId: user.userId,
+          nickname: user.nickname,
+          email: user.email,
+          createdAt: user.createdAt,
+          depth1: user.Locations[0].depth1,
+          depth2: user.Locations[0].depth2,
+          depth3: user.Locations[0].depth3,
+          depth4: user.Locations[0].depth4,
+          status: user.Active.isActive,
+          userReportCount: user.userReportCount,
+        }));
+        dispatch(setUsers(users));
+      })
+      .catch((error) => {
+        console.error('유저 목록 불러오는 중 오류 발생', error);
+      });
+  }, [dispatch]);
+  console.log('🚀 ~ users ~ users:', users);
 
   useEffect(() => {
     setSearchResults(users);
