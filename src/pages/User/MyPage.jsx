@@ -14,8 +14,8 @@ const MyPage = ({
   handleCancel,
   handleEdit,
   handleDelete,
-  sells,
-  buys,
+  // sells,
+  // buys,
 }) => {
   return (
     <>
@@ -25,7 +25,14 @@ const MyPage = ({
             {profileEdit ? (
               <ImageDropZone images={images} setImages={setImages} />
             ) : (
-              <Avatar img={images[0] || currentUser.profile_image} size="xl" />
+              <Avatar
+                img={
+                  currentUser.profileImage
+                    ? currentUser.profileImage
+                    : '/images/profile.png'
+                }
+                size="xl"
+              />
             )}
             <div className="flex space-x-2 mt-3">
               <Button onClick={handleProfileClick}>
@@ -69,20 +76,12 @@ const MyPage = ({
             </Tabs.Item>
             <Tabs.Item title="판매내역">
               <div className="flex flex-wrap">
-                {sells.map((sell) => (
-                  <div className="w-full sm:w-1/2 p-2" key={sell.productId}>
-                    <UserSellList sell={sell} />
-                  </div>
-                ))}
+                <UserSellList />
               </div>
             </Tabs.Item>
             <Tabs.Item title="구매내역">
               <div className="flex flex-wrap">
-                {buys.map((buy) => (
-                  <div className="w-full sm:w-1/2 p-2" key={buy.productId}>
-                    <UserBuyList buy={buy} />
-                  </div>
-                ))}
+                <UserBuyList />
               </div>
             </Tabs.Item>
           </Tabs>

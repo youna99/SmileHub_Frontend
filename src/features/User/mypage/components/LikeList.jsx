@@ -1,99 +1,101 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Avatar } from 'flowbite-react';
+import axios from 'axios';
 
 const LikeList = () => {
-  const initialProducts = [
-    {
-      userid: '1',
-      productId: '1',
-      imgSrc: '',
-      title: '상품1',
-      price: '50,000',
-      location: '주소',
-      isSoldOut: true,
-      isLike: true,
-    },
-    {
-      userid: '1',
-      productId: '2',
-      imgSrc: '',
-      title: '상품2',
-      price: '30,000',
-      location: '주소',
-      isSoldOut: false,
-      isLike: true,
-    },
-    {
-      userid: '1',
-      productId: '3',
-      imgSrc: '',
-      title: '상품3',
-      price: '20,000',
-      location: '주소',
-      isSoldOut: false,
-      isLike: true,
-    },
-    {
-      userid: '1',
-      productId: '4',
-      imgSrc: '',
-      title: '상품3',
-      price: '20,000',
-      location: '주소',
-      isSoldOut: true,
-      isLike: true,
-    },
-    {
-      userid: '1',
-      productId: '5',
-      imgSrc: '',
-      title: '상품4',
-      price: '50,000',
-      location: '주소',
-      isSoldOut: false,
-      isLike: true,
-    },
-  ];
+  const [likeProducts, setLikeProducts] = useState([]); // 찜 목록 상태 관리
 
-  const [likeProducts, setLikeProducts] = useState(initialProducts); // 찜 목록 상태 관리
+  // 마운트시 찜목록 가져오기
+  useEffect(() => {
+    const fetchLikesList = async () => {
+      try {
+        const token = localStorage.getItem('token'); // 토큰 가져오기
+        const res = await axios.post(
+          'http://localhost:8000/mypage',
+          {
+            mypageList: 'likes',
+          },
+          {
+            headers: {
+              Authorization: token,
+            },
+          },
+        );
 
-  const deleteLike = (productId) => {
-    setLikeProducts(
-      likeProducts.filter((product) => product.productId !== productId),
-    );
+        // 서버 응답 데이터가 배열인지 확인
+        if (Array.isArray(res.data)) {
+          setLikeProducts(res.data);
+        } else {
+          console.error('서버 응답 데이터가 배열이 아닙니다:', res.data);
+          setLikeProducts([]); // 데이터가 배열이 아닌 경우 빈 배열로 설정
+        }
+      } catch (error) {
+        console.error('마운트시 찜목록 불러오기 오류', error);
+      }
+    };
+    fetchLikesList();
+  }, []);
+
+  // 찜목록 삭제
+  const deleteLike = async (productId) => {
+    const token = localStorage.getItem('token'); // 토큰 가져오기
+    try {
+      const res = await axios.delete(
+        `http://localhost:8000/mypage/likesdelete?productId=${productId}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        },
+      );
+      if (res.status === 200) {
+        setLikeProducts(
+          likeProducts.filter((product) => product.productId !== productId),
+        );
+      }
+    } catch (error) {
+      console.error('찜목록 삭제 오류', error);
+    }
   };
 
   return (
     <section className="flex flex-wrap">
-      {likeProducts.map((product) => (
-        <div key={product.productId} className="p-2 w-full sm:w-1/2">
-          <div className="relative flex items-center bg-white p-4 rounded-lg border border-gray-200">
-            <img
-              src="/images/likeY.png"
-              alt="Like"
-              className="absolute top-2 right-2 w-6 h-6 cursor-pointer"
-              onClick={() => deleteLike(product.productId)}
-            />
-            <Avatar
-              img={product.imgSrc}
-              size="lg"
-              className="flex items-center justify-center rounded-lg"
-            />
-            {product.isSoldOut && (
-              <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg">
-                <span className="text-white text-xl font-bold">판매완료</span>
+      {likeProducts.length > 0 ? (
+        <div>
+          {likeProducts.map((product) => (
+            <div key={product.productId} className="p-2 w-full sm:w-1/2">
+              <div className="relative flex items-center bg-white p-4 rounded-lg border border-gray-200">
+                <img
+                  src="/images/likeY.png"
+                  alt="Like"
+                  className="absolute top-2 right-2 w-6 h-6 cursor-pointer"
+                  onClick={() => deleteLike(product.productId)}
+                />
+                <Avatar
+                  img={product.imgSrc}
+                  size="lg"
+                  className="flex items-center justify-center rounded-lg"
+                />
+                {/* {product.staus === '배송완료' && (
+                  <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg">
+                    <span className="text-white text-xl font-bold">
+                      판매완료
+                    </span>
+                  </div>
+                )} */}
+                <div className="ml-4 flex-1">
+                  <h2 className="text-lg">{product.productName}</h2>
+                  <p className="text-xl font-bold text-gray-800 mt-1">
+                    {product.price}원
+                  </p>
+                </div>
               </div>
-            )}
-            <div className="ml-4 flex-1">
-              <h2 className="text-lg">{product.title}</h2>
-              <p className="text-gray-400 text-sm">{product.location}</p>
-              <p className="text-xl font-bold text-gray-800 mt-1">
-                {product.price}원
-              </p>
             </div>
-          </div>
+          ))}
         </div>
-      ))}
+      ) : (
+        <p>찜목록이 없습니다.</p>
+      )}
     </section>
   );
 };
