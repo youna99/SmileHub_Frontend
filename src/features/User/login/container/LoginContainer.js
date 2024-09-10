@@ -48,7 +48,7 @@ export const LoginContainer = () => {
           gender: user.gender,
           age: user.age,
           temp: user.temp,
-          profileImage: user.profileImage,
+          profileImage: `https://sesac-2nd-pro-bucket.s3.ap-northeast-2.amazonaws.com/${user.profileImage}`,
           money: user.money,
           address: {
             sido: user.Locations[0].depth1,
