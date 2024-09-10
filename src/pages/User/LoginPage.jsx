@@ -41,7 +41,7 @@ export default function LoginPage({
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            {error && <div className="text-red-500 text-sm">{error}</div>}
+            {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
           </div>
           <Button type="submit">로그인</Button>
           <div className="flex justify-end">

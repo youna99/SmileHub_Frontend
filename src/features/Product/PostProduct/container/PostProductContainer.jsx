@@ -25,7 +25,6 @@ export default function PostProductContainer() {
 
   const postProduct = async (data) => {
     try {
-      // redux 전역 상태 셋팅
       // setProduct.setImages(images); // images를 사용해야 함
       // setProduct.setProductName(data.productName);
       // setProduct.setCategory(data.category);
