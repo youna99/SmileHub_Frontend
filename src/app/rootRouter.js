@@ -6,6 +6,7 @@ import UserEditContainer from '../features/User/mypage/container/UserEditContain
 import MyPageContainer from '../features/User/mypage/container/MyPageContainer';
 import Header from '../shared/Header';
 import PostProductContainer from '../features/Product/PostProduct/container/PostProductContainer';
+// import TestProductPage from '../pages/Product/PostProduct/TestProductPage.jsx';
 
 export const RootRouter = () => {
   const location = useLocation();
@@ -22,6 +23,7 @@ export const RootRouter = () => {
         <Route path="/mypage" element={<MyPageContainer />} />
         <Route path="/mypageEdit" element={<UserEditContainer />} />
         <Route path="/postproduct" element={<PostProductContainer />} />
+        {/* <Route path="/postproduct" element={<TestProductPage />} /> */}
       </Routes>
     </>
   );

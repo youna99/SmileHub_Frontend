@@ -49,8 +49,9 @@ export default function PostProduct() {
       const formData = new FormData();
 
       // 이미지 파일들을 FormData에 추가
-      imageFiles.forEach((files) => {
-        formData.append('images', files);
+      imageFiles.forEach((file) => {
+        formData.append('images', file);
+        console.log('부모 컴포넌트 file', file);
       });
 
       // 폼의 텍스트 데이터를 FormData에 추가
@@ -63,14 +64,13 @@ export default function PostProduct() {
       const res = await axios.post(
         'http://localhost:8000/product/write',
         formData,
-        // {
-        //   productName: data.productName,
-        //   categoryId: 1,
-        //   userId: 2,
-        //   content: data.description,
-        //   price: data.price,
-        //   // images: formData.images.map((file) => file.name),
-        // },
+        {
+          productName: data.productName,
+          userId: 2,
+          categoryId: 1,
+          content: data.description,
+          price: data.price,
+        },
         {
           // Content-type 명시적으로 설정.
           headers: {
@@ -78,7 +78,6 @@ export default function PostProduct() {
           },
         },
       );
-
       console.log('응답 >>>>> ', res);
       console.log('응답 Data >>>>> ', res.data);
     } catch (error) {
@@ -93,9 +92,7 @@ export default function PostProduct() {
         <form
           className="bg-white p-4 rounded"
           onSubmit={handleSubmit(postProduct)}
-          encType="multipart/form-data"
         >
-          {/* <input type="file" name="productImg1" accept="image/*" required /> */}
           <TestImageDropZone
             // 바꾼 이름으로 다시 Props!
             handleSetImageFiles={handleSetImageFiles}

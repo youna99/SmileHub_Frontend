@@ -1,30 +1,37 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
-export const TestImageDropZone = ({ images, setImages }) => {
+export const TestImageDropZone = ({ handleSetImageFiles }) => {
+  const [previewUrls, setPreviewUrls] = useState([]); // 미리보기 URL을 상태로 관리
   const onDrop = useCallback(
     (acceptedFiles) => {
-      const formData = new FormData();
-      console.log('formData', formData);
+      const newPreviewUrls = []; // 각 파일에 대한 Blob URL 저장할 배열.
+      const newImageFiles = []; // 각 파일에 대한 실제 객체 저장할 배열.
 
       acceptedFiles.forEach((file) => {
-        const imageUrl = URL.createObjectURL(file); // Blob URL 생성
-        console.log('imageUrl->', imageUrl);
+        const imageUrl = URL.createObjectURL(file); // Blob URL 생성 // 단순히 미리보기용!
+        // Blob URL은 미리보기 할 수 있도록 임시 URL만 생성해주는 역할.
+        // 즉, 이미지 파일의 실제 데이터는 file 객체에 담겨있음.
 
-        formData.append('images', file); // FormData에 파일 추가
-        console.log('file', file);
+        newPreviewUrls.push(imageUrl); // 미리보기 URL 배열에 추가
+        newImageFiles.push(file); // 원본 파일 배열에 추가
 
-        // 상태 업데이트
-        setImages((prevImages) => [...prevImages, imageUrl]);
+        console.log('imageUrl:', imageUrl);
+        console.log('file:', file);
       });
+      // 부모 컴포넌트로 원본 파일 객체 전달
+      handleSetImageFiles(newImageFiles);
 
-      // 필요한 경우 formData를 서버에 전송하는 로직을 추가
-      // 예: axios.post('/your-upload-url', formData)
+      // 미리보기 URL 상태 업데이트 (밑에서 map으로 미리보기를 보여주기 위해서!)
+      setPreviewUrls((prevUrls) => [...prevUrls, ...newPreviewUrls]);
     },
-    [setImages],
+    // handleSetImageFiles 값이 변할 때 마다 재실행 (새로운 파일 업로드 할때 마다라는 것이죠!)
+    [handleSetImageFiles],
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+  });
 
   return (
     <section
@@ -40,7 +47,7 @@ export const TestImageDropZone = ({ images, setImages }) => {
         <p className="text-gray-600">이곳으로 사진을 드래그하세요</p>
       )}
       <div className="mt-4 grid grid-cols-2 gap-4">
-        {images.map((image, index) => (
+        {previewUrls.map((image, index) => (
           <div
             key={index}
             className="border rounded-lg overflow-hidden shadow-lg"
