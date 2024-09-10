@@ -43,41 +43,41 @@ export default function Header() {
             SeSAC-2st
           </span>
         </Navbar.Brand>
-        {isAuthenticated ? (
-          <div className="flex md:order-2">
-            <Dropdown
-              arrowIcon={false}
-              inline
-              // label={<Avatar alt="User profile" img={profileImage} rounded />}
-              label={
-                <Avatar
-                  alt="User profile"
-                  img={profileImage ? profileImage : '/images/profile.png'}
-                  rounded
-                />
-              }
+        <div className="flex md:order-2">
+          {isAuthenticated ? (
+            <>
+              <Dropdown
+                arrowIcon={false}
+                inline
+                label={
+                  <Avatar
+                    alt="User profile"
+                    img={profileImage ? profileImage : '/images/profile.png'}
+                    rounded
+                  />
+                }
+              >
+                <Dropdown.Header>
+                  <span className="block text-sm">UserName</span>
+                </Dropdown.Header>
+                <Dropdown.Item>
+                  <Link to="/mypage">마이페이지</Link>
+                </Dropdown.Item>
+                <Dropdown.Item>
+                  <button onClick={handleLogout}>로그아웃</button>
+                </Dropdown.Item>
+              </Dropdown>
+            </>
+          ) : (
+            <Link
+              to="/login"
+              className="text-sm text-gray-700 hover:text-gray-900"
             >
-              <Dropdown.Header>
-                <span className="block text-sm">UserName</span>
-              </Dropdown.Header>
-              <Dropdown.Item>
-                <Link to="/mypage">마이페이지</Link>
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <button onClick={handleLogout}>로그아웃</button>
-              </Dropdown.Item>
-            </Dropdown>
-            <Navbar.Toggle />
-          </div>
-        ) : (
-          <Link
-            to="/login"
-            className="text-sm text-gray-700 hover:text-gray-900"
-          >
-            로그인/회원가입
-          </Link>
-        )}
-
+              로그인/회원가입
+            </Link>
+          )}
+          <Navbar.Toggle />
+        </div>
         <Navbar.Collapse>
           <Navbar.Link href="/" active>
             홈

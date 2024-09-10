@@ -7,9 +7,10 @@ import MyPageContainer from '../features/User/mypage/container/MyPageContainer';
 import PaymentPage from '../pages/Payment/PaymentPage';
 import ChatPage from '../pages/Chat/ChatPage';
 import AdminPage from '../pages/Admin/AdminPage';
+import Header from '../shared/Header';
 import PostProductContainer from '../features/Product/PostProduct/container/PostProductContainer';
-import ProductDetailPage from '../features/Product/ProductDetail/container/ProductDetailContainer';
-import PageNotFound from '../pages/PageNotFound';
+import ProductDetailPage from '../pages/Product/ProductDetail/ProductDetailPage.jsx';
+import PageNotFound from '../pages/PageNotFound.jsx';
 import Header from '../shared/Header';
 import ChatButton from '../shared/ChatButton';
 
