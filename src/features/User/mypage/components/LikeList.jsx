@@ -4,6 +4,7 @@ import axios from 'axios';
 
 const LikeList = () => {
   const [likeProducts, setLikeProducts] = useState([]); // 찜 목록 상태 관리
+  console.log('likeProducts', likeProducts);
 
   // 마운트시 찜목록 가져오기
   useEffect(() => {
@@ -61,7 +62,7 @@ const LikeList = () => {
   return (
     <section className="flex flex-wrap">
       {likeProducts.length > 0 ? (
-        <div>
+        <div className="flex flex-wrap">
           {likeProducts.map((product) => (
             <div key={product.productId} className="p-2 w-full sm:w-1/2">
               <div className="relative flex items-center bg-white p-4 rounded-lg border border-gray-200">
@@ -72,17 +73,22 @@ const LikeList = () => {
                   onClick={() => deleteLike(product.productId)}
                 />
                 <Avatar
-                  img={product.imgSrc}
+                  img={
+                    product.ProductImages.length === 0 ||
+                    !product.ProductImages[0].productImage
+                      ? '/images/likeN.png'
+                      : product.ProductImages[0].productImage
+                  }
                   size="lg"
                   className="flex items-center justify-center rounded-lg"
                 />
-                {/* {product.staus === '배송완료' && (
+                {product.status === '배송완료' && (
                   <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg">
                     <span className="text-white text-xl font-bold">
                       판매완료
                     </span>
                   </div>
-                )} */}
+                )}
                 <div className="ml-4 flex-1">
                   <h2 className="text-lg">{product.productName}</h2>
                   <p className="text-xl font-bold text-gray-800 mt-1">
