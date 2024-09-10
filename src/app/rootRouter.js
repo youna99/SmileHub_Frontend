@@ -6,6 +6,10 @@ import UserEditContainer from '../features/User/mypage/container/UserEditContain
 import MyPageContainer from '../features/User/mypage/container/MyPageContainer';
 import ChatPage from '../pages/Chat/ChatPage';
 import AdminPage from '../pages/Admin/AdminPage';
+import Header from '../shared/Header';
+import PostProductContainer from '../features/Product/PostProduct/container/PostProductContainer';
+import ProductDetailPage from '../pages/Product/ProductDetail/ProductDetailPage.jsx';
+import PageNotFound from '../pages/PageNotFound.jsx';
 
 export const RootRouter = () => {
   const location = useLocation();
