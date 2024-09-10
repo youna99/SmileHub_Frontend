@@ -6,20 +6,12 @@ import axios from 'axios';
 import MyPage from '../../../../pages/User/MyPage';
 
 const MyPageContainer = () => {
-  const [images, setImages] = useState([]); // 이미지 상태 관리
-  const [profileEdit, setProfileEdit] = useState(false); // 프로필 수정 상태 관리
-  const [originalProfileImage, setOriginalProfileImage] = useState(''); // 원본 프로필 이미지 저장 상태 관리
-  // const [isModalOpen, setIsModalOpen] = useState(false); // 충전하기 버튼 클릭시 모달 상태 관리
+  const [isModalOpen, setIsModalOpen] = useState(false); // 충전하기 버튼 클릭시 모달 상태 관리
 
   const currentUser = useSelector((state) => state.user.currentUser);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  // 컴포넌트가 마운트될 때 프로필 이미지를 저장
-  // useEffect(() => {
-  //   setOriginalProfileImage(currentUser.profileImage);
-  // }, [currentUser.profileImage]);
 
   const handleEdit = () => {
     navigate('/mypageEdit');
@@ -56,81 +48,23 @@ const MyPageContainer = () => {
     }
   };
 
-  // 프로필 수정하기
-  const handleProfileClick = async () => {
-    if (profileEdit) {
-      // 수정 완료 버튼 클릭 시
-      if (images.length > 0) {
-        try {
-          const userId = currentUser.userId;
-          const newProfileImageFile = images[0]; // 선택된 이미지 파일
-          console.log('newProfileImage >>>', newProfileImageFile);
-
-          // 로컬 스토리지에서 토큰 가져오기
-          const token = localStorage.getItem('token');
-
-          // FormData 객체 생성
-          const formData = new FormData();
-          formData.append('profileImage', newProfileImageFile); // 파일을 FormData에 추가
-          console.log('formData >>', formData);
-
-          await axios.post(
-            `http://localhost:8000/uploadImg/user/${userId}`,
-            formData,
-            {
-              headers: {
-                Authorization: token,
-              },
-            },
-          );
-
-          // 프로필 이미지 업데이트
-          dispatch(
-            setUserField({ field: 'profileImage', value: newProfileImageFile }),
-          );
-          setProfileEdit(false);
-          console.log('프로필 수정 성공');
-        } catch (error) {
-          console.error('프로필 수정 중 에러 발생', error);
-          alert('프로필 수정에 실패하였습니다.');
-        }
-      } else {
-        setProfileEdit(false);
-      }
-    } else {
-      // 프로필 수정하기 버튼 클릭 시
-      setProfileEdit(true);
-      setImages([]);
-    }
+  // 충전하기 버튼 클릭시
+  const openModal = () => {
+    console.log('충전하기 버튼 클릭');
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
-  // 프로필 수정 시 취소 버튼 클릭
-  const handleCancel = () => {
-    setProfileEdit(false);
-    setImages([originalProfileImage]); // 원래 프로필 이미지로 상태 복원
-  };
-
-  // // 충전하기 버튼 클릭시
-  // const openModal = () => {
-  //   console.log('충전하기 버튼 클릭');
-  //   setIsModalOpen(true);
-  // };
-  // const closeModal = () => {
-  //   setIsModalOpen(false);
-  // };
   return (
     <MyPage
-      profileEdit={profileEdit}
-      images={images}
-      setImages={setImages}
       currentUser={currentUser}
-      handleProfileClick={handleProfileClick}
-      handleCancel={handleCancel}
       handleEdit={handleEdit}
       handleDelete={handleDelete}
-      // openModal={openModal}
-      // isModalOpen={isModalOpen}
-      // closeModal={closeModal}
+      isModalOpen={isModalOpen}
+      openModal={openModal}
+      closeModal={closeModal}
     />
   );
 };
