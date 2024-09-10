@@ -11,7 +11,6 @@ import Header from '../shared/Header';
 import PostProductContainer from '../features/Product/PostProduct/container/PostProductContainer';
 import ProductDetailPage from '../pages/Product/ProductDetail/ProductDetailPage.jsx';
 import PageNotFound from '../pages/PageNotFound.jsx';
-import Header from '../shared/Header';
 import ChatButton from '../shared/ChatButton';
 
 export const RootRouter = () => {
