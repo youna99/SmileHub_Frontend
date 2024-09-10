@@ -7,15 +7,22 @@ import MyPageContainer from '../features/User/mypage/container/MyPageContainer';
 import PaymentPage from '../pages/Payment/PaymentPage';
 import ChatPage from '../pages/Chat/ChatPage';
 import AdminPage from '../pages/Admin/AdminPage';
+import PostProductContainer from '../features/Product/PostProduct/container/PostProductContainer';
+import ProductDetailPage from '../features/Product/ProductDetail/container/ProductDetailContainer';
+import PageNotFound from '../pages/PageNotFound';
+import Header from '../shared/Header';
+import ChatButton from '../shared/ChatButton';
 
 export const RootRouter = () => {
   const location = useLocation();
 
-  // 헤더를 표시할 경로를 정의합니다.
   const showHeaderPaths = ['/', '/mypage', '/postproduct', '/productdetail'];
+  const showChatButtonPaths = ['/'];
+
   return (
     <>
       {showHeaderPaths.includes(location.pathname) && <Header />}
+      {showChatButtonPaths.includes(location.pathname) && <ChatButton />}
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<LoginContainer />} />
