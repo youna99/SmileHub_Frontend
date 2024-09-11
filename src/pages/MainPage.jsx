@@ -139,11 +139,11 @@ export default function MainPage() {
           onChange={(e) => setSearchKeyword(e.target.value)}
           onKeyDown={handleKeyPress}
           placeholder="판매 물품 검색"
-          className="w-1/2 m-3 rounded-md border-orange-500 border-4 h-10" // 높이 추가
+          className="w-1/2 m-3 rounded-md border-yellow-300 border-4 h-10" // 높이 추가
         />
         <button
           onClick={submitSearch}
-          className="px-3 h-10 bg-orange-500 text-white rounded-md" // 높이 추가
+          className="px-3 h-10 bg-yellow-300 text-white rounded-md" // 높이 추가
         >
           검색
         </button>
