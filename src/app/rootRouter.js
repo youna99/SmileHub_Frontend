@@ -11,14 +11,20 @@ import Header from '../shared/Header';
 import PostProductContainer from '../features/Product/PostProduct/container/PostProductContainer';
 import ReadProductPage from '../pages/Product/ProductRead/ProductDetailPage.jsx';
 import UpdateProductPage from '../pages/Product/ProductUpdate/ProductUpdatePage.jsx';
-import DeleteProductPage from '../pages/Product/ProductUpdate/ProductUpdatePage.jsx';
 import PageNotFound from '../pages/PageNotFound.jsx';
 import ChatButton from '../shared/ChatButton';
 
 export const RootRouter = () => {
   const location = useLocation();
 
-  const showHeaderPaths = ['/', '/mypage', '/product/read', '/product/write'];
+  const showHeaderPaths = [
+    '/',
+    '/mypage',
+    '/product/write',
+    '/product/read',
+    '/admin',
+  ];
+
   const showChatButtonPaths = ['/'];
 
   return (

@@ -1,43 +1,37 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateProductStatus, removeProduct } from '../store/productTabSlice';
+import { removeProduct } from '../store/productTabSlice';
 import { Modal } from '../../../../shared/Modal';
+import axios from 'axios';
 
-const ProductList = ({ searchResults }) => {
+const ProductList = ({ searchResults, setSearchResults }) => {
   const dispatch = useDispatch();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedAction, setSelectedAction] = useState(null); // 상태인지 삭제인지 구분
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const handleStatusChange = (id, currentStatus) => {
-    const newStatus = currentStatus === '판매중' ? '판매완료' : '판매중';
-    setSelectedProduct(id);
-    setSelectedAction({
-      type: 'status',
-      newStatus: newStatus,
-    });
+  const handleRemove = (productId) => {
+    setSelectedProduct(productId);
     setIsModalOpen(true);
   };
 
-  const handleRemove = (id) => {
-    setSelectedProduct(id);
-    setSelectedAction({ type: 'remove' });
-    setIsModalOpen(true);
-  };
+  const handleConfirm = async () => {
+    const token = localStorage.getItem('token');
 
-  const handleConfirm = () => {
-    if (selectedAction.type === 'status') {
-      dispatch(
-        updateProductStatus({
-          id: selectedProduct,
-          status: selectedAction.newStatus,
-        }),
+    try {
+      await axios.delete(
+        `http://localhost:8000/product/delete?productId=${selectedProduct}`,
+        {
+          headers: { Authorization: token },
+        },
       );
-    } else if (selectedAction.type === 'remove') {
+
       dispatch(removeProduct(selectedProduct));
+
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error('삭제 요청 중 오류 발생:', error);
     }
-    setIsModalOpen(false);
   };
 
   return (
@@ -56,49 +50,60 @@ const ProductList = ({ searchResults }) => {
           </tr>
         </thead>
         <tbody>
-          {searchResults.map((product) => (
-            <tr key={product.id} className="border-b">
-              <td className="px-4 py-2 text-center align-middle">
-                {product.id}
-              </td>
-              <td className="px-4 py-2 text-center align-middle">
-                {product.name}
-              </td>
-              <td className="px-4 py-2 text-center align-middle">
-                {product.price}
-              </td>
-              <td className="px-4 py-2 text-center align-middle">
-                {product.seller}
-              </td>
-              <td className="px-4 py-2 text-center align-middle">
-                {product.createdAt}
-              </td>
-              <td className="px-4 py-2 text-center align-middle">
-                {product.reports}
-              </td>
-              <td className="px-4 py-2 text-center align-middle">
-                <button
-                  onClick={() => handleStatusChange(product.id, product.status)}
-                  className={`py-1 px-3 rounded-md text-white cursor-pointer ${product.status === '판매중' ? 'bg-green-500' : 'bg-red-500'}`}
-                  style={{
-                    display: 'inline-block',
-                    minWidth: '90px',
-                    textAlign: 'center',
-                  }}
-                >
-                  {product.status}
-                </button>
-              </td>
-              <td className="px-4 py-2 text-center align-middle">
-                <button
-                  onClick={() => handleRemove(product.id)}
-                  className="bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600"
-                >
-                  삭제
-                </button>
+          {searchResults.length === 0 ? (
+            <tr>
+              <td colSpan="8" className="text-center py-4 text-lg">
+                등록된 상품이 없습니다.
               </td>
             </tr>
-          ))}
+          ) : (
+            searchResults.map((product) => {
+              const formattedDate = new Date(product.createdAt)
+                .toISOString()
+                .slice(0, 10);
+              return (
+                <tr key={product.productId} className="border-b">
+                  <td className="px-4 py-2 text-center align-middle">
+                    {product.productId}
+                  </td>
+                  <td className="px-4 py-2 text-center align-middle">
+                    {product.productName}
+                  </td>
+                  <td className="px-4 py-2 text-center align-middle">
+                    {product.price}
+                  </td>
+                  <td className="px-4 py-2 text-center align-middle">
+                    {product.seller}
+                  </td>
+                  <td className="px-4 py-2 text-center align-middle">
+                    {formattedDate}
+                  </td>
+                  <td className="px-4 py-2 text-center align-middle">
+                    {product.reports}
+                  </td>
+                  <td className="px-4 py-2 text-center align-middle">
+                    <span
+                      className={`${
+                        product.status === '판매완료'
+                          ? 'text-red-400'
+                          : 'text-green-400'
+                      }`}
+                    >
+                      {product.status}
+                    </span>
+                  </td>
+                  <td className="px-4 py-2 text-center align-middle">
+                    <button
+                      onClick={() => handleRemove(product.productId)}
+                      className="bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600"
+                    >
+                      삭제
+                    </button>
+                  </td>
+                </tr>
+              );
+            })
+          )}
         </tbody>
       </table>
 
@@ -106,11 +111,7 @@ const ProductList = ({ searchResults }) => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleConfirm}
-        message={
-          selectedAction?.type === 'status'
-            ? '정말 상태를 변경하시겠습니까?'
-            : '정말 삭제하시겠습니까?'
-        }
+        message="정말 삭제하시겠습니까?"
       />
     </div>
   );
