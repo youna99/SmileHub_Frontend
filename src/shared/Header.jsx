@@ -35,6 +35,10 @@ export default function Header() {
     }
   };
 
+  // 기본 프로필 이미지
+  const defaultUrl =
+    'https://sesac-2nd-pro-bucket.s3.ap-northeast-2.amazonaws.com/null';
+
   return (
     <nav>
       <Navbar fluid rounded>
@@ -52,7 +56,11 @@ export default function Header() {
                 label={
                   <Avatar
                     alt="User profile"
-                    img={profileImage ? profileImage : '/images/profile.png'}
+                    img={
+                      profileImage === defaultUrl
+                        ? '/images/profile.png'
+                        : profileImage
+                    }
                     rounded
                   />
                 }
