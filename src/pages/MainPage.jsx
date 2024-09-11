@@ -90,6 +90,12 @@ export default function MainPage() {
             <div className="border-t border-gray-300 pt-2 mt-2 w-full">
               <div className="items-center text-gray-400 text-xs mt-1">
                 <span className="font-medium text-gray-400 text-sm">
+                  가격 : {productInfo.nickname}
+                </span>
+                <span className="font-medium text-gray-400 text-sm">
+                  주소 : {productInfo.nickname}
+                </span>
+                <span className="font-medium text-gray-400 text-sm">
                   닉네임 : {productInfo.nickname}
                 </span>
                 <span>
@@ -103,9 +109,38 @@ export default function MainPage() {
     </div>
   );
 
+  const [searchKeyword, setSearchKeyword] = useState('');
+
+  const submitSearch = () => {
+    try {
+      const res = axios.post('http://localhost:8000/search', {
+        searchKeyword: searchKeyword,
+      });
+      console.log('res =>', res);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      console.log(e.target.value);
+
+      submitSearch();
+    }
+  };
+
   return (
     <>
-      <h1>메인페이지</h1>
+      <div className="flex justify-center">
+        <input
+          type="text"
+          onChange={(e) => setSearchKeyword(e.target.value)}
+          onKeyDown={handleKeyPress}
+          placeholder="판매 물품, 유저명 검색"
+          className="w-1/2 border-orange-500 border-4"
+        />
+      </div>
       <div className="flex flex-wrap min-h-screen m-5">
         {loading && <p>Loading...</p>}
         {error && <p className="text-red-900">{error}</p>}
