@@ -29,7 +29,7 @@ export const RootRouter = () => {
         <Route path="/register" element={<RegisterContainer />} />
         <Route path="/mypage" element={<MyPageContainer />} />
         <Route path="/mypageEdit" element={<UserEditContainer />} />
-        <Route path="/postproduct" element={<PostProductContainer />} />
+        <Route path="/product/write" element={<PostProductContainer />} />
         <Route path="/productdetail" element={<ProductDetailPage />} />
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/chat/:roomId" element={<ChatPage />} />

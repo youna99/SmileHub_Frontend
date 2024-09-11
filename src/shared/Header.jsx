@@ -90,7 +90,7 @@ export default function Header() {
           <Navbar.Link href="/" active>
             홈
           </Navbar.Link>
-          <Navbar.Link href="/">판매글쓰기</Navbar.Link>
+          <Navbar.Link href="/product/write">판매글쓰기</Navbar.Link>
         </Navbar.Collapse>
       </Navbar>
     </nav>
