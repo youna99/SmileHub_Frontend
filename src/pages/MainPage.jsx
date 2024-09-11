@@ -111,12 +111,13 @@ export default function MainPage() {
 
   const [searchKeyword, setSearchKeyword] = useState('');
 
-  const submitSearch = () => {
+  const submitSearch = async () => {
     try {
-      const res = axios.post('http://localhost:8000/search', {
+      const res = await axios.post('http://localhost:8000/product/search', {
         searchKeyword: searchKeyword,
+        searchType: 'name',
       });
-      console.log('res =>', res);
+      console.log('submitSearch res =>', res);
     } catch (error) {
       console.log('error', error);
     }
@@ -137,7 +138,7 @@ export default function MainPage() {
           type="text"
           onChange={(e) => setSearchKeyword(e.target.value)}
           onKeyDown={handleKeyPress}
-          placeholder="판매 물품, 유저명 검색"
+          placeholder="판매 물품 검색"
           className="w-1/2 border-orange-500 border-4"
         />
       </div>
