@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Label, TextInput, Radio } from 'flowbite-react';
 import AddressSearch from '../../features/User/Register/components/AddressSearch';
 
@@ -20,6 +20,8 @@ const RegisterPage = ({
   handleCheckEmail,
   handleCheckNickname,
 }) => {
+  const [email, setEmail] = useState('');
+  const [nickname, setNickname] = useState('');
   return (
     <>
       <div className="flex justify-between items-center px-5 py-3 bg-gray-100">
@@ -49,10 +51,13 @@ const RegisterPage = ({
                   },
                 })}
                 shadow
-                value={checkEmail}
-                onChange={(e) => setCheckEmail(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
-              <Button className="w-full sm:w-auto" onClick={handleCheckEmail}>
+              <Button
+                className="w-full sm:w-auto"
+                onClick={() => handleCheckEmail(email)}
+              >
                 중복 확인
               </Button>
             </div>
@@ -128,8 +133,8 @@ const RegisterPage = ({
                   required: '닉네임은 필수 입력 항목입니다.',
                 })}
                 shadow
-                value={checkNickname}
-                onChange={(e) => setCheckNickname(e.target.value)}
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
               />
               <Button
                 className="w-full sm:w-auto"
@@ -194,23 +199,34 @@ const RegisterPage = ({
             <div className="mb-2 block">
               <Label htmlFor="address" value="주소" />
             </div>
+
             <div className="flex gap-2 pb-2">
               <TextInput
                 className="w-1/2"
                 type="text"
                 id="postcode"
                 placeholder="우편번호"
-                value={currentUser.address.postcode}
-                {...register('address.postcode')}
+                {...register('address.postcode', {
+                  required: '우편번호를 입력해주세요.',
+                })}
               />
               <Button onClick={() => setIsModalOpen(true)}>주소검색</Button>
             </div>
+            {errors.address?.postcode && (
+              <p className="text-red-500">{errors.address.postcode.message}</p>
+            )}
+
             <TextInput
               placeholder="주소"
-              value={currentUser.address.address}
-              {...register('address.address')}
+              {...register('address.address', {
+                required: '주소를 입력해주세요.',
+              })}
               className="pb-2"
             />
+            {errors.address?.address && (
+              <p className="text-red-500">{errors.address.address.message}</p>
+            )}
+
             <div className="flex gap-2">
               <TextInput
                 className="w-1/2"
@@ -220,13 +236,13 @@ const RegisterPage = ({
               <TextInput
                 className="w-1/2"
                 placeholder="참고항목"
-                value={currentUser.address.extraAddress}
                 {...register('address.extraAddress')}
               />
             </div>
-
-            {errors.address && (
-              <p className="text-red-500">{errors.address.message}</p>
+            {errors.address?.detailAddress && (
+              <p className="text-red-500">
+                {errors.address.detailAddress.message}
+              </p>
             )}
           </div>
 

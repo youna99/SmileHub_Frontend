@@ -9,8 +9,10 @@ import axios from 'axios';
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 const RegisterContainer = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // 주소 modal 상태관리
-  const [checkEmail, setCheckEmail] = useState(''); // 이메일 중복 확인 상태
-  const [checkNickname, setCheckNickname] = useState(''); // 닉네임 중복 확인 상태
+  const [checkEmail, setCheckEmail] = useState(false); // 이메일 중복 확인 상태
+  const [checkNickname, setCheckNickname] = useState(false); // 닉네임 중복 확인 상태
+  const [email, setEmail] = useState('');
+  const [nickname, setNickname] = useState('');
   const currentUser = useSelector((state) => state.user.currentUser);
 
   const dispatch = useDispatch();
@@ -34,7 +36,17 @@ const RegisterContainer = () => {
 
   // 회원가입 폼 제출
   const onSubmit = async (data) => {
+    // e.preventDefault();
     console.log('data >>', data);
+
+    if (!checkEmail) {
+      alert('이메일 중복 검사를 먼저 해주세요.');
+      return;
+    }
+    if (!checkNickname) {
+      alert('닉네임 중복 검사를 먼저 해주세요.');
+      return;
+    }
 
     // 성별 변환
     let genderValue;
@@ -101,13 +113,14 @@ const RegisterContainer = () => {
 
     try {
       const res = await axios.post(`${REACT_APP_API_URL}/user/checkEmail`, {
-        email: checkEmail,
+        email,
       });
       console.log('res >>', res);
 
       if (res.status === 200) {
         alert('사용 가능한 이메일입니다.');
       }
+      setCheckEmail(true);
     } catch (error) {
       if (error.response && error.response.status === 409) {
         // 409 상태 코드가 발생했을 때 처리
@@ -123,12 +136,13 @@ const RegisterContainer = () => {
   const handleCheckNickname = async () => {
     try {
       const res = await axios.post(`${REACT_APP_API_URL}/user/checkNickname`, {
-        nickname: checkNickname,
+        nickname,
       });
       console.log('res >>', res);
 
       if (res.status === 200) {
         alert('사용 가능한 닉네임입니다.');
+        setCheckNickname(true);
       }
     } catch (error) {
       if (error.response && error.response.status === 409) {
@@ -153,6 +167,10 @@ const RegisterContainer = () => {
       onSubmit={onSubmit}
       currentUser={currentUser}
       navigate={navigate}
+      email={email}
+      nickname={nickname}
+      setEmail={setEmail}
+      setNickname={setNickname}
       checkEmail={checkEmail}
       setCheckEmail={setCheckEmail}
       checkNickname={checkNickname}

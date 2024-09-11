@@ -49,7 +49,7 @@ const PaymentPage = () => {
   //       try {
   //         const token = localStorage.getItem('token'); // 토큰 가져오기
   //         const res = await axios.get(
-  //           `http://localhost:8000/product/order?productId=${productId}`,
+  //           `http://${REACT_APP_API_URL}/product/order?productId=${productId}`,
   //           {
   //             headers: {
   //               Authorization: token,

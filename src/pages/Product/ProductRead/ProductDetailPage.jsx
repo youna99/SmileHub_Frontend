@@ -10,7 +10,7 @@ import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
 
 import '../../../App.css';
-
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
@@ -46,7 +46,7 @@ const ProductDetail = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/product/read?productId=${productId}`,
+          `${REACT_APP_API_URL}/product/read?productId=${productId}`,
         );
         setProduct(response.data); // 응답 데이터 저장
       } catch (error) {
