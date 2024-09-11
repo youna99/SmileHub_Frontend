@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
 
-import '../../../App.css'; // CSS 파일을 따로 만들어서 import
+import '../../../App.css';
 
 const ProductDetail = () => {
   const [product, setProduct] = useState(null);
@@ -20,7 +20,7 @@ const ProductDetail = () => {
 
   const productId = new URLSearchParams(window.location.search).get(
     'productId',
-  ); // URL에서 productId 가져오기
+  );
 
   const toggleLike = () => {
     setIsLiked(!isLiked); // 찜 상태 토글
