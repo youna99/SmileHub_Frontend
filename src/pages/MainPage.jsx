@@ -133,15 +133,22 @@ export default function MainPage() {
 
   return (
     <>
-      <div className="flex justify-center">
+      <div className="flex justify-center items-center">
         <input
           type="text"
           onChange={(e) => setSearchKeyword(e.target.value)}
           onKeyDown={handleKeyPress}
           placeholder="판매 물품 검색"
-          className="w-1/2 border-orange-500 border-4"
+          className="w-1/2 m-3 rounded-md border-orange-500 border-4 h-10" // 높이 추가
         />
+        <button
+          onClick={submitSearch}
+          className="px-3 h-10 bg-orange-500 text-white rounded-md" // 높이 추가
+        >
+          검색
+        </button>
       </div>
+
       <div className="flex flex-wrap min-h-screen m-5">
         {loading && <p>Loading...</p>}
         {error && <p className="text-red-900">{error}</p>}
