@@ -1,61 +1,92 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ProductSearchForm from '../components/ProductSearchForm';
 import ProductList from '../components/ProductList';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setProducts } from '../store/productTabSlice';
+import axios from 'axios';
 
 const ProductTabPage = () => {
+  const dispatch = useDispatch();
   const products = useSelector((state) => state.productTab.products);
-  const [searchResults, setSearchResults] = useState(products);
-  const [currentFilteredResults, setCurrentFilteredResults] =
-    useState(products); // 현재 필터링된 결과
+  const [initialProducts, setInitialProducts] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [includeSoldOut, setIncludeSoldOut] = useState(true);
+  const [searchType, setSearchType] = useState('');
+  const [searchValue, setSearchValue] = useState('');
 
   useEffect(() => {
-    setSearchResults(products);
-    setCurrentFilteredResults(products); // Redux 상태가 변경될 때 searchResults와 currentFilteredResults 모두 업데이트
-  }, [products]);
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/product/list?page=${currentPage}&limit=99`,
+        );
+
+        const fetchedProducts = response.data.productInfo.map((product) => ({
+          productId: product.productId,
+          productName: product.productName,
+          price: product.price,
+          seller: product.nickname || product.seller,
+          createdAt: product.createdAt,
+          status: product.status,
+          reports: product.reportCount,
+        }));
+
+        setInitialProducts(fetchedProducts); // 필터링되지 않은 초기 상품 목록 저장
+        setSearchResults(fetchedProducts); // 검색 결과에도 초기값 설정
+        dispatch(setProducts(fetchedProducts)); // Redux 상태 설정
+      } catch (error) {
+        console.error('상품 목록 불러오는 중 오류 발생', error);
+      }
+    };
+
+    fetchProducts();
+  }, [currentPage, dispatch]);
 
   // 검색 기능
-  const handleSearch = ({ searchType, value, includeSoldOut }) => {
-    const filtered = products.filter((product) => {
+  const handleSearch = ({ searchType, value }) => {
+    const filtered = initialProducts.filter((product) => {
       const matchSearch =
         searchType === 'name'
-          ? product.name.includes(value)
-          : searchType === 'seller'
-            ? product.seller.includes(value)
-            : product.id.toString().includes(value);
-
-      const matchStatus = includeSoldOut || product.status === '판매중';
-      return matchSearch && matchStatus;
+          ? product.productName.includes(value)
+          : product.seller.includes(value);
+      return matchSearch;
     });
-    setSearchResults(filtered);
-    setCurrentFilteredResults(filtered);
+    setSearchResults(filtered); // 검색 결과를 별도 상태로 저장
+    dispatch(setProducts(filtered)); // Redux 상태로 검색된 결과 설정
   };
 
   // 체크박스 클릭 시 검색된 결과에서 필터링
-  const handleStatusChange = (includeSoldOut) => {
+  const handleStatusChange = (checked) => {
+    setIncludeSoldOut(checked);
+
+    // 검색 결과(searchResults)를 기준으로 필터링
     const filtered = searchResults.filter((product) => {
-      return includeSoldOut || product.status === '판매중';
+      return checked || product.status === '판매중';
     });
-    setCurrentFilteredResults(filtered); // 현재 검색된 결과에서 필터링
+    dispatch(setProducts(filtered));
   };
 
   // 초기화
   const handleReset = () => {
-    setSearchResults(products);
-    setCurrentFilteredResults(products);
+    setSearchType('');
+    setSearchValue('');
+    setSearchResults(initialProducts);
+    dispatch(setProducts(initialProducts));
   };
 
   return (
     <div>
-      {/* 검색 폼에 onSearch와 onReset 전달 */}
       <ProductSearchForm
         onSearch={handleSearch}
         onReset={handleReset}
         onStatusChange={handleStatusChange}
       />
 
-      {/* 검색 결과 리스트 */}
-      <ProductList searchResults={currentFilteredResults} />
+      <ProductList
+        searchResults={products}
+        setSearchResults={(newResults) => dispatch(setProducts(newResults))}
+      />
     </div>
   );
 };
