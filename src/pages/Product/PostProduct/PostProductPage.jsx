@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const AddProduct = () => {
   const [imageFiles, setImageFiles] = useState([]);
   const [price, setPrice] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+
+  const navigate = useNavigate();
 
   const handleFileChange = (event) => {
     setImageFiles(event.target.files); // 선택된 파일 목록
@@ -43,6 +46,7 @@ const AddProduct = () => {
 
       console.log('응답 >>>>> ', response.data);
       alert('상품이 성공적으로 추가되었습니다.');
+      navigate('/');
     } catch (error) {
       console.error('상품 추가 중 오류 발생:', error);
       alert('상품 추가에 실패했습니다.');
@@ -50,67 +54,77 @@ const AddProduct = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>
-            파일:
-            <input
-              type="file"
-              id="productImg"
-              name="productImg"
-              multiple
-              onChange={handleFileChange}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            제목:
-            <input
-              type="text"
-              className="border border-gray-300 rounded w-full p-2"
-              id="productName"
-              name="productName"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            내용:
-            <textarea
-              className="border border-gray-300 rounded w-full p-2 h-32"
-              id="content"
-              name="content"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            가격:
-            <input
-              type="number"
-              className="border border-gray-300 rounded w-full p-2"
-              id="price"
-              name="price"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded">
-          상품 추가
-        </button>
-      </form>
-    </div>
+    <main className="p-4">
+      <h1 className="text-center text-xl font-bold mt-5">판매글쓰기</h1>
+      <div className="flex justify-center items-center min-h-screen">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white p-8 rounded-lg w-full max-w-3xl space-y-4"
+        >
+          <div>
+            <label className="block text-gray-700 font-medium mb-2">
+              파일
+              <input
+                type="file"
+                id="productImg"
+                name="productImg"
+                multiple
+                onChange={handleFileChange}
+                required
+                className="mt-1 block w-full text-gray-800 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-black p-2"
+              />
+            </label>
+          </div>
+          <div>
+            <label className="block text-gray-700 font-medium mb-2">
+              제목
+              <input
+                type="text"
+                className="mt-1 block w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-black"
+                id="productName"
+                name="productName"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+              />
+            </label>
+          </div>
+          <div>
+            <label className="block text-gray-700 font-medium mb-2">
+              내용
+              <textarea
+                className="mt-1 block w-full border border-gray-300 rounded p-2 h-40 resize-none focus:outline-none focus:ring-4 focus:ring-black"
+                id="content"
+                name="content"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                required
+              />
+            </label>
+          </div>
+          <div>
+            <label className="block text-gray-700 font-medium mb-2">
+              가격
+              <input
+                type="number"
+                className="mt-1 block w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-black"
+                id="price"
+                name="price"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                required
+              />
+            </label>
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-[#FEE715] text-black p-2 rounded hover:bg-black hover:text-[#FEE715] focus:outline-none focus:ring-2 focus:ring-[#FEE715]"
+          >
+            상품 추가
+          </button>
+        </form>
+      </div>
+    </main>
   );
 };
 

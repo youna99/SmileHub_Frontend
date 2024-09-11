@@ -16,7 +16,13 @@ import ChatButton from '../shared/ChatButton';
 export const RootRouter = () => {
   const location = useLocation();
 
-  const showHeaderPaths = ['/', '/mypage', '/postproduct', '/productdetail'];
+  const showHeaderPaths = [
+    '/',
+    '/mypage',
+    '/postproduct',
+    '/productdetail',
+    '/product/write',
+  ];
   const showChatButtonPaths = ['/'];
 
   return (
