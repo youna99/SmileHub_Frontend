@@ -49,16 +49,15 @@ export default function MainPage() {
   const handleScroll = () => {
     if (
       window.innerHeight + document.documentElement.scrollTop >=
-      document.documentElement.offsetHeight - 1 // 페이지 끝에 가까워졌을 때
+      document.documentElement.offsetHeight - 1
     ) {
-      setPage((prevPage) => prevPage + 1); // 페이지 증가
+      setPage((prevPage) => prevPage + 1);
     }
   };
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
 
-    // 컴포넌트 언마운트 시 리스너 제거
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -69,7 +68,7 @@ export default function MainPage() {
       key={productInfo.productId}
       className="flexcard back w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-3"
     >
-      <Link to="/productdetail">
+      <Link to={`/product/read?productId=${productInfo.productId}`}>
         <div
           className="flex flex-col bg-white border border-coolGray-100 shadow-dashboard rounded-md 
           h-auto shadow-lg hover:shadow-xl overflow-hidden transform origin-bottom transition duration-400 ease-in 
