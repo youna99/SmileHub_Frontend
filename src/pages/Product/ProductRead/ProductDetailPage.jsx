@@ -19,10 +19,11 @@ const ProductDetail = () => {
 
   const productId = new URLSearchParams(window.location.search).get(
     'productId',
-  ); // URL에서 productId 가져오기
+  );
+  const token = localStorage.getItem('token');
   const navigate = useNavigate();
 
-  const toggleLike = () => {
+  const checkLikes = async () => {
     setIsLiked(!isLiked); // 찜 상태 토글
   };
   const updateClick = () => {
@@ -30,10 +31,25 @@ const ProductDetail = () => {
       state: { productId },
     });
   };
-  const deleteClick = () => {
-    navigate(`/product/delete?productId=${productId}`, {
-      state: { productId },
-    });
+  const deleteClick = async () => {
+    const confirmDelete = window.confirm('정말로 이 상품을 삭제하시겠습니까?');
+    if (confirmDelete) {
+      try {
+        await axios.delete(
+          `http://localhost:8000/product/delete?productId=${productId}`,
+          {
+            headers: {
+              Authorization: token,
+            },
+          },
+        );
+        alert('상품이 성공적으로 삭제되었습니다.');
+        navigate('/');
+      } catch (error) {
+        console.error('상품 삭제 중 오류 발생:', error);
+        alert('로그인 유저와 작성자가 일치하지 않습니다.');
+      }
+    }
   };
   const handlePayment = () => {
     navigate('/mypage/payment', { state: { productId, product } });
@@ -49,9 +65,10 @@ const ProductDetail = () => {
           `http://localhost:8000/product/read?productId=${productId}`,
         );
         setProduct(response.data); // 응답 데이터 저장
+        console.log('data: ', response.data);
       } catch (error) {
         console.error('상품 데이터를 가져오는 중 오류 발생:', error);
-        setError('상품 데이터를 가져오는 중 오류 발생');
+        setError('해당 상품 아이디는 없는 아이디입니다. ');
       } finally {
         setLoading(false); // 로딩 완료
       }
@@ -143,7 +160,7 @@ const ProductDetail = () => {
               <div className="flex items-center">
                 <button
                   className="text-red-500 hover:text-red-700 transition duration-300"
-                  onClick={toggleLike}
+                  onClick={checkLikes}
                 >
                   <FontAwesomeIcon
                     icon={isLiked ? solidHeart : regularHeart}
