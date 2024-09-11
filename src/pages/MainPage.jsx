@@ -66,11 +66,11 @@ export default function MainPage() {
   const renderProduct = (productInfo) => (
     <div
       key={productInfo.productId}
-      className="flexcard back w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-3"
+      className="flexcard back w-full md:w-1/2 lg:w-1/3 xl:w-1/4 2xl:w-1/5  p-3"
     >
       <Link to={`/product/read?productId=${productInfo.productId}`}>
         <div
-          className="flex flex-col bg-white border border-coolGray-100 shadow-dashboard rounded-md 
+          className="flex  md:w-80w-full  flex-col bg-white border border-coolGray-100 shadow-dashboard rounded-md 
           h-auto shadow-lg hover:shadow-xl overflow-hidden transform origin-bottom transition duration-400 ease-in 
           min-w-60 relative"
         >
@@ -106,7 +106,7 @@ export default function MainPage() {
   return (
     <>
       <h1>메인페이지</h1>
-      <div className="flex flex-wrap min-h-screen">
+      <div className="flex flex-wrap min-h-screen m-5">
         {loading && <p>Loading...</p>}
         {error && <p className="text-red-900">{error}</p>}
         {productList.map(renderProduct)}
