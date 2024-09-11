@@ -6,34 +6,36 @@ const LikeList = () => {
   const [likeProducts, setLikeProducts] = useState([]); // 찜 목록 상태 관리
   console.log('likeProducts', likeProducts);
 
-  // 마운트시 찜목록 가져오기
-  useEffect(() => {
-    const fetchLikesList = async () => {
-      try {
-        const token = localStorage.getItem('token'); // 토큰 가져오기
-        const res = await axios.post(
-          'http://localhost:8000/mypage',
-          {
-            mypageList: 'likes',
+  // 찜목록 가져오기
+  const fetchLikesList = async () => {
+    try {
+      const token = localStorage.getItem('token'); // 토큰 가져오기
+      const res = await axios.post(
+        'http://localhost:8000/mypage',
+        {
+          mypageList: 'likes',
+        },
+        {
+          headers: {
+            Authorization: token,
           },
-          {
-            headers: {
-              Authorization: token,
-            },
-          },
-        );
+        },
+      );
+      console.log('백엔드에서 받아온 데이터:', res.data);
 
-        // 서버 응답 데이터가 배열인지 확인
-        if (Array.isArray(res.data)) {
-          setLikeProducts(res.data);
-        } else {
-          console.error('서버 응답 데이터가 배열이 아닙니다:', res.data);
-          setLikeProducts([]); // 데이터가 배열이 아닌 경우 빈 배열로 설정
-        }
-      } catch (error) {
-        console.error('마운트시 찜목록 불러오기 오류', error);
+      // 서버 응답 데이터가 배열인지 확인
+      if (Array.isArray(res.data)) {
+        setLikeProducts(res.data);
+      } else {
+        console.error('서버 응답 데이터가 배열이 아닙니다:', res.data);
+        setLikeProducts([]); // 데이터가 배열이 아닌 경우 빈 배열로 설정
       }
-    };
+    } catch (error) {
+      console.error('마운트시 찜목록 불러오기 오류', error);
+    }
+  };
+
+  useEffect(() => {
     fetchLikesList();
   }, []);
 
@@ -53,6 +55,7 @@ const LikeList = () => {
         setLikeProducts(
           likeProducts.filter((product) => product.productId !== productId),
         );
+        fetchLikesList();
       }
     } catch (error) {
       console.error('찜목록 삭제 오류', error);
