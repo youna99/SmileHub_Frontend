@@ -22,7 +22,9 @@ export const RootRouter = () => {
     '/postproduct',
     '/productdetail',
     '/product/write',
+    '/product/read',
     '/admin',
+
   ];
   const showChatButtonPaths = ['/'];
 

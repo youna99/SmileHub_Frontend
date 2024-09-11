@@ -44,7 +44,7 @@ export default function PostComment() {
         <div class="flex justify-end">
           <button
             type="submit"
-            class="bg-blue-500 text-white font-semibold py-1 p-1 md:py-1 md:px-3 rounded hover:bg-blue-600"
+            class="bg-[#FEE715] text-black font-semibold py-1 p-1 md:py-1 md:px-3 rounded hover:bg-black hover:text-[#FEE715]"
           >
             댓글 작성
           </button>
