@@ -5,7 +5,13 @@ import { useDispatch } from 'react-redux';
 import { setUserField } from '../../store/userSlice';
 
 // 주소 api
-const AddressSearch = ({ isOpen, onRequestClose, setValue }) => {
+const AddressSearch = ({
+  isOpen,
+  onRequestClose,
+  setValue,
+  onAddressSelect,
+  updateRedux = true,
+}) => {
   const dispatch = useDispatch();
 
   const handleComplete = (data) => {
@@ -40,21 +46,36 @@ const AddressSearch = ({ isOpen, onRequestClose, setValue }) => {
     console.log('extraAddr >>', sigungu);
     console.log('extraAddr >>', bname);
 
-    // Redux 상태 업데이트
-    dispatch(setUserField({ field: 'address.postcode', value: data.zonecode }));
-    dispatch(setUserField({ field: 'address.address', value: addr }));
-    dispatch(setUserField({ field: 'address.extraAddress', value: extraAddr }));
-    dispatch(setUserField({ field: 'address.sido', value: sido }));
-    dispatch(setUserField({ field: 'address.sigungu', value: sigungu }));
-    dispatch(setUserField({ field: 'address.bname', value: bname }));
+    const fullAddress = `${addr} ${extraAddr}`;
 
-    // react-hook-form 상태 업데이트
-    setValue('address.postcode', data.zonecode);
-    setValue('address.address', addr);
-    setValue('address.extraAddress', extraAddr);
-    setValue('address.sido', sido);
-    setValue('address.sigungu', sigungu);
-    setValue('address.bname', bname);
+    // Redux 상태 업데이트 (updateRedux가 true인 경우에만)
+    if (updateRedux) {
+      dispatch(
+        setUserField({ field: 'address.postcode', value: data.zonecode }),
+      );
+      dispatch(setUserField({ field: 'address.address', value: addr }));
+      dispatch(
+        setUserField({ field: 'address.extraAddress', value: extraAddr }),
+      );
+      dispatch(setUserField({ field: 'address.sido', value: sido }));
+      dispatch(setUserField({ field: 'address.sigungu', value: sigungu }));
+      dispatch(setUserField({ field: 'address.bname', value: bname }));
+    }
+
+    // react-hook-form 상태 업데이트 (setValue가 제공된 경우에만)
+    if (setValue) {
+      setValue('address.postcode', data.zonecode);
+      setValue('address.address', addr);
+      setValue('address.extraAddress', extraAddr);
+      setValue('address.sido', sido);
+      setValue('address.sigungu', sigungu);
+      setValue('address.bname', bname);
+    }
+
+    // 결제 페이지에서 주소 변경 시
+    if (onAddressSelect) {
+      onAddressSelect(fullAddress);
+    }
 
     onRequestClose();
   };

@@ -35,66 +35,62 @@ export default function Header() {
     }
   };
 
+  // 기본 프로필 이미지
+  const defaultUrl =
+    'https://sesac-2nd-pro-bucket.s3.ap-northeast-2.amazonaws.com/null';
+
   return (
     <nav>
       <Navbar fluid rounded>
         <Navbar.Brand href="/">
-          <span className="self-center whitespace-nowrap text-xl font-semibold">
+          <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
             SeSAC-2st
           </span>
         </Navbar.Brand>
-        {isAuthenticated ? (
-          <div className="flex md:order-2">
-            <Dropdown
-              arrowIcon={false}
-              inline
-              // label={<Avatar alt="User profile" img={profileImage} rounded />}
-              label={
-                <Avatar
-                  alt="User profile"
-                  img={profileImage ? profileImage : '/images/profile.png'}
-                  rounded
-                />
-              }
+        <div className="flex md:order-2">
+          {isAuthenticated ? (
+            <>
+              <Dropdown
+                arrowIcon={false}
+                inline
+                label={
+                  <Avatar
+                    alt="User profile"
+                    img={
+                      profileImage === defaultUrl
+                        ? '/images/profile.png'
+                        : profileImage
+                    }
+                    rounded
+                  />
+                }
+              >
+                <Dropdown.Header>
+                  <span className="block text-sm">UserName</span>
+                </Dropdown.Header>
+                <Dropdown.Item>
+                  <Link to="/mypage">마이페이지</Link>
+                </Dropdown.Item>
+                <Dropdown.Item>
+                  <button onClick={handleLogout}>로그아웃</button>
+                </Dropdown.Item>
+              </Dropdown>
+            </>
+          ) : (
+            <Link
+              to="/login"
+              className="text-sm text-gray-700 hover:text-gray-900"
             >
-              <Dropdown.Header>
-                <span className="block text-sm">UserName</span>
-              </Dropdown.Header>
-              <Dropdown.Item>
-                <Link to="/mypage">마이페이지</Link>
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <button onClick={handleLogout}>로그아웃</button>
-              </Dropdown.Item>
-            </Dropdown>
-            <Navbar.Toggle />
-          </div>
-        ) : (
-          <Link
-            to="/login"
-            className="text-sm text-gray-700 hover:text-gray-900"
-          > 
-            로그인/회원가
-          </Link>
-            <Dropdown.Header>
-              <span className="block text-sm">UserName</span>
-            </Dropdown.Header>
-            <Dropdown.Item>
-              <Link to="/login">Login</Link>
-            </Dropdown.Item>
-            <Dropdown.Item>
-              <Link to="/mypage">Mypage</Link>
-            </Dropdown.Item>
-            <Dropdown.Divider />
-            <Dropdown.Item>Sign out</Dropdown.Item>
-          </Dropdown>
+              로그인/회원가입
+            </Link>
+          )}
           <Navbar.Toggle />
         </div>
         <Navbar.Collapse>
           <Navbar.Link href="/" active>
             홈
           </Navbar.Link>
-          <Navbar.Link href="#">판매글쓰기</Navbar.Link>
+          <Navbar.Link href="/product/write">판매글쓰기</Navbar.Link>
         </Navbar.Collapse>
       </Navbar>
     </nav>

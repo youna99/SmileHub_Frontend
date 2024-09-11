@@ -28,6 +28,7 @@ export default function ProductDetailPage() {
     setIsLiked(!isLiked); // 찜 상태 토글
   };
 
+  // 상세 정보 불러오기
   useEffect(() => {
     const fetchProductDetail = async () => {
       try {
@@ -45,14 +46,10 @@ export default function ProductDetailPage() {
     fetchProductDetail();
   }, [productId]);
 
-  if (loading) {
-    return <div>로딩 중...</div>;
-  }
+  if (loading) return <div>로딩 중...</div>;
 
   // 오류가 발생했을 때
-  if (error) {
-    return <div>오류 발생: {error}</div>;
-  }
+  if (error) return <div>오류 발생: {error}</div>;
 
   //   useEffect(() => {
   //     const fetchImages = async () => {
@@ -68,14 +65,24 @@ export default function ProductDetailPage() {
   //     fetchImages();
   //   }, []);
 
+  const reportUser = (data) => {
+    try {
+      const res = axios.post('http://localhost:8000/product/report', {
+        userId: 2,
+        productId: 3,
+      });
+      console.log(res.data);
+    } catch (error) {}
+  };
+
   return (
     <main>
       <div className="flex flex-col max-w-fulll">
-        <div className="flex flex-col px-11 py-7 w-full bg-white max-md:px-5 max-md:max-w-full">
-          <div className="max-w- w-[724px]">
+        <div className="flex flex-col px-11 py-7 w-full bg-white ">
+          <div className="">
             <div className="flex gap-5 max-md:flex-col">
-              <section className="flex flex-col w-[44%] max-md:ml-0 max-md:w-full">
-                <div className="w-full aspect-square bg-zinc-100 max-md:px-5 max-md:pb-24 max-md:mt-5">
+              <section className="flex flex-col md:w-1/2 ">
+                <div className="w-full aspect-square bg-zinc-100 ">
                   <Swiper
                     spaceBetween={50}
                     slidesPerView={1}
@@ -95,18 +102,23 @@ export default function ProductDetailPage() {
                   </Swiper>
                 </div>
               </section>
-              <div className="p-4">
-                <h1 className="text-xl font-bold mb-2">
+              <div className="p-4 w-1/2">
+                <h1 className="text-2xl md:text-4xl font-bold mb-2">
                   {fetchProduct.productName}
                 </h1>
                 <p className="text-lg font-semibold mb-2">
                   {fetchProduct.price} 원
                 </p>
                 <hr />
-                <div className="flex items-center mb-2">
+                <div className="flex justify-between mb-2">
                   <span className="text-gray-500">5일 전</span>
+                  <button className="text-gray-500" onClick={reportUser}>
+                    신고
+                  </button>
                 </div>
-                <div className="flex justify-evenly">
+                <div className="flex gap-4 mt-4">
+                  {' '}
+                  {/* gap 추가 및 margin-top 설정 */}
                   <button
                     onClick={toggleLike}
                     className="text-red-500 hover:text-red-700 transition-all duration-300"
@@ -116,10 +128,10 @@ export default function ProductDetailPage() {
                       size="2x"
                     />
                   </button>
-                  <button className="bg-[#FEE715] text-[#101820] px-4 py-2 rounded shadow hover:bg-yellow-600">
-                    채팅
+                  <button className="bg-[#FEE715] text-[#101820] w-32 px-4 py-2 rounded shadow hover:bg-yellow-600">
+                    채팅
                   </button>
-                  <button className="bg-[#f3b105] text-[#ffefbc] py-2 rounded shadow hover:bg-red-600">
+                  <button className="bg-[#f3b105] text-[#ffefbc] w-32 py-2 rounded shadow hover:bg-red-600">
                     안전구매
                   </button>
                 </div>
