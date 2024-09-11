@@ -40,7 +40,7 @@ export const TestImageDropZone = ({ images, setImages }) => {
         <p className="text-gray-600">이곳으로 사진을 드래그하세요</p>
       )}
       <div className="mt-4 grid grid-cols-2 gap-4">
-        {images.map((image, index) => (
+        {/* {images.map((image, index) => (
           <div
             key={index}
             className="border rounded-lg overflow-hidden shadow-lg"
@@ -50,7 +50,7 @@ export const TestImageDropZone = ({ images, setImages }) => {
               alt={`Preview ${index}`}
               className="w-full h-auto" // 가로 폭을 100%로 하고 비율에 맞게 높이 조정
             />
-          </div>
+          </div> */}
         ))}
       </div>
     </section>

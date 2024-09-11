@@ -35,6 +35,10 @@ export default function Header() {
     }
   };
 
+  // 기본 프로필 이미지
+  const defaultUrl =
+    'https://sesac-2nd-pro-bucket.s3.ap-northeast-2.amazonaws.com/null';
+
   return (
     <nav>
       <Navbar fluid rounded>
@@ -52,7 +56,11 @@ export default function Header() {
                 label={
                   <Avatar
                     alt="User profile"
-                    img={profileImage ? profileImage : '/images/profile.png'}
+                    img={
+                      profileImage === defaultUrl
+                        ? '/images/profile.png'
+                        : profileImage
+                    }
                     rounded
                   />
                 }
@@ -82,7 +90,7 @@ export default function Header() {
           <Navbar.Link href="/" active>
             홈
           </Navbar.Link>
-          <Navbar.Link href="/">판매글쓰기</Navbar.Link>
+          <Navbar.Link href="/product/write">판매글쓰기</Navbar.Link>
         </Navbar.Collapse>
       </Navbar>
     </nav>
