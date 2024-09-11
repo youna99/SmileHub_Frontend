@@ -91,14 +91,22 @@ export default function MainPage() {
             <div className="border-t border-gray-300 pt-2 mt-2 w-full">
               <div className="items-center text-gray-400 text-xs mt-1">
                 <span className="font-medium text-gray-400 text-sm">
-                  가격 : {productInfo.nickname}
+                  가격 : {productInfo.price}
                 </span>
+                <hr />
                 <span className="font-medium text-gray-400 text-sm">
-                  주소 : {productInfo.nickname}
+                  주소 :
+                  <div>
+                    {productInfo.Location
+                      ? `${productInfo.Location.depth1}, ${productInfo.Location.depth2}, ${productInfo.Location.depth3}`
+                      : '주소 정보가 없습니다.'}
+                  </div>
                 </span>
+                <hr />
                 <span className="font-medium text-gray-400 text-sm">
                   닉네임 : {productInfo.nickname}
                 </span>
+                <hr />
                 <span>
                   날짜 :{new Date(productInfo.updatedAt).toLocaleDateString()}
                 </span>
