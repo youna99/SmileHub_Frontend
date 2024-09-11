@@ -80,19 +80,25 @@ const EditProduct = () => {
     try {
       const token = localStorage.getItem('token');
       console.log('token >> ', token);
-      const response = await axios.post(
-        `http://${REACT_APP_API_URL}/product/updated?productId=${productId}`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: token,
+      const response = await axios
+        .post(
+          `${REACT_APP_API_URL}/product/update?productId=${productId}`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: token,
+            },
           },
-        },
-      );
-      console.log('응답 >>>>> ', response.data);
-      alert('상품이 성공적으로 수정되었습니다.');
-      navigate(`/product/read?productId=${productId}`); // 수정 후 상세 페이지로 이동
+        )
+        .then((res) => {
+          console.log('응답 >>>>> ', res.data);
+          alert('상품이 성공적으로 수정되었습니다.');
+          navigate(`/product/read?productId=${productId}`); // 수정 후 상세 페이지로 이동
+        })
+        .catch((error) => {
+          alert(error.response.data.message);
+        });
     } catch (error) {
       console.error('상품 추가 중 오류 발생:', error);
       alert('상품 수정에 실패했습니다.');
@@ -125,7 +131,6 @@ const EditProduct = () => {
               name="productImg"
               multiple
               onChange={handleFileChange}
-              required
               className="mt-1 block w-full text-gray-800 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-black p-2"
             />
           </label>
