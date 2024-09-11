@@ -29,13 +29,14 @@ export const RootRouter = () => {
         <Route path="/register" element={<RegisterContainer />} />
         <Route path="/mypage" element={<MyPageContainer />} />
         <Route path="/mypageEdit" element={<UserEditContainer />} />
-        <Route path="/postproduct" element={<PostProductContainer />} />
+        <Route path="/mypage/payment" element={<PaymentPage />} />
+        <Route path="/product/write" element={<PostProductContainer />} />
         <Route path="/product/read" element={<ProductDetailPage />} />
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/chat/:roomId" element={<ChatPage />} />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/admin" element={<AdminPage />} />
         <Route path="/*" element={<PageNotFound />} />
-        <Route path="/payment" element={<PaymentPage />} />
       </Routes>
     </>
   );

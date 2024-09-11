@@ -1,146 +1,148 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import ProductTab from './ProductTab';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css'; // 스타일 import
 import { Navigation, Pagination } from 'swiper/modules';
-import ProductTab from './ProductTab';
-import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useNavigate } from 'react-router-dom';
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
 
-export default function ProductDetailPage() {
-  //   const [images, setImages] = useState([]);
+import '../../../App.css'; // CSS 파일을 따로 만들어서 import
+
+const ProductDetail = () => {
+  const [product, setProduct] = useState(null);
   const [fetchProduct, setFetchProduct] = useState(null);
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
   const [error, setError] = useState(null); // 오류 상태 추가
-
-  const productId = 3;
-  const images = [
-    '/images/1.png',
-    '/images/2.png',
-    '/images/3.png',
-    // 추가 이미지 경로
-  ];
-
   const [isLiked, setIsLiked] = useState(false); // 찜 상태 관리
+
+  const productId = new URLSearchParams(window.location.search).get(
+    'productId',
+  ); // URL에서 productId 가져오기
 
   const toggleLike = () => {
     setIsLiked(!isLiked); // 찜 상태 토글
   };
 
-  // 상세 정보 불러오기
-  useEffect(() => {
-    const fetchProductDetail = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:8000/product/read?productId=${productId}`,
-        );
-        setFetchProduct(res.data);
-        console.log('fetchProductDetail data ->', res.data);
-      } catch (error) {
-        setError(error.message); // 오류 메시지를 상태에 저장
-      } finally {
-        setLoading(false); // 로딩 상태 종료
-      }
-    };
-    fetchProductDetail();
-  }, [productId]);
+  const navigate = useNavigate();
 
-  if (loading) return <div>로딩 중...</div>;
-
-  // 오류가 발생했을 때
-  if (error) return <div>오류 발생: {error}</div>;
-
-  //   useEffect(() => {
-  //     const fetchImages = async () => {
-  //       try {
-  //         const response = await fetch('https://your-api-url.com/images'); // 이미지 API URL
-  //         const data = await response.json();
-  //         setImages(data.images); // 응답 데이터에서 이미지 배열을 설정
-  //       } catch (error) {
-  //         console.error('이미지 불러오기 실패:', error);
-  //       }
-  //     };
-
-  //     fetchImages();
-  //   }, []);
-
-  const reportUser = (data) => {
-    try {
-      const res = axios.post('http://localhost:8000/product/report', {
-        userId: 2,
-        productId: 3,
-      });
-      console.log(res.data);
-    } catch (error) {}
+  const handlePayment = (productId) => {
+    navigate('/mypage/payment', { state: { productId } });
   };
 
+  const handleClickChat = (productId) => {
+    navigate('/chat', { state: { productId } });
+  };
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/product/read?productId=${productId}`,
+        );
+        setProduct(response.data); // 응답 데이터 저장
+      } catch (error) {
+        console.error('상품 데이터를 가져오는 중 오류 발생:', error);
+      } finally {
+        setLoading(false); // 로딩 완료
+      }
+    };
+
+    fetchProduct();
+  }, [productId]);
+
+  if (loading) {
+    return <div className="loading">로딩 중...</div>;
+  }
+
+  if (!product) {
+    return <div className="error">상품을 찾을 수 없습니다.</div>;
+  }
+
   return (
-    <main>
-      <div className="flex flex-col max-w-fulll">
-        <div className="flex flex-col px-11 py-7 w-full bg-white ">
-          <div className="">
-            <div className="flex gap-5 max-md:flex-col">
-              <section className="flex flex-col md:w-1/2 ">
-                <div className="w-full aspect-square bg-zinc-100 ">
-                  <Swiper
-                    spaceBetween={50}
-                    slidesPerView={1}
-                    navigation
-                    pagination={{ clickable: true }}
-                    modules={[Navigation, Pagination]} // modules 속성 추가
-                  >
-                    {images.map((image, index) => (
-                      <SwiperSlide key={index}>
-                        <img
-                          src={image}
-                          alt={`상품 이미지 ${index + 1}`}
-                          className="w-full h-full object-cover"
-                        />
-                      </SwiperSlide>
-                    ))}
-                  </Swiper>
-                </div>
-              </section>
-              <div className="p-4 w-1/2">
-                <h1 className="text-2xl md:text-4xl font-bold mb-2">
-                  {fetchProduct.productName}
-                </h1>
-                <p className="text-lg font-semibold mb-2">
-                  {fetchProduct.price} 원
-                </p>
-                <hr />
-                <div className="flex justify-between mb-2">
-                  <span className="text-gray-500">5일 전</span>
-                  <button className="text-gray-500" onClick={reportUser}>
-                    신고
-                  </button>
-                </div>
-                <div className="flex gap-4 mt-4">
-                  {' '}
-                  {/* gap 추가 및 margin-top 설정 */}
-                  <button
-                    onClick={toggleLike}
-                    className="text-red-500 hover:text-red-700 transition-all duration-300"
-                  >
-                    <FontAwesomeIcon
-                      icon={isLiked ? solidHeart : regularHeart}
-                      size="2x"
-                    />
-                  </button>
-                  <button className="bg-[#FEE715] text-[#101820] w-32 px-4 py-2 rounded shadow hover:bg-yellow-600">
-                    채팅
-                  </button>
-                  <button className="bg-[#f3b105] text-[#ffefbc] w-32 py-2 rounded shadow hover:bg-red-600">
-                    안전구매
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+    <div className="product-detail">
+      <h1 className="product-title ">{product.productName}</h1>
+      <section className="flex flex-col w-[44%] max-md:ml-0 max-md:w-full">
+        <div className="w-full aspect-square bg-zinc-100 max-md:px-5 max-md:pb-24 max-md:mt-5">
+          <Swiper
+            spaceBetween={50}
+            slidesPerView={1}
+            navigation
+            pagination={{ clickable: true }}
+            modules={[Navigation, Pagination]} // modules 속성 추가
+          >
+            {product.images && product.images.length > 0 ? (
+              // {images.map((image, index) => (
+              product.images.map((image, index) => (
+                <SwiperSlide key={index}>
+                  <img
+                    key={index}
+                    src={image}
+                    alt={`상품 이미지 ${index + 1}`}
+                    className="product-image"
+                  />
+                </SwiperSlide>
+              ))
+            ) : (
+              <p>이미지가 없습니다.</p>
+            )}
+          </Swiper>
         </div>
-        <ProductTab />
-      </div>
-    </main>
+      </section>
+      <section className="content border-2 border-purple border-solid">
+        <div>
+          <span className="product-price">가격: {product.price} 원</span>
+          &nbsp;&nbsp;
+          <span className="product-status bg-[#FEE715] rounded shadow ">
+            {product.status}
+          </span>
+        </div>
+        <p className="product-location">
+          위치:{' '}
+          {product.location
+            ? `${product.location.depth1} ${product.location.depth2} ${product.location.depth3}`
+            : '위치 정보 없음'}
+        </p>
+        {/* <p className="product-view-count">조회수: {product.viewCount}</p> */}
+        <div className="flex justify-evenly">
+          <button
+            onClick={toggleLike}
+            className="text-red-500 hover:text-red-700 transition-all duration-300"
+          >
+            <FontAwesomeIcon
+              icon={isLiked ? solidHeart : regularHeart}
+              size="2x"
+            />
+            {product.totalLikes}
+          </button>
+          <button
+            className="bg-[#FEE715] text-[#101820] px-4 py-2 rounded shadow hover:bg-yellow-600"
+            onClick={() => handleClickChat(productId)}
+          >
+            채팅
+          </button>
+          <button
+            className="bg-[#f3b105] text-[#ffefbc] py-2 rounded shadow hover:bg-red-600"
+            onClick={() => handlePayment(productId)}
+          >
+            안전구매
+          </button>
+        </div>
+        <p className="product-reports">
+          이 판매자의 신고 수: {product.totalReport}
+        </p>
+        <p className="product-created-at">
+          등록일: {new Date(product.createdAt).toLocaleDateString()}
+        </p>
+      </section>
+      <section>
+        <p className="product-description">{product.content}</p>
+      </section>
+      <ProductTab />
+    </div>
   );
-}
+};
+
+export default ProductDetail;

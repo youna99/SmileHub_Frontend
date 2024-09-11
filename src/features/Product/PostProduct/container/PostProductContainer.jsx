@@ -1,5 +1,4 @@
 // PostProductContainer.jsx
-import React, { useState } from 'react';
 import ProductPage from '../../../../pages/Product/PostProduct/PostProductPage';
 
 export default function PostProductContainer() {
