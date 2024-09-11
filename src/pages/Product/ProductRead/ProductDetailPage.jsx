@@ -9,11 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
 
-<<<<<<< HEAD:src/pages/Product/ProductRead/ProductDetailPage.jsx
 import '../../../App.css';
 
-=======
->>>>>>> 8db5fa1a8d138f5f7c845ea91023302d0b59dc27:src/pages/Product/ProductDetail/ProductDetailPage.jsx
 const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
@@ -22,21 +19,25 @@ const ProductDetail = () => {
 
   const productId = new URLSearchParams(window.location.search).get(
     'productId',
-<<<<<<< HEAD:src/pages/Product/ProductRead/ProductDetailPage.jsx
-  );
-=======
   ); // URL에서 productId 가져오기
   const navigate = useNavigate();
->>>>>>> 8db5fa1a8d138f5f7c845ea91023302d0b59dc27:src/pages/Product/ProductDetail/ProductDetailPage.jsx
 
   const toggleLike = () => {
     setIsLiked(!isLiked); // 찜 상태 토글
   };
-
+  const updateClick = () => {
+    navigate(`/product/update?productId=${productId}`, {
+      state: { productId },
+    });
+  };
+  const deleteClick = () => {
+    navigate(`/product/delete?productId=${productId}`, {
+      state: { productId },
+    });
+  };
   const handlePayment = () => {
     navigate('/mypage/payment', { state: { productId, product } });
   };
-
   const handleClickChat = () => {
     navigate('/chat', { state: { productId } });
   };
@@ -100,10 +101,16 @@ const ProductDetail = () => {
 
         <div className="flex flex-col space-y-4 sm:w-1/2">
           <div className="flex justify-between mb-1">
-            <button className="bg-gray-200 text-black px-4 py-2 rounded hover:bg-[#FEE715] hover:text-black transition">
+            <button
+              className="bg-gray-200 text-black px-4 py-2 rounded hover:bg-[#FEE715] hover:text-black transition"
+              onClick={updateClick}
+            >
               수정
             </button>
-            <button className="bg-gray-200 text-black px-4 py-2 rounded hover:bg-red-500 hover:text-white transition">
+            <button
+              className="bg-gray-200 text-black px-4 py-2 rounded hover:bg-red-500 hover:text-white transition"
+              onClick={deleteClick}
+            >
               삭제
             </button>
           </div>

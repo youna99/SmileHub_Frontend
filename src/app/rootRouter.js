@@ -41,7 +41,7 @@ export const RootRouter = () => {
         <Route path="/product/write" element={<PostProductContainer />} />
         <Route path="/product/read" element={<ReadProductPage />} />
         <Route path="/product/update" element={<UpdateProductPage />} />
-        <Route path="/product/delete" element={<DeleteProductPage />} />
+        {/* <Route path="/product/delete" element={<DeleteProductPage />} /> */}
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/chat/:roomId" element={<ChatPage />} />
         <Route path="/admin" element={<AdminPage />} />
