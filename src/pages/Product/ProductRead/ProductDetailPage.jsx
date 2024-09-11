@@ -9,6 +9,11 @@ import { useNavigate } from 'react-router-dom';
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
 
+<<<<<<< HEAD:src/pages/Product/ProductRead/ProductDetailPage.jsx
+import '../../../App.css';
+
+=======
+>>>>>>> 8db5fa1a8d138f5f7c845ea91023302d0b59dc27:src/pages/Product/ProductDetail/ProductDetailPage.jsx
 const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
@@ -17,8 +22,12 @@ const ProductDetail = () => {
 
   const productId = new URLSearchParams(window.location.search).get(
     'productId',
+<<<<<<< HEAD:src/pages/Product/ProductRead/ProductDetailPage.jsx
+  );
+=======
   ); // URL에서 productId 가져오기
   const navigate = useNavigate();
+>>>>>>> 8db5fa1a8d138f5f7c845ea91023302d0b59dc27:src/pages/Product/ProductDetail/ProductDetailPage.jsx
 
   const toggleLike = () => {
     setIsLiked(!isLiked); // 찜 상태 토글
