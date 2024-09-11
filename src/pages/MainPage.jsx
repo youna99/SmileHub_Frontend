@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function MainPage() {
   const [productList, setProductList] = useState([]);
@@ -8,6 +8,7 @@ export default function MainPage() {
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const limit = 20;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getProductList = async () => {
@@ -117,7 +118,9 @@ export default function MainPage() {
         searchKeyword: searchKeyword,
         searchType: 'name',
       });
-      console.log('submitSearch res =>', res);
+      console.log('submitSearch res =>', res.data.result);
+
+      navigate('/search', { state: { results: res.data.result } });
     } catch (error) {
       console.log('error', error);
     }

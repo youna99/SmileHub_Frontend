@@ -12,6 +12,7 @@ import PostProductContainer from '../features/Product/PostProduct/container/Post
 import ProductDetailPage from '../pages/Product/ProductDetail/ProductDetailPage.jsx';
 import PageNotFound from '../pages/PageNotFound.jsx';
 import ChatButton from '../shared/ChatButton';
+import SearchPage from '../pages/SearchPage.jsx';
 
 export const RootRouter = () => {
   const location = useLocation();
@@ -36,6 +37,7 @@ export const RootRouter = () => {
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/*" element={<PageNotFound />} />
         <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/search" element={<SearchPage />} />
       </Routes>
     </>
   );
