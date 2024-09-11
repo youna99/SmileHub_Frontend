@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Avatar, TextInput, Label, Checkbox } from 'flowbite-react';
+import { Avatar, Label, Checkbox } from 'flowbite-react';
 import { useDispatch, useSelector } from 'react-redux';
 import AddressSearch from '../../features/User/Register/components/AddressSearch';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -202,7 +202,7 @@ const PaymentPage = () => {
 
               {!isDetailAddressComplete && temporaryAddress && (
                 <div className="flex items-center gap-2 mt-2 sm:mt-3 w-full sm:max-w-md">
-                  <TextInput
+                  <input
                     id="detailAddress"
                     type="text"
                     className="flex-1"
@@ -210,9 +210,9 @@ const PaymentPage = () => {
                     value={temporaryDetailAddress}
                     onChange={handleDetailAddressChange}
                   />
-                  <Button className="h-full ml-2" onClick={handleComplete}>
+                  <button className="h-full ml-2" onClick={handleComplete}>
                     완료
-                  </Button>
+                  </button>
                 </div>
               )}
             </div>
@@ -238,12 +238,12 @@ const PaymentPage = () => {
                 충전하기
               </div>
             </div>
-            <TextInput
+            <input
               id="money"
               type="number"
               value={moneyInput}
               onChange={handleInputChange}
-              className="w-full sm:max-w-md mt-2 sm:mt-3"
+              className="w-full sm:max-w-md mt-2 sm:mt-3 border-2 border-[#101820] focus:border-4 focus:border-black focus:ring-0 rounded-md"
               placeholder="사용할 금액을 입력하세요"
             />
             {error && <p className="text-red-500">{error}</p>}
@@ -265,6 +265,7 @@ const PaymentPage = () => {
                     isCheck.infoCheck &&
                     isCheck.eventCheck
                   }
+                  color="gray"
                   className="h-4 w-4 sm:h-5 sm:w-5"
                   onChange={handleAllCheck}
                 />
@@ -280,6 +281,7 @@ const PaymentPage = () => {
                   checked={isCheck.paymentCheck}
                   onChange={() => handleCheckChange('paymentCheck')}
                   className="h-4 w-4 sm:h-5 sm:w-5"
+                  color="gray"
                 />
                 <Label htmlFor="payment" className="font-medium text-sm">
                   (필수) 결제 서비스 이용약관 동의
@@ -293,6 +295,7 @@ const PaymentPage = () => {
                   checked={isCheck.infoCheck}
                   onChange={() => handleCheckChange('infoCheck')}
                   className="h-4 w-4 sm:h-5 sm:w-5"
+                  color="gray"
                 />
                 <Label htmlFor="personalInfo" className="font-medium text-sm">
                   (필수) 개인정보 수집 및 이용 동의
@@ -305,6 +308,7 @@ const PaymentPage = () => {
                   checked={isCheck.eventCheck}
                   onChange={() => handleCheckChange('eventCheck')}
                   className="h-4 w-4 sm:h-5 sm:w-5"
+                  color="gray"
                 />
                 <Label htmlFor="eventCheck" className="font-medium text-sm">
                   (선택) 이벤트 및 혜택 알림 수신 동의
@@ -313,12 +317,12 @@ const PaymentPage = () => {
             </div>
           </section>
 
-          <Button
-            className="w-full mt-2 sm:mt-3 rounded-lg text-sm sm:text-base"
+          <button
+            className="w-full h-10 mt-2 sm:mt-3 rounded-md text-sm sm:text-base bg-green-500 text-white hover:bg-green-700 transition-colors duration-300"
             onClick={handlePayment}
           >
             결제하기
-          </Button>
+          </button>
 
           <MoneyMoal isModalOpen={isMoneyModal} closeModal={closeModal} />
 
