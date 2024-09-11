@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { setUserField } from '../../features/User/store/userSlice';
 
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 const MyPage = ({
   currentUser,
   handleEdit,
@@ -48,7 +49,7 @@ const MyPage = ({
 
     try {
       const res = await axios.post(
-        `http://localhost:8000/uploadImg/user/${currentUser.userId}`,
+        `${REACT_APP_API_URL}/uploadImg/user/${currentUser.userId}`,
         formData,
         {
           headers: {
@@ -84,7 +85,7 @@ const MyPage = ({
     const token = localStorage.getItem('token');
     try {
       const res = await axios.delete(
-        `http://localhost:8000/uploadImg/user/${currentUser.userId}`,
+        `${REACT_APP_API_URL}/uploadImg/user/${currentUser.userId}`,
         {
           headers: {
             Authorization: token,

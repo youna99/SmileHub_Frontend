@@ -36,6 +36,7 @@ const ChatButton = () => {
       <button
         onClick={openChatPage}
         className="fixed bottom-16 right-16 bg-blue-500 text-white px-8 py-3 rounded-full shadow-lg text-lg tracking-widest hover:bg-blue-600"
+        style={{ zIndex: 1000 }} // z-index를 명시적으로 추가
       >
         Chat
       </button>
@@ -57,7 +58,7 @@ export default ChatButton;
 // const handleChatButtonClick = async (productId, buyerId, sellerId) => {
 //   try {
 //     // 채팅방이 이미 존재하는지 서버에 확인 후 방 생성
-//     const response = await axios.post('http://localhost:8000/room', {
+//     const response = await axios.post('${REACT_APP_API_URL}/room', {
 //       productId,
 //       buyerId,
 //       sellerId,

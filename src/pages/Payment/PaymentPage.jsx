@@ -7,6 +7,7 @@ import axios from 'axios';
 import MoneyMoal from '../../features/User/mypage/components/MoneyMoal';
 import { pay } from '../../features/User/store/userSlice';
 
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 const PaymentPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // 주소 modal 상태관리
   const [isMoneyModal, setIsMoneyModal] = useState(false); // 충전하기 버튼 클릭시 모달 상태 관리
@@ -41,7 +42,7 @@ const PaymentPage = () => {
         try {
           const token = localStorage.getItem('token'); // 토큰 가져오기
           const res = await axios.get(
-            `http://localhost:8000/product/order?productId=${productId}`,
+            `${REACT_APP_API_URL}/product/order?productId=${productId}`,
             {
               headers: {
                 Authorization: token,
@@ -136,7 +137,7 @@ const PaymentPage = () => {
 
     try {
       const res = await axios.post(
-        `http://localhost:8000/mypage/payment`,
+        `${REACT_APP_API_URL}/mypage/payment`,
         {
           productId,
         },

@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setProducts } from '../store/productTabSlice';
 import axios from 'axios';
 
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 const ProductTabPage = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.productTab.products);
@@ -19,7 +20,7 @@ const ProductTabPage = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/product/list?page=${currentPage}&limit=99`,
+          `${REACT_APP_API_URL}/product/list?page=${currentPage}&limit=99`,
         );
 
         const fetchedProducts = response.data.productInfo.map((product) => ({

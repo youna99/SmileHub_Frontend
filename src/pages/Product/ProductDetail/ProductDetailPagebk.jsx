@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
 
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 export default function ProductDetailPage() {
   //   const [images, setImages] = useState([]);
   const [fetchProduct, setFetchProduct] = useState(null);
@@ -30,7 +31,7 @@ export default function ProductDetailPage() {
     const fetchProductDetail = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8000/product/read?productId=${productId}`,
+          `${REACT_APP_API_URL}/product/read?productId=${productId}`,
         );
         setFetchProduct(res.data);
         console.log('fetchProductDetail data ->', res.data);

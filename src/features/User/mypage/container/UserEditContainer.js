@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { setUserFields } from '../../store/userSlice';
 
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 const UserEditContainer = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // 주소 modal 상태관리
   const [isChangingPassword, setIsChangingPassword] = useState(false); // 비밀번호 변경 여부 확인 상태
@@ -41,7 +42,7 @@ const UserEditContainer = () => {
       console.log('token>>>>', token);
 
       const res = await axios.post(
-        `http://localhost:8000/user/chkPassword/${currentUser.userId}`,
+        `${REACT_APP_API_URL}/user/chkPassword/${currentUser.userId}`,
         { password: oldPassword }, // 기존 비밀번호를 본문에 포함
         {
           headers: {
@@ -64,7 +65,7 @@ const UserEditContainer = () => {
   // 닉네임 중복 확인
   const handleCheckNickname = async () => {
     try {
-      const res = await axios.post('http://localhost:8000/user/checkNickname', {
+      const res = await axios.post(`${REACT_APP_API_URL}/user/checkNickname`, {
         nickname: checkNickname,
       });
       console.log('res >>', res);
@@ -115,7 +116,7 @@ const UserEditContainer = () => {
     const token = localStorage.getItem('token');
     try {
       const res = await axios.patch(
-        `http://localhost:8000/user/${currentUser.userId}`,
+        `${REACT_APP_API_URL}/user/${currentUser.userId}`,
         updatedData,
         {
           headers: {

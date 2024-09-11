@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 export default function MainPage() {
   const [productList, setProductList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,7 +15,7 @@ export default function MainPage() {
       try {
         setLoading(true);
         const res = await axios.get(
-          `http://localhost:8000/product/list?page=${page}&limit=${limit}`,
+          `${REACT_APP_API_URL}/product/list?page=${page}&limit=${limit}`,
         );
 
         const newProductInfo = res.data.productInfo;

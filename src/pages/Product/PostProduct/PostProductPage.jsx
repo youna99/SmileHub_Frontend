@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 const AddProduct = () => {
   const [imageFiles, setImageFiles] = useState([]);
   const [price, setPrice] = useState('');
@@ -34,7 +35,7 @@ const AddProduct = () => {
       const token = localStorage.getItem('token');
       console.log('token >> ', token);
       const response = await axios.post(
-        'http://localhost:8000/product/write',
+        `${REACT_APP_API_URL}/product/write`,
         formData,
         {
           headers: {

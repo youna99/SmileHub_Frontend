@@ -6,6 +6,7 @@ import RegisterPage from '../../../../pages/User/RegisterPage';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 const RegisterContainer = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // 주소 modal 상태관리
   const [checkEmail, setCheckEmail] = useState(''); // 이메일 중복 확인 상태
@@ -46,7 +47,7 @@ const RegisterContainer = () => {
     }
 
     try {
-      const res = await axios.post('http://localhost:8000/user', {
+      const res = await axios.post(`${REACT_APP_API_URL}/user`, {
         nickname: data.nickname,
         email: data.email,
         password: data.password,
@@ -99,7 +100,7 @@ const RegisterContainer = () => {
     console.log('checkEmail >>', checkEmail);
 
     try {
-      const res = await axios.post('http://localhost:8000/user/checkEmail', {
+      const res = await axios.post(`${REACT_APP_API_URL}/user/checkEmail`, {
         email: checkEmail,
       });
       console.log('res >>', res);
@@ -121,7 +122,7 @@ const RegisterContainer = () => {
   // 닉네임 중복 확인
   const handleCheckNickname = async () => {
     try {
-      const res = await axios.post('http://localhost:8000/user/checkNickname', {
+      const res = await axios.post(`${REACT_APP_API_URL}/user/checkNickname`, {
         nickname: checkNickname,
       });
       console.log('res >>', res);

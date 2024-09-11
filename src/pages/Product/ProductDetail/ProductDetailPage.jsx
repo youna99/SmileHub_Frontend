@@ -11,6 +11,7 @@ import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
 
 import '../../../App.css'; // CSS 파일을 따로 만들어서 import
 
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [fetchProduct, setFetchProduct] = useState(null);
@@ -40,7 +41,7 @@ const ProductDetail = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/product/read?productId=${productId}`,
+          `${REACT_APP_API_URL}/product/read?productId=${productId}`,
         );
         setProduct(response.data); // 응답 데이터 저장
       } catch (error) {
