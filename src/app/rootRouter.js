@@ -9,7 +9,6 @@ import ChatPage from '../pages/Chat/ChatPage';
 import AdminPage from '../pages/Admin/AdminPage';
 import Header from '../shared/Header';
 import PostProductContainer from '../features/Product/PostProduct/container/PostProductContainer';
-import PostProductContainerTest from '../features/Product/PostProduct/container/PostProductContainerTest';
 import ProductDetailPage from '../pages/Product/ProductDetail/ProductDetailPage.jsx';
 import PageNotFound from '../pages/PageNotFound.jsx';
 import ChatButton from '../shared/ChatButton';
@@ -30,8 +29,7 @@ export const RootRouter = () => {
         <Route path="/register" element={<RegisterContainer />} />
         <Route path="/mypage" element={<MyPageContainer />} />
         <Route path="/mypageEdit" element={<UserEditContainer />} />
-        <Route path="/postproduct" element={<PostProductContainer />} />
-        <Route path="/testpostproduct" element={<PostProductContainerTest />} />
+        <Route path="/product/write" element={<PostProductContainer />} />
         <Route path="/productdetail" element={<ProductDetailPage />} />
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/chat/:roomId" element={<ChatPage />} />
