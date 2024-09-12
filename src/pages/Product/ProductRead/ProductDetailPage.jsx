@@ -24,8 +24,32 @@ const ProductDetail = () => {
   const navigate = useNavigate();
 
   const checkLikes = async () => {
-    setIsLiked(!isLiked); // 찜 상태 토글
+    try {
+      console.log('product.userId > ', product.userId, product.userId != 0);
+      console.log('token > ', token);
+      if (product.userId != 0) {
+        await axios.post(
+          `http://localhost:8000/product/likes?productId=${productId}`,
+          {
+            headers: {
+              Authorization: token,
+            },
+          },
+        );
+      } else {
+        console.log('errorrrororor');
+      }
+    } catch (error) {
+      // if (error.status === 401) {
+      //   console.log(
+      //     `error.response.data.message >>${error.response.data.message}`,
+      //   );
+      //   alert(`로그인을 먼저 해주세요 !`); // navigate('/login');
+      // }
+      console.error(`${productId}번 상품에 찜 추가 중 오류 발생.`, error);
+    }
   };
+
   const updateClick = () => {
     navigate(`/product/update?productId=${productId}`, {
       state: { productId },
@@ -47,7 +71,7 @@ const ProductDetail = () => {
         navigate('/');
       } catch (error) {
         console.error('상품 삭제 중 오류 발생:', error);
-        alert('로그인 유저와 작성자가 일치하지 않습니다.');
+        alert('상품 삭제 중 오류 발생');
       }
     }
   };
@@ -63,6 +87,11 @@ const ProductDetail = () => {
       try {
         const response = await axios.get(
           `http://localhost:8000/product/read?productId=${productId}`,
+          {
+            headers: {
+              Authorization: token,
+            },
+          },
         );
         setProduct(response.data); // 응답 데이터 저장
         console.log('data: ', response.data);
@@ -163,7 +192,7 @@ const ProductDetail = () => {
                   onClick={checkLikes}
                 >
                   <FontAwesomeIcon
-                    icon={isLiked ? solidHeart : regularHeart}
+                    icon={product.isLike ? solidHeart : regularHeart}
                     size="1x"
                   />
                 </button>
@@ -193,7 +222,7 @@ const ProductDetail = () => {
         <p className="text-gray-700">{product.content}</p>
       </section>
 
-      <ProductTab />
+      <ProductTab newItem={product.newItem} />
     </div>
   );
 };
