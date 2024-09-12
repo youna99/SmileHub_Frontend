@@ -60,29 +60,29 @@ const UserBuyList = () => {
   };
 
   // 거절 버튼 클릭
-  const handleRejectBuy = async (productId, userId) => {
-    const token = localStorage.getItem('token'); // 토큰 가져오기
-    try {
-      const res = await axios.post(
-        `${REACT_APP_API_URL}/mypage/check`,
-        {
-          productId,
-          status: 'no',
-          userId,
-        },
-        {
-          headers: {
-            Authorization: token,
-          },
-        },
-      );
-      if (res.status === 200) {
-        fetchBuysList();
-      }
-    } catch (error) {
-      console.error('거절 버튼 클릭 오류', error);
-    }
-  };
+  // const handleRejectBuy = async (productId, userId) => {
+  //   const token = localStorage.getItem('token'); // 토큰 가져오기
+  //   try {
+  //     const res = await axios.post(
+  //       'http://localhost:8000/mypage/check',
+  //       {
+  //         productId,
+  //         status: 'no',
+  //         userId,
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: token,
+  //         },
+  //       },
+  //     );
+  //     if (res.status === 200) {
+  //       fetchBuysList();
+  //     }
+  //   } catch (error) {
+  //     console.error('거절 버튼 클릭 오류', error);
+  //   }
+  // };
   return (
     <section className="border-b border-gray-200">
       <div className="flex flex-col p-4">
@@ -121,12 +121,12 @@ const UserBuyList = () => {
                     >
                       상태확인 완료
                     </button>
-                    <button
+                    {/* <button
                       className="px-2 py-1 bg-gray-200 text-[#101820] hover:bg-red-500 hover:text-white rounded-md transition-colors duration-300"
                       onClick={() => handleRejectBuy(buy.productId, buy.userId)}
                     >
                       거절
-                    </button>
+                    </button> */}
                   </div>
                 )}
               </div>

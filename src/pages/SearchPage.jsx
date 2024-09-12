@@ -58,7 +58,7 @@ const SearchResults = () => {
         <select
           value={searchType}
           onChange={handleSearchTypeChange}
-          className=" border-yellow-300 border-2 rounded-md "
+          className=" border-[#FEE715] border-4 rounded-md "
         >
           <option value="name">상품명</option>
           <option value="seller">판매자</option>
@@ -68,11 +68,11 @@ const SearchResults = () => {
           onChange={(e) => setSearchKeyword(e.target.value)}
           onKeyDown={handleKeyPress}
           placeholder="판매 물품, 판매자 검색"
-          className="w-1/2 m-3 rounded-md border-yellow-300 border-4 h-10" // 높이 추가
+          className="w-1/2 m-3 rounded-md border-[#FEE715] border-4 h-10" // 높이 추가
         />
         <button
           onClick={submitSearch}
-          className="px-3 h-10 bg-yellow-300 text-white rounded-md" // 높이 추가
+          className="mx-3 px-3 h-10 bg-[#FEE715] text-[#101820] hover:bg-[#101820] hover:text-[#FEE715] transition rounded-md" // 높이 추가
         >
           검색
         </button>

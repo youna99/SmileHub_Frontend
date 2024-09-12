@@ -14,6 +14,7 @@ import UpdateProductPage from '../pages/Product/ProductUpdate/ProductUpdatePage.
 import PageNotFound from '../pages/PageNotFound.jsx';
 import ChatButton from '../shared/ChatButton';
 import SearchPage from '../pages/SearchPage.jsx';
+import ProtectedRoute from './ProtectedRoute.js';
 
 export const RootRouter = () => {
   const location = useLocation();
@@ -38,19 +39,44 @@ export const RootRouter = () => {
         <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<LoginContainer />} />
         <Route path="/register" element={<RegisterContainer />} />
-        <Route path="/mypage" element={<MyPageContainer />} />
-        <Route path="/mypageEdit" element={<UserEditContainer />} />
-        <Route path="/mypage/payment" element={<PaymentPage />} />
-        <Route path="/product/write" element={<PostProductContainer />} />
+        <Route
+          path="/mypage"
+          element={<ProtectedRoute element={<MyPageContainer />} />}
+        />
+        <Route
+          path="/mypageEdit"
+          element={<ProtectedRoute element={<UserEditContainer />} />}
+        />
+        <Route
+          path="/mypage/payment"
+          element={<ProtectedRoute element={<PaymentPage />} />}
+        />
+        <Route
+          path="/product/write"
+          element={<ProtectedRoute element={<PostProductContainer />} />}
+        />
         <Route path="/product/read" element={<ReadProductPage />} />
-        <Route path="/product/update" element={<UpdateProductPage />} />
+        <Route
+          path="/product/update"
+          element={<ProtectedRoute element={<UpdateProductPage />} />}
+        />
         {/* <Route path="/product/delete" element={<DeleteProductPage />} /> */}
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/chat/:roomId" element={<ChatPage />} />
-        <Route path="/admin" element={<AdminPage />} />
-        <Route path="/admin" element={<AdminPage />} />
+
+        <Route
+          path="/admin"
+          element={<ProtectedRoute element={<AdminPage />} />}
+        />
+        <Route
+          path="/admin"
+          element={<ProtectedRoute element={<AdminPage />} />}
+        />
         <Route path="/*" element={<PageNotFound />} />
-        <Route path="/payment" element={<PaymentPage />} />
+        <Route
+          path="/payment"
+          element={<ProtectedRoute element={<PaymentPage />} />}
+        />
         <Route path="/search" element={<SearchPage />} />
       </Routes>
     </>

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Input } from '../shared/input';
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 export default function MainPage() {
@@ -73,8 +74,8 @@ export default function MainPage() {
       >
         <Link to={`/product/read?productId=${productInfo.productId}`}>
           <div
-            className="flex  md:w-80 w-full  flex-col bg-white border border-coolGray-100 shadow-dashboard rounded-md 
-          h-auto hover:border-yellow-300  hover:border-2 hover:duration-200 overflow-hidden transform origin-bottom transition duration-400 ease-in 
+            className="flex  md:w-80 w-full  flex-col bg-white border border-coolGray-100 shadow-dashboard rounded-xl 
+          h-auto hover:border-[#FEE715]  hover:border-2 hover:duration-200 overflow-hidden transform origin-bottom transition duration-400 ease-in 
           min-w-60 relative"
           >
             {/* productID 구분용 태그 */}
@@ -97,11 +98,11 @@ export default function MainPage() {
                     {productInfo.price}
                   </span>
                   <span className="font-medium text-gray-400 text-sm w-1/2">
-                    <div>
+                    {/* <div>
                       {productInfo.Location
                         ? `${productInfo.Location.depth1}, ${productInfo.Location.depth2}, ${productInfo.Location.depth3}`
                         : '주소 정보가 없습니다.'}
-                    </div>
+                    </div> */}
                   </span>
                   <span className="font-medium text-gray-400 text-sm w-1/2">
                     {productInfo.nickname}
@@ -158,16 +159,19 @@ export default function MainPage() {
     <>
       {/* 검색창 */}
       <section className="flex justify-center items-center mb-8">
-        <input
-          type="text"
-          onChange={(e) => setSearchKeyword(e.target.value)}
-          onKeyDown={handleKeyPress}
-          placeholder="판매 물품 검색"
-          className="w-1/2 m-3 rounded-md border-yellow-300 border-4 h-10" // 높이 추가
-        />
+        <div className="w-1/2">
+          <Input
+            type="text"
+            onChange={(e) => setSearchKeyword(e.target.value)}
+            onKeyDown={handleKeyPress}
+            placeholder="판매 물품 검색"
+          />
+        </div>
+
+        {/* <input className="w-1/2 m-3 rounded-md border-[#FEE715] hover:border-black focus-visible:outline  border-4 h-10" /> */}
         <button
           onClick={submitSearch}
-          className="px-3 h-10 bg-yellow-300 text-white rounded-md" // 높이 추가
+          className="px-3 ml-4 h-10 bg-[#FEE715] text-[#101820] hover:bg-[#101820] hover:text-[#FEE715] transition rounded-xl" // 높이 추가
         >
           검색
         </button>
