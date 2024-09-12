@@ -55,15 +55,15 @@ const AddProduct = () => {
   };
 
   return (
-    <main className="p-4">
-      <h1 className="text-center text-xl font-bold mt-5">판매글쓰기</h1>
-      <div className="flex justify-center items-center min-h-screen">
+    <main className="p-4 bg-gray-50 h-full">
+      <h1 className="text-center text-2xl font-bold m-5">판매글쓰기</h1>
+      <div className="flex justify-center items-center">
         <form
           onSubmit={handleSubmit}
           className="bg-white p-8 rounded-lg w-full max-w-3xl space-y-4"
         >
           <div>
-            <label className="block text-gray-700 font-medium mb-2">
+            <label className="block text-lg font-semibold  text-gray-700  mb-2">
               파일
               <input
                 type="file"
@@ -72,16 +72,16 @@ const AddProduct = () => {
                 multiple
                 onChange={handleFileChange}
                 required
-                className="mt-1 block w-full text-gray-800 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-black p-2"
+                className="mt-1 block w-full focus:border-none  focus:ring-yellow-300 focus:ring-2  text-gray-800 border border-gray-300 rounded p-2"
               />
             </label>
           </div>
           <div>
-            <label className="block text-gray-700 font-medium mb-2">
+            <label className="block text-lg font-semibold text-gray-700 mb-2">
               제목
               <input
                 type="text"
-                className="mt-1 block w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-black"
+                className="mt-1 block w-full focus:border-none  focus:ring-yellow-300 focus:ring-2  rounded p-2"
                 id="productName"
                 name="productName"
                 value={title}
@@ -91,10 +91,10 @@ const AddProduct = () => {
             </label>
           </div>
           <div>
-            <label className="block text-gray-700 font-medium mb-2">
+            <label className="block text-gray-700 text-lg font-semibold mb-2">
               내용
               <textarea
-                className="mt-1 block w-full border border-gray-300 rounded p-2 h-40 resize-none focus:outline-none focus:ring-4 focus:ring-black"
+                className="mt-1 block w-full border border-gray-300 rounded p-2 h-40 resize-none focus:border-none  focus:ring-yellow-300 focus:ring-2 "
                 id="content"
                 name="content"
                 value={description}
@@ -104,11 +104,11 @@ const AddProduct = () => {
             </label>
           </div>
           <div>
-            <label className="block text-gray-700 font-medium mb-2">
+            <label className="block text-gray-700 text-lg font-semibold mb-2">
               가격
               <input
                 type="number"
-                className="mt-1 block w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-black"
+                className="mt-1 block w-full border border-gray-300 rounded p-2 focus:border-none  focus:ring-yellow-300 focus:ring-2 "
                 id="price"
                 name="price"
                 value={price}
@@ -119,7 +119,7 @@ const AddProduct = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-[#FEE715] text-black p-2 rounded hover:bg-black hover:text-[#FEE715] focus:outline-none focus:ring-2 focus:ring-[#FEE715]"
+            className="w-full bg-[#FEE715] text-black p-2 py-4 text-xl font-semibold rounded hover:bg-black hover:text-[#FEE715] focus:outline-none focus:ring-2 focus:ring-[#FEE715]"
           >
             상품 추가
           </button>

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Button, Label, TextInput, Radio } from 'flowbite-react';
+import React from 'react';
+import { Label } from 'flowbite-react';
 import AddressSearch from '../../features/User/Register/components/AddressSearch';
 
 const RegisterPage = ({
@@ -20,26 +20,30 @@ const RegisterPage = ({
   handleCheckEmail,
   handleCheckNickname,
 }) => {
-  const [email, setEmail] = useState('');
-  const [nickname, setNickname] = useState('');
   return (
-    <>
-      <div className="flex justify-between items-center px-5 py-3 bg-gray-100">
-        <button onClick={() => navigate(-1)}>뒤로가기</button>
+    <main className="bg-gray-50">
+      <div className="flex justify-between items-center px-2 pt-4 sm:px-5 sm:pt-4">
+        <img
+          src="/images/back.png"
+          alt="back"
+          onClick={() => navigate(-1)}
+          className="w-5"
+        />
       </div>
 
       <div className="flex justify-center">
-        <form
-          className="flex flex-col gap-4 w-full max-w-3xl mt-5"
-          onSubmit={handleSubmit(onSubmit)}
-        >
+        <form className="flex flex-col gap-4 w-full max-w-3xl my-5 mx-2">
           <div>
             <div className="mb-2 block">
-              <Label htmlFor="email" value="아이디(이메일)" />
+              <Label
+                htmlFor="email"
+                value="아이디(이메일)"
+                className="font-semibold"
+              />
             </div>
             <div className="flex flex-col sm:flex-row sm:justify-between gap-2">
-              <TextInput
-                className="w-full sm:w-4/5"
+              <input
+                className="w-full sm:w-4/5 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                 id="email"
                 type="email"
                 placeholder="example@naver.com"
@@ -51,15 +55,16 @@ const RegisterPage = ({
                   },
                 })}
                 shadow
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={checkEmail}
+                onChange={(e) => setCheckEmail(e.target.value)}
               />
-              <Button
-                className="w-full sm:w-auto"
-                onClick={() => handleCheckEmail(email)}
+              <button
+                type="button"
+                className="w-full sm:w-auto p-3 bg-gray-400 text-white rounded-lg hover:bg-gray-600 transition"
+                onClick={handleCheckEmail}
               >
                 중복 확인
-              </Button>
+              </button>
             </div>
             {errors.email && (
               <p className="text-red-500">{errors.email.message}</p>
@@ -70,11 +75,13 @@ const RegisterPage = ({
               <Label
                 htmlFor="password"
                 value="비밀번호 (최소 하나의 대문자, 소문자, 숫자, 특수문자 포함 필수)"
+                className="font-semibold"
               />
             </div>
-            <TextInput
+            <input
               id="password"
               type="password"
+              className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
               {...register('password', {
                 required: '비밀번호는 필수 입력 항목입니다.',
                 minLength: {
@@ -104,11 +111,16 @@ const RegisterPage = ({
           </div>
           <div>
             <div className="mb-2 block">
-              <Label htmlFor="repeat-password" value="비밀번호 확인" />
+              <Label
+                htmlFor="repeat-password"
+                value="비밀번호 확인"
+                className="font-semibold"
+              />
             </div>
-            <TextInput
+            <input
               id="repeat-password"
               type="password"
+              className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
               {...register('confirmPassword', {
                 required: '비밀번호 확인은 필수입니다.',
                 validate: (value) =>
@@ -122,26 +134,31 @@ const RegisterPage = ({
           </div>
           <div>
             <div className="mb-2 block">
-              <Label htmlFor="nickname" value="닉네임" />
+              <Label
+                htmlFor="nickname"
+                value="닉네임"
+                className="font-semibold"
+              />
             </div>
             <div className="flex flex-col sm:flex-row sm:justify-between gap-2">
-              <TextInput
-                className="w-full sm:w-4/5"
+              <input
+                className="w-full sm:w-4/5 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                 id="nickname"
                 type="text"
                 {...register('nickname', {
                   required: '닉네임은 필수 입력 항목입니다.',
                 })}
                 shadow
-                value={nickname}
-                onChange={(e) => setNickname(e.target.value)}
+                value={checkNickname}
+                onChange={(e) => setCheckNickname(e.target.value)}
               />
-              <Button
-                className="w-full sm:w-auto"
+              <button
+                type="button"
+                className="w-full sm:w-auto p-3 bg-gray-400 text-white rounded-lg hover:bg-gray-600 transition"
                 onClick={handleCheckNickname}
               >
                 중복 확인
-              </Button>
+              </button>
             </div>
             {errors.nickname && (
               <p className="text-red-500">{errors.nickname.message}</p>
@@ -149,11 +166,12 @@ const RegisterPage = ({
           </div>
           <div>
             <div className="mb-2 block">
-              <Label htmlFor="age" value="나이" />
+              <Label htmlFor="age" value="나이" className="font-semibold" />
             </div>
-            <TextInput
+            <input
               id="age"
               type="number"
+              className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
               {...register('age', {
                 valueAsNumber: true,
                 min: {
@@ -167,11 +185,12 @@ const RegisterPage = ({
           </div>
           <div>
             <div className="mb-2 block">
-              <Label htmlFor="gender" value="성별" />
+              <Label htmlFor="gender" value="성별" className="font-semibold" />
             </div>
             <div className="flex items-center gap-4">
               <div className="flex items-center">
-                <Radio
+                <input
+                  type="radio"
                   id="default"
                   value="default"
                   {...register('gender')}
@@ -182,13 +201,23 @@ const RegisterPage = ({
                 </Label>
               </div>
               <div className="flex items-center">
-                <Radio id="male" value="male" {...register('gender')} />
+                <input
+                  type="radio"
+                  id="male"
+                  value="male"
+                  {...register('gender')}
+                />
                 <Label htmlFor="male" className="ml-2">
                   남성
                 </Label>
               </div>
               <div className="flex items-center">
-                <Radio id="female" value="female" {...register('gender')} />
+                <input
+                  type="radio"
+                  id="female"
+                  value="female"
+                  {...register('gender')}
+                />
                 <Label htmlFor="female" className="ml-2">
                   여성
                 </Label>
@@ -197,56 +226,57 @@ const RegisterPage = ({
           </div>
           <div>
             <div className="mb-2 block">
-              <Label htmlFor="address" value="주소" />
+              <Label htmlFor="address" value="주소" className="font-semibold" />
             </div>
-
             <div className="flex gap-2 pb-2">
-              <TextInput
-                className="w-1/2"
+              <input
+                className="w-1/2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                 type="text"
                 id="postcode"
                 placeholder="우편번호"
-                {...register('address.postcode', {
-                  required: '우편번호를 입력해주세요.',
-                })}
+                // value={currentUser.address.postcode}
+                {...register('address.postcode')}
               />
-              <Button onClick={() => setIsModalOpen(true)}>주소검색</Button>
+              <button
+                type="button"
+                className="p-3 bg-gray-400 text-white rounded-lg hover:bg-gray-600 transition"
+                onClick={() => setIsModalOpen(true)}
+              >
+                주소검색
+              </button>
             </div>
-            {errors.address?.postcode && (
-              <p className="text-red-500">{errors.address.postcode.message}</p>
-            )}
-
-            <TextInput
+            <input
               placeholder="주소"
-              {...register('address.address', {
-                required: '주소를 입력해주세요.',
-              })}
-              className="pb-2"
+              // value={currentUser.address.address}
+              {...register('address.address')}
+              className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black pb-2"
             />
-            {errors.address?.address && (
-              <p className="text-red-500">{errors.address.address.message}</p>
-            )}
-
             <div className="flex gap-2">
-              <TextInput
-                className="w-1/2"
+              <input
+                className="w-1/2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                 placeholder="상세주소"
                 {...register('address.detailAddress')}
               />
-              <TextInput
-                className="w-1/2"
+              <input
+                className="w-1/2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                 placeholder="참고항목"
+                // value={currentUser.address.extraAddress}
                 {...register('address.extraAddress')}
               />
             </div>
-            {errors.address?.detailAddress && (
-              <p className="text-red-500">
-                {errors.address.detailAddress.message}
-              </p>
+
+            {errors.address && (
+              <p className="text-red-500">{errors.address.message}</p>
             )}
           </div>
 
-          <Button type="submit">회원가입</Button>
+          <button
+            onClick={handleSubmit(onSubmit)}
+            className="p-3 rounded-lg font-semibold bg-[#FEE715] text-[#101820] hover:bg-[#101820] hover:text-[#FEE715] transition"
+            type="button"
+          >
+            회원가입
+          </button>
 
           {/* 주소 검색 Modal */}
           <AddressSearch
@@ -256,7 +286,7 @@ const RegisterPage = ({
           />
         </form>
       </div>
-    </>
+    </main>
   );
 };
 

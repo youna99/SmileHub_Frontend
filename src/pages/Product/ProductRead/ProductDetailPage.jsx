@@ -8,25 +8,56 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
-
-import '../../../App.css';
+import { useSelector } from 'react-redux';
+import { Modal } from '../../../shared/Modal';
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
   const [error, setError] = useState(null); // 오류 상태 추가
-  const [isLiked, setIsLiked] = useState(false); // 찜 상태 관리
+  const [likes, setLikes] = useState(false); // 찜 상태 관리
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
 
   const productId = new URLSearchParams(window.location.search).get(
     'productId',
   );
   const token = localStorage.getItem('token');
+  const currentUser = useSelector((state) => state.user.currentUser);
   const navigate = useNavigate();
-
   const checkLikes = async () => {
-    setIsLiked(!isLiked); // 찜 상태 토글
+    try {
+      console.log('product.userId > ', product.userId, product.userId !== 0);
+      console.log('token > ', token);
+      if (product.userId != 0) {
+        const loginLike = product.isLike;
+        console.log('loginLike > ', loginLike);
+
+        await axios.post(
+          `${REACT_APP_API_URL}/product/likes/productId=${productId}`,
+          { data: 0 },
+          {
+            headers: {
+              Authorization: token,
+            },
+          },
+        );
+
+        setLikes(loginLike);
+      } else if (product.userId == 0) {
+        console.log(
+          `error.response.data.message >>${error.response.data.message}`,
+        );
+        alert(`로그인을 먼저 해주세요 !`); // navigate('/login');
+      } else {
+        console.log(`error : ${product.userId}는 존재하지 않는 아이디입니다.`);
+      }
+    } catch (error) {
+      console.error(`${productId}번 상품에 찜 추가 중 오류 발생.`, error);
+    }
   };
+
   const updateClick = () => {
     navigate(`/product/update?productId=${productId}`, {
       state: { productId },
@@ -48,15 +79,61 @@ const ProductDetail = () => {
         navigate('/');
       } catch (error) {
         console.error('상품 삭제 중 오류 발생:', error);
-        alert('로그인 유저와 작성자가 일치하지 않습니다.');
+        alert('상품 삭제 중 오류 발생');
       }
     }
   };
   const handlePayment = () => {
     navigate('/mypage/payment', { state: { productId, product } });
   };
-  const handleClickChat = () => {
-    navigate('/chat', { state: { productId } });
+
+  const handleClickChat = async () => {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      // 토큰이 없을 때 로그인 모달을 띄움
+      setModalMessage('로그인이 필요합니다.');
+      setIsModalOpen(true);
+    } else {
+      try {
+        const buyerId = product.userId;
+        const sellerId = product.sellerId;
+        const productId = product.productId;
+
+        const response = await axios.post(
+          `${REACT_APP_API_URL}/room`,
+          {
+            productId,
+            buyerId,
+            sellerId,
+          },
+          {
+            headers: {
+              Authorization: token,
+            },
+          },
+        );
+
+        const { roomId } = response.data;
+
+        const width = 1000;
+        const height = 600;
+        const left = (window.innerWidth - width) / 2;
+        const top = (window.innerHeight - height) / 2;
+
+        window.open(
+          `/chat/${roomId}`,
+          '_blank',
+          `width=${width},height=${height},left=${left},top=${top}`,
+        );
+      } catch (error) {
+        console.error('채팅방을 생성하는 중 오류 발생:', error);
+      }
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false); // 모달 닫기
   };
 
   useEffect(() => {
@@ -64,12 +141,17 @@ const ProductDetail = () => {
       try {
         const response = await axios.get(
           `${REACT_APP_API_URL}/product/read?productId=${productId}`,
+          {
+            headers: {
+              Authorization: token,
+            },
+          },
         );
         setProduct(response.data); // 응답 데이터 저장
         console.log('data: ', response.data);
       } catch (error) {
         console.error('상품 데이터를 가져오는 중 오류 발생:', error);
-        setError('해당 상품 아이디는 없는 아이디입니다. ');
+        setError('상품 데이터를 가져오는 중 오류 발생');
       } finally {
         setLoading(false); // 로딩 완료
       }
@@ -118,21 +200,6 @@ const ProductDetail = () => {
         </div>
 
         <div className="flex flex-col space-y-4 sm:w-1/2">
-          <div className="flex justify-between mb-1">
-            <button
-              className="bg-gray-200 text-black px-4 py-2 rounded hover:bg-[#FEE715] hover:text-black transition"
-              onClick={updateClick}
-            >
-              수정
-            </button>
-            <button
-              className="bg-gray-200 text-black px-4 py-2 rounded hover:bg-red-500 hover:text-white transition"
-              onClick={deleteClick}
-            >
-              삭제
-            </button>
-          </div>
-          <hr />
           <h1 className="product-title text-2xl font-bold text-center mb-8 sm:text-3xl">
             {product.productName}
           </h1>
@@ -156,7 +223,6 @@ const ProductDetail = () => {
                 : '위치 정보 없음'}
             </p>
 
-            {/* 버튼 부분 */}
             <div className="flex justify-between items-center space-x-4 sm:space-x-2">
               <div className="flex items-center">
                 <button
@@ -164,13 +230,32 @@ const ProductDetail = () => {
                   onClick={checkLikes}
                 >
                   <FontAwesomeIcon
-                    icon={isLiked ? solidHeart : regularHeart}
+                    icon={likes ? solidHeart : regularHeart}
                     size="1x"
                   />
                 </button>
                 <span className="ml-1">{product.totalLikes}</span>
               </div>
-              <div className="flex space-x-2">
+            </div>
+
+            {/* 버튼 부분 */}
+            {product.sellerId === currentUser.userId ? (
+              <div className="flex space-x-2 mt-7 ml-44 sm:ml-48">
+                <button
+                  className="bg-[#FEE715] text-black font-semibold px-4 py-2 rounded hover:bg-black hover:text-[#FEE715] transition"
+                  onClick={updateClick}
+                >
+                  수정
+                </button>
+                <button
+                  className="bg-gray-200 text-black px-4 py-2 rounded hover:bg-red-500 hover:text-white transition"
+                  onClick={deleteClick}
+                >
+                  삭제
+                </button>
+              </div>
+            ) : (
+              <div className="flex space-x-2 mt-7 ml-36 sm:ml-40">
                 <button
                   className="bg-[#FEE715] text-black px-4 py-2 rounded hover:bg-black hover:text-[#FEE715] transition"
                   onClick={handleClickChat}
@@ -184,17 +269,26 @@ const ProductDetail = () => {
                   안전구매
                 </button>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </section>
 
       <section className="mt-6">
         <hr className="pb-5" />
+        <h2 className="text-xl font-semibold mb-3">판매 내용</h2>
         <p className="text-gray-700">{product.content}</p>
       </section>
 
-      <ProductTab />
+      <ProductTab newItem={product.newItem} />
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onConfirm={handleCloseModal}
+        message={modalMessage}
+        showCancelButton={false} // 취소 버튼 숨김
+      />
     </div>
   );
 };

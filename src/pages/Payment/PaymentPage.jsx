@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Avatar, Label, Checkbox } from 'flowbite-react';
 import { useDispatch, useSelector } from 'react-redux';
 import AddressSearch from '../../features/User/Register/components/AddressSearch';
@@ -6,8 +6,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import MoneyMoal from '../../features/User/mypage/components/MoneyMoal';
 import { pay } from '../../features/User/store/userSlice';
-
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
 const PaymentPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // 주소 modal 상태관리
   const [isMoneyModal, setIsMoneyModal] = useState(false); // 충전하기 버튼 클릭시 모달 상태 관리
@@ -42,28 +42,6 @@ const PaymentPage = () => {
   const productId = state?.productId;
   const product = state?.product;
   console.log('product >>>>', product);
-
-  // useEffect(() => {
-  //   const fetchOrder = async () => {
-  //     if (productId) {
-  //       try {
-  //         const token = localStorage.getItem('token'); // 토큰 가져오기
-  //         const res = await axios.get(
-  //           `http://${REACT_APP_API_URL}/product/order?productId=${productId}`,
-  //           {
-  //             headers: {
-  //               Authorization: token,
-  //             },
-  //           },
-  //         );
-  //         console.log('상품 정보: ', res.data);
-  //       } catch (error) {
-  //         console.error('결제할 상품 불러오기 실패', error);
-  //       }
-  //     }
-  //   };
-  //   fetchOrder();
-  // }, [productId]);
 
   // 주소 변경 클릭시
   const handleAddressChange = (newAddress) => {
@@ -173,16 +151,23 @@ const PaymentPage = () => {
 
   return (
     <>
-      <main className="flex justify-center p-2 sm:p-5">
+      <div className="flex justify-between items-center px-2 pt-4 sm:px-5 sm:pt-4 bg-gray-50">
+        <img
+          src="/images/back.png"
+          alt="back"
+          onClick={() => navigate(-1)}
+          className="w-5"
+        />
+      </div>
+      <main className="flex justify-center p-2 sm:p-5 bg-gray-50">
         <div className="flex flex-col justify-between gap-3 w-full max-w-xl sm:max-w-2xl mt-3 sm:mt-5">
           <h1 className="text-3xl sm:text-4xl font-extrabold mb-2 sm:mb-3">
             안전결제하기
           </h1>
 
-          <section className="border bg-gray-100 p-3 sm:p-4 rounded-lg shadow-md">
-            <div className="font-semibold mb-2 sm:mb-2">주문상품정보</div>
+          <div className="font-semibold my-2 sm:mb-2 text-xl">주문상품정보</div>
+          <section className="border p-3 sm:p-4 rounded-lg shadow-md">
             <div className="flex items-center">
-              <Avatar img="" size="lg" className="mb-2" />
               <div className="ml-3 sm:ml-4 flex-1">
                 <h2 className="text-base sm:text-lg font-semibold">
                   {product.productName}
@@ -194,46 +179,44 @@ const PaymentPage = () => {
             </div>
           </section>
 
-          <section className="border bg-gray-100 p-3 sm:p-4 rounded-lg shadow-md">
-            <div className="font-semibold mb-2">배송지</div>
-            <div className="border-2 mb-2 sm:mb-3 mx-2 sm:mx-3 p-2 sm:p-3 rounded-lg">
-              <div className="flex justify-between items-center">
-                <div className="font-semibold text-sm sm:text-base">
-                  {nickname}
-                </div>
-                <div
-                  className="text-blue-500 cursor-pointer text-sm sm:text-base"
-                  onClick={() => setIsModalOpen(true)}
-                >
-                  주소변경
-                </div>
+          <div className="font-semibold my-2 text-xl">배송지</div>
+          <section className="border p-3 sm:p-4 rounded-lg shadow-md">
+            <div className="flex justify-between items-center">
+              <div className="font-semibold text-sm sm:text-base">
+                {nickname}
               </div>
-              <div className="mt-1 sm:mt-2 text-sm sm:text-base">
-                {temporaryAddress
-                  ? `${temporaryAddress}${isDetailAddressComplete ? `, ${temporaryDetailAddress}` : ''}`
-                  : `${address.sido} ${address.sigungu} ${address.bname} ${detailAddress}`}
+              <div
+                className="text-blue-500 cursor-pointer text-sm sm:text-base"
+                onClick={() => setIsModalOpen(true)}
+              >
+                주소변경
               </div>
-
-              {!isDetailAddressComplete && temporaryAddress && (
-                <div className="flex items-center gap-2 mt-2 sm:mt-3 w-full sm:max-w-md">
-                  <input
-                    id="detailAddress"
-                    type="text"
-                    className="flex-1"
-                    placeholder="상세주소를 입력하세요"
-                    value={temporaryDetailAddress}
-                    onChange={handleDetailAddressChange}
-                  />
-                  <button className="h-full ml-2" onClick={handleComplete}>
-                    완료
-                  </button>
-                </div>
-              )}
             </div>
+            <div className="mt-1 sm:mt-2 text-sm sm:text-base">
+              {temporaryAddress
+                ? `${temporaryAddress}${isDetailAddressComplete ? `, ${temporaryDetailAddress}` : ''}`
+                : `${address.sido} ${address.sigungu} ${address.bname} ${detailAddress}`}
+            </div>
+
+            {!isDetailAddressComplete && temporaryAddress && (
+              <div className="flex items-center gap-2 mt-2 sm:mt-3 w-full sm:max-w-md">
+                <input
+                  id="detailAddress"
+                  type="text"
+                  className="flex-1"
+                  placeholder="상세주소를 입력하세요"
+                  value={temporaryDetailAddress}
+                  onChange={handleDetailAddressChange}
+                />
+                <button className="h-full ml-2" onClick={handleComplete}>
+                  완료
+                </button>
+              </div>
+            )}
           </section>
 
-          <section className="border bg-gray-100 p-3 sm:p-4 rounded-lg shadow-md">
-            <div className="font-semibold mb-2">머니 사용하기</div>
+          <div className="font-semibold my-2 text-xl">머니 사용하기</div>
+          <section className="border p-3 sm:p-4 rounded-lg shadow-md">
             <div className="font-semibold text-sm sm:text-base ">결제 금액</div>
             <div className="text-lg sm:text-xl font-bold text-red-500 mb-2">
               {product.price}원
@@ -263,8 +246,8 @@ const PaymentPage = () => {
             {error && <p className="text-red-500">{error}</p>}
           </section>
 
-          <section className="border bg-gray-100 p-3 sm:p-4 rounded-lg shadow-md">
-            <div className="font-semibold mb-2">약관동의</div>
+          <div className="font-semibold my-2 text-xl">약관동의</div>
+          <section className="border p-3 sm:p-4 rounded-lg shadow-md">
             {checkError && <p className="text-red-500 mb-1">{checkError}</p>}
             <div
               className="flex max-w-md flex-col gap-3 sm:gap-4"
@@ -332,7 +315,7 @@ const PaymentPage = () => {
           </section>
 
           <button
-            className="w-full h-10 mt-2 sm:mt-3 rounded-md text-sm sm:text-base bg-green-500 text-white hover:bg-green-700 transition-colors duration-300"
+            className="w-full h-10 mt-2 sm:mt-3 rounded-md text-sm font-semibold sm:text-base bg-[#FEE715] text-black hover:bg-black hover:text-[#FEE715] transition-colors duration-300"
             onClick={handlePayment}
           >
             결제하기
