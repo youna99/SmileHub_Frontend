@@ -21,7 +21,7 @@ const RegisterPage = ({
   handleCheckNickname,
 }) => {
   return (
-    <>
+    <main className="bg-gray-50">
       <div className="flex justify-between items-center px-2 pt-4 sm:px-5 sm:pt-4">
         <img
           src="/images/back.png"
@@ -239,7 +239,7 @@ const RegisterPage = ({
               />
               <button
                 type="button"
-                className="p-3 bg-gray-400 text-white rounded-lg hover:bg-gray-600s transition"
+                className="p-3 bg-gray-400 text-white rounded-lg hover:bg-gray-600 transition"
                 onClick={() => setIsModalOpen(true)}
               >
                 주소검색
@@ -286,7 +286,7 @@ const RegisterPage = ({
           />
         </form>
       </div>
-    </>
+    </main>
   );
 };
 

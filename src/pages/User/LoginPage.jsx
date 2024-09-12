@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Label, TextInput } from 'flowbite-react';
+import { Label } from 'flowbite-react';
 
 export default function LoginPage({
   navigate,
@@ -10,7 +10,7 @@ export default function LoginPage({
   error,
 }) {
   return (
-    <>
+    <main className="bg-gray-50">
       <div className="flex justify-between items-center px-2 pt-4 sm:px-5 sm:pt-4">
         <img
           src="/images/back.png"
@@ -66,10 +66,12 @@ export default function LoginPage({
           </button>
           <div className="flex justify-end">
             <p className="mr-2">아직 회원이 아니신가요?</p>
-            <Link to="/register">회원가입</Link>
+            <Link to="/register" className="font-semibold">
+              회원가입
+            </Link>
           </div>
         </form>
       </div>
-    </>
+    </main>
   );
 }
