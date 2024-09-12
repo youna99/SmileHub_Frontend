@@ -29,6 +29,7 @@ const RegisterContainer = () => {
     mode: 'onChange',
     defaultValues: {
       gender: 'default',
+      nickname: currentUser.nickname,
     },
   });
   const password = watch('password');
