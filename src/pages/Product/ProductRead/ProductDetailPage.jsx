@@ -8,8 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
-
-import '../../../App.css';
+import { useSelector } from 'react-redux';
 
 const ProductDetail = () => {
   const [product, setProduct] = useState(null);
@@ -21,10 +20,11 @@ const ProductDetail = () => {
     'productId',
   );
   const token = localStorage.getItem('token');
+  const currentUser = useSelector((state) => state.user.currentUser);
   const navigate = useNavigate();
   const checkLikes = async () => {
     try {
-      console.log('product.userId > ', product.userId, product.userId != 0);
+      console.log('product.userId > ', product.userId, product.userId !== 0);
       console.log('token > ', token);
       if (product.userId != 0) {
         const loginLike = product.isLike;
@@ -39,6 +39,7 @@ const ProductDetail = () => {
             },
           },
         );
+
         setLikes(loginLike);
       } else if (product.userId == 0) {
         console.log(
@@ -149,21 +150,6 @@ const ProductDetail = () => {
         </div>
 
         <div className="flex flex-col space-y-4 sm:w-1/2">
-          <div className="flex justify-between mb-1">
-            <button
-              className="bg-gray-200 text-black px-4 py-2 rounded hover:bg-[#FEE715] hover:text-black transition"
-              onClick={updateClick}
-            >
-              수정
-            </button>
-            <button
-              className="bg-gray-200 text-black px-4 py-2 rounded hover:bg-red-500 hover:text-white transition"
-              onClick={deleteClick}
-            >
-              삭제
-            </button>
-          </div>
-          <hr />
           <h1 className="product-title text-2xl font-bold text-center mb-8 sm:text-3xl">
             {product.productName}
           </h1>
@@ -187,7 +173,6 @@ const ProductDetail = () => {
                 : '위치 정보 없음'}
             </p>
 
-            {/* 버튼 부분 */}
             <div className="flex justify-between items-center space-x-4 sm:space-x-2">
               <div className="flex items-center">
                 <button
@@ -201,7 +186,26 @@ const ProductDetail = () => {
                 </button>
                 <span className="ml-1">{product.totalLikes}</span>
               </div>
-              <div className="flex space-x-2">
+            </div>
+
+            {/* 버튼 부분 */}
+            {product.sellerId === currentUser.userId ? (
+              <div className="flex space-x-2 mt-7 ml-44 sm:ml-48">
+                <button
+                  className="bg-[#FEE715] text-black font-semibold px-4 py-2 rounded hover:bg-black hover:text-[#FEE715] transition"
+                  onClick={updateClick}
+                >
+                  수정
+                </button>
+                <button
+                  className="bg-gray-200 text-black px-4 py-2 rounded hover:bg-red-500 hover:text-white transition"
+                  onClick={deleteClick}
+                >
+                  삭제
+                </button>
+              </div>
+            ) : (
+              <div className="flex space-x-2 mt-7 ml-36 sm:ml-40">
                 <button
                   className="bg-[#FEE715] text-black px-4 py-2 rounded hover:bg-black hover:text-[#FEE715] transition"
                   onClick={handleClickChat}
@@ -215,13 +219,14 @@ const ProductDetail = () => {
                   안전구매
                 </button>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </section>
 
       <section className="mt-6">
         <hr className="pb-5" />
+        <h2 className="text-xl font-semibold mb-3">판매 내용</h2>
         <p className="text-gray-700">{product.content}</p>
       </section>
 

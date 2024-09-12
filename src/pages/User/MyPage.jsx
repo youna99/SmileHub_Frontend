@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Avatar, Button } from 'flowbite-react';
+import { Avatar } from 'flowbite-react';
 import UserSellList from '../../features/User/mypage/components/UserSellList';
 import UserBuyList from '../../features/User/mypage/components/UserBuyList';
 import LikeList from '../../features/User/mypage/components/LikeList';
@@ -25,11 +25,6 @@ const MyPage = ({
   const [image, setImage] = useState(null); // 사용자가 업로드할 이미지 상태관리
 
   const dispatch = useDispatch();
-
-  // 컴포넌트가 마운트될 때 프로필 이미지를 저장
-  // useEffect(() => {
-  //   setOriginalProfileImage(currentUser.profileImage);
-  // }, [currentUser.profileImage]);
 
   // 파일 업로드 input에 넣은 이미지
   const handleImageChange = (e) => {
@@ -102,9 +97,9 @@ const MyPage = ({
   };
 
   return (
-    <>
+    <main className="bg-gray-50">
       <section className="flex justify-center py-10 w-full">
-        <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4 w-full max-w-3xl border p-6 bg-gray-100 mx-auto rounded-lg">
+        <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4 w-full max-w-3xl border p-6 bg-white mx-auto rounded-lg">
           <div className="flex flex-col items-center">
             {profileEdit ? (
               // 수정 상태일 때: 이미지 업로드 폼 및 버튼
@@ -117,13 +112,13 @@ const MyPage = ({
                 <div className="flex flex-col space-y-2 mt-3 sm:space-y-0 sm:flex-row sm:space-x-2">
                   <button
                     type="submit"
-                    className="w-full sm:w-auto px-4 py-2 sm:px-4 sm:py-2 bg-[#FEE715] text-[#101820] hover:bg-[#101820] hover:text-[#FEE715] rounded-md transition-colors duration-300"
+                    className="w-full sm:w-auto px-4 py-2 sm:px-4 sm:py-2 font-semibold bg-[#FEE715] text-[#101820] hover:bg-[#101820] hover:text-[#FEE715] rounded-md transition-colors duration-300"
                   >
                     업로드
                   </button>
                   <button
                     onClick={handleCancel}
-                    className="w-full sm:w-auto px-4 py-2 sm:px-4 sm:py-2 bg-gray-200 text-[#101820] hover:bg-red-500 hover:text-white rounded-md transition-colors duration-300"
+                    className="w-full sm:w-auto px-4 py-2 sm:px-4 sm:py-2 font-semibold bg-gray-200 text-[#101820] hover:bg-red-500 hover:text-white rounded-md transition-colors duration-300"
                   >
                     취소
                   </button>
@@ -143,13 +138,13 @@ const MyPage = ({
                 <div className="flex mt-2 space-y-2 sm:space-y-0 sm:space-x-2">
                   <button
                     onClick={handleProfileClick}
-                    className="w-full px-2 sm:px-4 sm:py-2 mr-2 bg-[#FEE715] text-[#101820] hover:bg-[#101820] hover:text-[#FEE715] rounded-md transition-colors duration-300"
+                    className="w-full px-2 sm:px-4 py-2 sm:py-2 mr-2 font-semibold bg-[#FEE715] text-[#101820] hover:bg-[#101820] hover:text-[#FEE715] rounded-md transition-colors duration-300"
                   >
                     업로드
                   </button>
                   <button
                     onClick={handleProfileReset}
-                    className="w-full px-2 py-1 sm:px-4 sm:py-2 bg-gray-200 text-[#101820] hover:bg-red-500 hover:text-white rounded-md transition-colors duration-300"
+                    className="w-full px-2 py-2 sm:px-4 sm:py-2 font-semibold bg-gray-200 text-[#101820] hover:bg-red-500 hover:text-white rounded-md transition-colors duration-300"
                   >
                     초기화
                   </button>
@@ -168,22 +163,25 @@ const MyPage = ({
               <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
                 <button
                   onClick={handleEdit}
-                  className="w-full sm:w-auto px-4 py-2 sm:px-4 sm:py-2 bg-[#FEE715] text-[#101820] hover:bg-[#101820] hover:text-[#FEE715] rounded-md transition-colors duration-300"
+                  className="w-full sm:w-auto px-4 py-2 sm:px-4 sm:py-2 font-semibold bg-[#FEE715] text-[#101820] hover:bg-[#101820] hover:text-[#FEE715] rounded-md transition-colors duration-300"
                 >
                   내 정보 수정
                 </button>
                 <button
                   onClick={handleDelete}
-                  className="w-full sm:w-auto px-4 py-2 sm:px-4 sm:py-2 bg-gray-200 text-[#101820] hover:bg-red-500 hover:text-white rounded-md transition-colors duration-300"
+                  className="w-full sm:w-auto px-4 py-2 sm:px-4 sm:py-2 font-semibold bg-gray-200 text-[#101820] hover:bg-red-500 hover:text-white rounded-md transition-colors duration-300"
                 >
                   회원 탈퇴
                 </button>
               </div>
             </div>
-            <div className="border bg-white rounded-lg p-4 mt-4 w-full">
+            <div className="border-2 bg-gray-50 rounded-lg p-4 mt-4 w-full">
               <div className="flex flex-col sm:flex-row justify-between items-center">
-                <div className="mb-2 sm:mb-0">
-                  현재 머니: {currentUser.money}
+                <div className="flex mb-2 sm:mb-0">
+                  <div className="mr-2">현재 머니:</div>
+                  <div className="font-semibold text-green-500">
+                    {currentUser.money}
+                  </div>
                 </div>
                 <button
                   className="w-full sm:w-auto px-4 py-2 sm:px-4 sm:py-2 bg-gray-200 text-[#101820] hover:bg-green-500 hover:text-white rounded-md transition-colors duration-300"
@@ -243,7 +241,7 @@ const MyPage = ({
 
       {/* MoneyMoal 컴포넌트 추가 */}
       <MoneyMoal isModalOpen={isModalOpen} closeModal={closeModal} />
-    </>
+    </main>
   );
 };
 
