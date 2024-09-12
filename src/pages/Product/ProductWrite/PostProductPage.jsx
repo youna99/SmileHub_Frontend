@@ -55,7 +55,7 @@ const AddProduct = () => {
 
   return (
     <main className="p-4 bg-gray-50 h-full">
-      <h1 className="text-center text-2xl font-bold m-5">판매글쓰기</h1>
+      <h1 className="text-center text-2xl font-bold m-5">판매 글 작성</h1>
       <div className="flex justify-center items-center">
         <form
           onSubmit={handleSubmit}
@@ -74,6 +74,9 @@ const AddProduct = () => {
                 className="mt-1 block w-full focus:border-none  focus:ring-yellow-300 focus:ring-2  text-gray-800 border border-gray-300 rounded p-2"
               />
             </label>
+            <p className="text-red-500 mb-2 text-sm">
+              파일 형식은 png, jpeg, jpg 만 업로드 가능합니다.
+            </p>
           </div>
           <div>
             <label className="block text-lg font-semibold text-gray-700 mb-2">
