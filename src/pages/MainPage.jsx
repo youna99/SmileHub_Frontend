@@ -68,49 +68,44 @@ export default function MainPage() {
     <section className="mx-5">
       <div
         key={productInfo.productId}
-        className="flexcard back w-full mt-3 md:w-1/2 lg:w-1/3 xl:w-1/4 2xl:w-1/5  p-3"
+        className="flexcard back w-full mt-3  p-3 "
       >
         <Link to={`/product/read?productId=${productInfo.productId}`}>
           <div
             className="flex  md:w-80 w-full  flex-col bg-white border border-coolGray-100 shadow-dashboard rounded-md 
-          h-auto shadow-lg hover:shadow-xl overflow-hidden transform origin-bottom transition duration-400 ease-in 
+          h-auto hover:border-yellow-300  hover:border-2 hover:duration-200 overflow-hidden transform origin-bottom transition duration-400 ease-in 
           min-w-60 relative"
           >
             <h2 className="tracking-tight text-gray-900 text-lg font-bold hover:underline block mb-2">
               {productInfo.productId}번
             </h2>
-            <div>{productInfo.image}</div>
+            <div>{productInfo.images}</div>
             <div className="flex flex-col justify-center items-start px-4 pt-4 pb-4">
               <h2 className="tracking-tight text-gray-900 text-lg font-bold hover:underline block mb-2">
-                상품 이름 : {productInfo.productName}
+                {productInfo.productName}
               </h2>
               <h3 className="mt-2 text-sm text-gray-700 line-clamp-3">
-                상품 내용 :{' '}
                 {productInfo.content.length > 100
                   ? `${productInfo.content.slice(0, 100)}...`
                   : productInfo.content}
               </h3>
               <div className="border-t border-gray-300 pt-2 mt-2 w-full">
-                <div className="items-center text-gray-400 text-xs mt-1">
-                  <span className="font-medium text-gray-400 text-sm">
-                    가격 : {productInfo.price}
+                <div className="flex flex-wrap items-center text-gray-400 text-xs mt-1">
+                  <span className="font-medium text-gray-400 text-sm w-1/2">
+                    {productInfo.price}
                   </span>
-                  <hr />
-                  <span className="font-medium text-gray-400 text-sm">
-                    주소 :
+                  <span className="font-medium text-gray-400 text-sm w-1/2">
                     <div>
                       {productInfo.Location
                         ? `${productInfo.Location.depth1}, ${productInfo.Location.depth2}, ${productInfo.Location.depth3}`
                         : '주소 정보가 없습니다.'}
                     </div>
                   </span>
-                  <hr />
-                  <span className="font-medium text-gray-400 text-sm">
-                    닉네임 : {productInfo.nickname}
+                  <span className="font-medium text-gray-400 text-sm w-1/2">
+                    {productInfo.nickname}
                   </span>
-                  <hr />
-                  <span>
-                    날짜 :{new Date(productInfo.updatedAt).toLocaleDateString()}
+                  <span className="font-medium text-gray-400 text-sm w-1/2">
+                    {new Date(productInfo.updatedAt).toLocaleDateString()}
                   </span>
                 </div>
               </div>
@@ -124,6 +119,11 @@ export default function MainPage() {
   const [searchKeyword, setSearchKeyword] = useState('');
 
   const submitSearch = async () => {
+    if (!searchKeyword.trim()) {
+      alert('검색어를 입력해주세요.');
+      return;
+    }
+
     try {
       const res = await axios.post('http://localhost:8000/product/search', {
         searchKeyword: searchKeyword,
@@ -131,7 +131,14 @@ export default function MainPage() {
       });
       console.log('submitSearch res =>', res.data.result);
 
-      navigate('/search', { state: { results: res.data.result } });
+      if (res.data && res.data.result) {
+        console.log('submitSearch res =>', res.data.result);
+        navigate('/search', {
+          state: { results: res.data.result },
+        });
+      } else {
+        alert('검색 결과가 없습니다.');
+      }
     } catch (error) {
       console.log('error', error);
     }
@@ -147,7 +154,8 @@ export default function MainPage() {
 
   return (
     <>
-      <div className="flex justify-center items-center">
+      {/* 검색창 */}
+      <section className="flex justify-center items-center mb-8">
         <input
           type="text"
           onChange={(e) => setSearchKeyword(e.target.value)}
@@ -161,13 +169,13 @@ export default function MainPage() {
         >
           검색
         </button>
-      </div>
+      </section>
 
-      <div className="flex flex-wrap bg-gray-50 min-h-screen">
+      <section className="flex flex-wrap px-16 py-8 bg-gray-50 min-h-screen justify-center">
         {loading && <p>Loading...</p>}
         {error && <p className="text-red-900">{error}</p>}
         {productList.map(renderProduct)}
-      </div>
+      </section>
     </>
   );
 }
