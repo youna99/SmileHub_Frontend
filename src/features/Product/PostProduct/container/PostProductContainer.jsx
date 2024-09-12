@@ -3,7 +3,7 @@ import ProductPage from '../../../../pages/Product/ProductWrite/PostProductPage'
 
 export default function PostProductContainer() {
   return (
-    <main>
+    <main className="h-screen">
       <ProductPage />
     </main>
   );
