@@ -119,6 +119,11 @@ export default function MainPage() {
   const [searchKeyword, setSearchKeyword] = useState('');
 
   const submitSearch = async () => {
+    if (!searchKeyword.trim()) {
+      alert('검색어를 입력해주세요.');
+      return;
+    }
+
     try {
       const res = await axios.post('http://localhost:8000/product/search', {
         searchKeyword: searchKeyword,
@@ -126,7 +131,12 @@ export default function MainPage() {
       });
       console.log('submitSearch res =>', res.data.result);
 
-      navigate('/search', { state: { results: res.data.result } });
+      if (res.data && res.data.result) {
+        console.log('submitSearch res =>', res.data.result);
+        navigate('/search', { state: { results: res.data.result } });
+      } else {
+        alert('검색 결과가 없습니다.');
+      }
     } catch (error) {
       console.log('error', error);
     }
