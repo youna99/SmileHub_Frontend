@@ -11,10 +11,11 @@ const ProductTab = (newItem) => {
       ref.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
-  // console.log(
-  //   'newItem >> ',
-  //   newItem.newItem.map((i, v) => console.log(i.title)),
-  // );
+  console.log(
+    'newItem >> ',
+    newItem.newItem.length,
+    // newItem.newItem.map((i, v) => console.log(i.title)),
+  );
 
   return (
     <div className="container mx-auto">
@@ -35,10 +36,10 @@ const ProductTab = (newItem) => {
 
       <div ref={newProductPriceRef} className="py-8">
         <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
-          해당 상품과 연관된 상품입니다.
+          게시글 상품과 연관된 상품입니다.
         </h2>
         <div className="mt-2 space-y-6">
-          {newItem && newItem.newItem.length > 0 ? (
+          {newItem.newItem && newItem.newItem.length > 0 ? (
             newItem.newItem.map((item, index) => (
               <div
                 key={index}

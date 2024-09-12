@@ -36,16 +36,15 @@ const ProductDetail = () => {
             },
           },
         );
+      } else if (product.userId == 0) {
+        console.log(
+          `error.response.data.message >>${error.response.data.message}`,
+        );
+        alert(`로그인을 먼저 해주세요 !`); // navigate('/login');
       } else {
         console.log('errorrrororor');
       }
     } catch (error) {
-      // if (error.status === 401) {
-      //   console.log(
-      //     `error.response.data.message >>${error.response.data.message}`,
-      //   );
-      //   alert(`로그인을 먼저 해주세요 !`); // navigate('/login');
-      // }
       console.error(`${productId}번 상품에 찜 추가 중 오류 발생.`, error);
     }
   };
