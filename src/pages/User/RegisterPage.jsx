@@ -1,5 +1,5 @@
 import React from 'react';
-import { Label, Checkbox } from 'flowbite-react';
+import { Label } from 'flowbite-react';
 import AddressSearch from '../../features/User/Register/components/AddressSearch';
 
 const RegisterPage = ({
@@ -189,34 +189,34 @@ const RegisterPage = ({
             </div>
             <div className="flex items-center gap-4">
               <div className="flex items-center">
-                <Checkbox
+                <input
+                  type="radio"
                   id="default"
                   value="default"
                   {...register('gender')}
                   defaultChecked
-                  color="gray"
                 />
                 <Label htmlFor="default" className="ml-2">
                   선택안함
                 </Label>
               </div>
               <div className="flex items-center">
-                <Checkbox
+                <input
+                  type="radio"
                   id="male"
                   value="male"
                   {...register('gender')}
-                  color="gray"
                 />
                 <Label htmlFor="male" className="ml-2">
                   남성
                 </Label>
               </div>
               <div className="flex items-center">
-                <Checkbox
+                <input
+                  type="radio"
                   id="female"
                   value="female"
                   {...register('gender')}
-                  color="gray"
                 />
                 <Label htmlFor="female" className="ml-2">
                   여성
