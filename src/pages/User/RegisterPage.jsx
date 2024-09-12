@@ -1,6 +1,7 @@
 import React from 'react';
 import { Label } from 'flowbite-react';
 import AddressSearch from '../../features/User/Register/components/AddressSearch';
+import { Link } from 'react-router-dom';
 
 const RegisterPage = ({
   isModalOpen,
@@ -33,6 +34,12 @@ const RegisterPage = ({
 
       <div className="flex justify-center">
         <form className="flex flex-col gap-4 w-full max-w-3xl my-5 mx-2">
+          <Link to="/">
+            <div className="flex flex-col items-center justify-center">
+              <img src="/images/logo.png" alt="" className="w-1/4 flex " />
+              <p className="text-4xl font-bold">Smile Hub</p>
+            </div>
+          </Link>
           <div>
             <div className="mb-2 block">
               <Label
@@ -60,7 +67,7 @@ const RegisterPage = ({
               />
               <button
                 type="button"
-                className="w-full sm:w-auto p-3 bg-gray-400 text-white rounded-lg hover:bg-gray-600 transition"
+                className="w-full sm:w-auto p-3 bg-[#FEE715] text-black font-semibold shadow-sm rounded-lg  hover:bg-black hover:text-[#FEE715] transition"
                 onClick={handleCheckEmail}
               >
                 중복 확인
@@ -70,68 +77,67 @@ const RegisterPage = ({
               <p className="text-red-500">{errors.email.message}</p>
             )}
           </div>
-          <div>
-            <div className="mb-2 block">
-              <Label
-                htmlFor="password"
-                value="비밀번호 (최소 하나의 대문자, 소문자, 숫자, 특수문자 포함 필수)"
-                className="font-semibold"
-              />
-            </div>
-            <input
-              id="password"
-              type="password"
-              className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
-              {...register('password', {
-                required: '비밀번호는 필수 입력 항목입니다.',
-                minLength: {
-                  value: 6,
-                  message: '비밀번호는 최소 6자 이상이어야 합니다.',
-                },
-                validate: {
-                  hasNumber: (value) =>
-                    /[0-9]/.test(value) ||
-                    '비밀번호에는 최소 하나의 숫자가 포함되어야 합니다.',
-                  hasSpecialChar: (value) =>
-                    /[!@#$%^&*(),.?":{}|<>]/.test(value) ||
-                    '비밀번호에는 최소 하나의 특수문자가 포함되어야 합니다.',
-                  hasUpperCase: (value) =>
-                    /[A-Z]/.test(value) ||
-                    '비밀번호에는 최소 하나의 대문자가 포함되어야 합니다.',
-                  hasLowerCase: (value) =>
-                    /[a-z]/.test(value) ||
-                    '비밀번호에는 최소 하나의 소문자가 포함되어야 합니다.',
-                },
-              })}
-              shadow
+
+          <div className="mb-2 block">
+            <Label
+              htmlFor="password"
+              value="비밀번호 (최소 하나의 대문자, 소문자, 숫자, 특수문자 포함 필수)"
+              className="font-semibold"
             />
-            {errors.password && (
-              <p className="text-red-500">{errors.password.message}</p>
-            )}
           </div>
-          <div>
-            <div className="mb-2 block">
-              <Label
-                htmlFor="repeat-password"
-                value="비밀번호 확인"
-                className="font-semibold"
-              />
-            </div>
-            <input
-              id="repeat-password"
-              type="password"
-              className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
-              {...register('confirmPassword', {
-                required: '비밀번호 확인은 필수입니다.',
-                validate: (value) =>
-                  value === password || '비밀번호가 일치하지 않습니다.',
-              })}
-              shadow
+          <input
+            id="password"
+            type="password"
+            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+            {...register('password', {
+              required: '비밀번호는 필수 입력 항목입니다.',
+              minLength: {
+                value: 6,
+                message: '비밀번호는 최소 6자 이상이어야 합니다.',
+              },
+              validate: {
+                hasNumber: (value) =>
+                  /[0-9]/.test(value) ||
+                  '비밀번호에는 최소 하나의 숫자가 포함되어야 합니다.',
+                hasSpecialChar: (value) =>
+                  /[!@#$%^&*(),.?":{}|<>]/.test(value) ||
+                  '비밀번호에는 최소 하나의 특수문자가 포함되어야 합니다.',
+                hasUpperCase: (value) =>
+                  /[A-Z]/.test(value) ||
+                  '비밀번호에는 최소 하나의 대문자가 포함되어야 합니다.',
+                hasLowerCase: (value) =>
+                  /[a-z]/.test(value) ||
+                  '비밀번호에는 최소 하나의 소문자가 포함되어야 합니다.',
+              },
+            })}
+            shadow
+          />
+          {errors.password && (
+            <p className="text-red-500">{errors.password.message}</p>
+          )}
+
+          <div className="mb-2 block">
+            <Label
+              htmlFor="repeat-password"
+              value="비밀번호 확인"
+              className="font-semibold"
             />
-            {errors.confirmPassword && (
-              <p className="text-red-500">{errors.confirmPassword.message}</p>
-            )}
           </div>
+          <input
+            id="repeat-password"
+            type="password"
+            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+            {...register('confirmPassword', {
+              required: '비밀번호 확인은 필수입니다.',
+              validate: (value) =>
+                value === password || '비밀번호가 일치하지 않습니다.',
+            })}
+            shadow
+          />
+          {errors.confirmPassword && (
+            <p className="text-red-500">{errors.confirmPassword.message}</p>
+          )}
+
           <div>
             <div className="mb-2 block">
               <Label
@@ -154,7 +160,7 @@ const RegisterPage = ({
               />
               <button
                 type="button"
-                className="w-full sm:w-auto p-3 bg-gray-400 text-white rounded-lg hover:bg-gray-600 transition"
+                className="w-full sm:w-auto p-3 bg-[#FEE715] text-black font-semibold shadow-sm  rounded-lg hover:bg-black hover:text-[#FEE715] transition"
                 onClick={handleCheckNickname}
               >
                 중복 확인
@@ -164,25 +170,25 @@ const RegisterPage = ({
               <p className="text-red-500">{errors.nickname.message}</p>
             )}
           </div>
-          <div>
-            <div className="mb-2 block">
-              <Label htmlFor="age" value="나이" className="font-semibold" />
-            </div>
-            <input
-              id="age"
-              type="number"
-              className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
-              {...register('age', {
-                valueAsNumber: true,
-                min: {
-                  value: 1,
-                  message: '유효한 나이를 입력하세요.',
-                },
-              })}
-              shadow
-            />
-            {errors.age && <p className="text-red-500">{errors.age.message}</p>}
+
+          <div className="mb-2 block">
+            <Label htmlFor="age" value="나이" className="font-semibold" />
           </div>
+          <input
+            id="age"
+            type="number"
+            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+            {...register('age', {
+              valueAsNumber: true,
+              min: {
+                value: 1,
+                message: '유효한 나이를 입력하세요.',
+              },
+            })}
+            shadow
+          />
+          {errors.age && <p className="text-red-500">{errors.age.message}</p>}
+
           <div>
             <div className="mb-2 block">
               <Label htmlFor="gender" value="성별" className="font-semibold" />
@@ -228,7 +234,7 @@ const RegisterPage = ({
             <div className="mb-2 block">
               <Label htmlFor="address" value="주소" className="font-semibold" />
             </div>
-            <div className="flex gap-2 pb-2">
+            <div className="flex pb-2">
               <input
                 className="w-1/2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                 type="text"
@@ -239,29 +245,30 @@ const RegisterPage = ({
               />
               <button
                 type="button"
-                className="p-3 bg-gray-400 text-white rounded-lg hover:bg-gray-600 transition"
+                className="p-3 mx-2 bg-[#FEE715] text-[#101820] hover:bg-[#101820] hover:text-[#FEE715] font-semibold rounded-lg transition"
                 onClick={() => setIsModalOpen(true)}
               >
                 주소검색
               </button>
             </div>
-            <input
-              placeholder="주소"
-              // value={currentUser.address.address}
-              {...register('address.address')}
-              className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black pb-2"
-            />
-            <div className="flex gap-2">
+
+            <div className="flex gap-3">
               <input
-                className="w-1/2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
-                placeholder="상세주소"
-                {...register('address.detailAddress')}
+                placeholder="주소"
+                // value={currentUser.address.address}
+                {...register('address.address')}
+                className="p-3 my-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black "
               />
               <input
-                className="w-1/2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-1/2 p-3 my-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                 placeholder="참고항목"
                 // value={currentUser.address.extraAddress}
                 {...register('address.extraAddress')}
+              />
+              <input
+                className="w-1/2 p-3 my-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                placeholder="상세주소"
+                {...register('address.detailAddress')}
               />
             </div>
 
