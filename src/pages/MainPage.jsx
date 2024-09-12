@@ -79,7 +79,7 @@ export default function MainPage() {
             <h2 className="tracking-tight text-gray-900 text-lg font-bold hover:underline block mb-2">
               {productInfo.productId}번
             </h2>
-            <div>{productInfo.image}</div>
+            <div>{productInfo.images}</div>
             <div className="flex flex-col justify-center items-start px-4 pt-4 pb-4">
               <h2 className="tracking-tight text-gray-900 text-lg font-bold hover:underline block mb-2">
                 {productInfo.productName}
@@ -133,7 +133,9 @@ export default function MainPage() {
 
       if (res.data && res.data.result) {
         console.log('submitSearch res =>', res.data.result);
-        navigate('/search', { state: { results: res.data.result } });
+        navigate('/search', {
+          state: { results: res.data.result },
+        });
       } else {
         alert('검색 결과가 없습니다.');
       }
@@ -152,6 +154,7 @@ export default function MainPage() {
 
   return (
     <>
+      {/* 검색창 */}
       <section className="flex justify-center items-center mb-8">
         <input
           type="text"
