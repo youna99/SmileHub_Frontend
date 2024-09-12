@@ -15,34 +15,38 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
   const [error, setError] = useState(null); // 오류 상태 추가
-  const [isLiked, setIsLiked] = useState(false); // 찜 상태 관리
+  const [likes, setLikes] = useState(false); // 찜 상태 관리
 
   const productId = new URLSearchParams(window.location.search).get(
     'productId',
   );
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
-
   const checkLikes = async () => {
     try {
       console.log('product.userId > ', product.userId, product.userId != 0);
       console.log('token > ', token);
       if (product.userId != 0) {
+        const loginLike = product.isLike;
+        console.log('loginLike > ', loginLike);
+
         await axios.post(
-          `http://localhost:8000/product/likes?productId=${productId}`,
+          `http://localhost:8000/product/likes/productId=${productId}`,
+          { data: 0 },
           {
             headers: {
               Authorization: token,
             },
           },
         );
+        setLikes(loginLike);
       } else if (product.userId == 0) {
         console.log(
           `error.response.data.message >>${error.response.data.message}`,
         );
         alert(`로그인을 먼저 해주세요 !`); // navigate('/login');
       } else {
-        console.log('errorrrororor');
+        console.log(`error : ${product.userId}는 존재하지 않는 아이디입니다.`);
       }
     } catch (error) {
       console.error(`${productId}번 상품에 찜 추가 중 오류 발생.`, error);
@@ -96,7 +100,7 @@ const ProductDetail = () => {
         console.log('data: ', response.data);
       } catch (error) {
         console.error('상품 데이터를 가져오는 중 오류 발생:', error);
-        setError('해당 상품 아이디는 없는 아이디입니다. ');
+        setError('상품 데이터를 가져오는 중 오류 발생');
       } finally {
         setLoading(false); // 로딩 완료
       }
@@ -191,7 +195,7 @@ const ProductDetail = () => {
                   onClick={checkLikes}
                 >
                   <FontAwesomeIcon
-                    icon={product.isLike ? solidHeart : regularHeart}
+                    icon={likes ? solidHeart : regularHeart}
                     size="1x"
                   />
                 </button>
