@@ -33,29 +33,36 @@ const PaymentPage = () => {
   const money = useSelector((status) => status.user.currentUser.money);
 
   const location = useLocation();
-  const productId = location.state?.productId; // 상세 페이지에서 전달받은 productId
+  // const productId = location.state?.productId; // 상세 페이지에서 전달받은 productId
+  // console.log('productId>>>>', productId);
+  // const product = location.state;
+  // console.log('product >>>', product);
+  const { state } = location;
+  const productId = state?.productId;
+  const product = state?.product;
+  console.log('product >>>>', product);
 
-  useEffect(() => {
-    const fetchOrder = async () => {
-      if (productId) {
-        try {
-          const token = localStorage.getItem('token'); // 토큰 가져오기
-          const res = await axios.get(
-            `http://localhost:8000/product/order?productId=${productId}`,
-            {
-              headers: {
-                Authorization: token,
-              },
-            },
-          );
-          console.log('상품 정보: ', res.data);
-        } catch (error) {
-          console.error('결제할 상품 불러오기 실패', error);
-        }
-      }
-    };
-    fetchOrder();
-  }, [productId]);
+  // useEffect(() => {
+  //   const fetchOrder = async () => {
+  //     if (productId) {
+  //       try {
+  //         const token = localStorage.getItem('token'); // 토큰 가져오기
+  //         const res = await axios.get(
+  //           `http://localhost:8000/product/order?productId=${productId}`,
+  //           {
+  //             headers: {
+  //               Authorization: token,
+  //             },
+  //           },
+  //         );
+  //         console.log('상품 정보: ', res.data);
+  //       } catch (error) {
+  //         console.error('결제할 상품 불러오기 실패', error);
+  //       }
+  //     }
+  //   };
+  //   fetchOrder();
+  // }, [productId]);
 
   // 주소 변경 클릭시
   const handleAddressChange = (newAddress) => {
@@ -124,6 +131,12 @@ const PaymentPage = () => {
       return;
     }
 
+    // 금액이 상품 가격과 동일한지 확인
+    if (Number(moneyInput) !== product.price) {
+      setError('결제 금액이 상품 가격과 일치하지 않습니다.');
+      return;
+    }
+
     // 필수 체크박스 확인
     if (!isCheck.paymentCheck || !isCheck.infoCheck) {
       setCheckError('필수 약관에 동의해야 결제가 가능합니다.');
@@ -131,8 +144,6 @@ const PaymentPage = () => {
     }
 
     const token = localStorage.getItem('token'); // 토큰 가져오기
-    // const productId = location.state?.productId; // 상세페이지의 productId 가져오기
-    const productId = 9;
 
     try {
       const res = await axios.post(
@@ -172,9 +183,11 @@ const PaymentPage = () => {
             <div className="flex items-center">
               <Avatar img="" size="lg" className="mb-2" />
               <div className="ml-3 sm:ml-4 flex-1">
-                <h2 className="text-base sm:text-lg font-semibold">상품</h2>
+                <h2 className="text-base sm:text-lg font-semibold">
+                  {product.productName}
+                </h2>
                 <p className="text-lg sm:text-xl font-bold text-gray-800 mt-1">
-                  10000원
+                  {product.price}원
                 </p>
               </div>
             </div>
@@ -222,7 +235,7 @@ const PaymentPage = () => {
             <div className="font-semibold mb-2">머니 사용하기</div>
             <div className="font-semibold text-sm sm:text-base ">결제 금액</div>
             <div className="text-lg sm:text-xl font-bold text-red-500 mb-2">
-              200000원
+              {product.price}원
             </div>
             <div className="flex justify-between items-center ">
               <div className="text-sm sm:text-base">

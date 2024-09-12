@@ -26,7 +26,7 @@ const UserEditContainer = () => {
   } = useForm({
     mode: 'onChange',
     defaultValues: {
-      gender: currentUser.gender || 'default',
+      // gender: currentUser.gender,
       nickname: currentUser.nickname,
       age: currentUser.age || '',
     },
@@ -63,6 +63,10 @@ const UserEditContainer = () => {
 
   // 닉네임 중복 확인
   const handleCheckNickname = async () => {
+    if (checkNickname === '') {
+      alert('한 글자 이상 작성해주세요.');
+      return;
+    }
     try {
       const res = await axios.post('http://localhost:8000/user/checkNickname', {
         nickname: checkNickname,
@@ -88,9 +92,6 @@ const UserEditContainer = () => {
     console.log(data);
 
     const { password, newPassword, gender, age, nickname, address } = data;
-    // gender를 true (남자) 또는 false (여자)로 변환
-    const genderValue =
-      gender === 'male' ? true : gender === 'female' ? false : undefined;
 
     // 주소가 변경되지 않았을 때는 현재 사용자 주소를 사용
     const currentAddress = currentUser.address;
@@ -98,7 +99,7 @@ const UserEditContainer = () => {
     const updatedData = {
       ...(nickname !== currentUser.nickname && { nickname }),
       ...(age && { age }),
-      ...(genderValue !== undefined && { gender: genderValue }), // gender 필드는 true 또는 false로 변환하여 포함
+      ...(gender !== undefined && { gender: gender }), // gender 필드는 true 또는 false로 변환하여 포함
       password, // 기존 비밀번호는 password로 포함
       ...(newPassword && { newPassword }), // 새로운 비밀번호가 있을 경우 포함
       ...(address && {
@@ -130,8 +131,12 @@ const UserEditContainer = () => {
         navigate('/mypage');
       }
     } catch (error) {
-      console.error('회원정보 수정 실패', error);
-      alert('정보 수정에 실패하였습니다.');
+      if (error.status === 409) {
+        alert('닉네임이 중복되었습니다. 수정 후 중복 검사를 해주세요.');
+      } else {
+        console.error('회원정보 수정 실패', error);
+        alert('정보 수정에 실패하였습니다.');
+      }
     }
   };
 

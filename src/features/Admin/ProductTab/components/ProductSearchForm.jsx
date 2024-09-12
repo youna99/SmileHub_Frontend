@@ -45,7 +45,6 @@ const ProductSearchForm = ({ onSearch, onReset, onStatusChange }) => {
         >
           <option value="name">상품명</option>
           <option value="seller">판매자</option>
-          <option value="id">상품번호</option>
         </select>
         <input
           type="text"
