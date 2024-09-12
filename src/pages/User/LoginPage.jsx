@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Label } from 'flowbite-react';
+import { Input } from '../../shared/input';
 
 export default function LoginPage({
   navigate,
@@ -29,16 +30,23 @@ export default function LoginPage({
               <Label
                 htmlFor="email"
                 value="아이디(이메일)"
-                className="font-semibold"
+                className="text-lg font-semibold"
               />
             </div>
-            <input
+            {/* <input
               id="email"
               type="email"
               placeholder="example@naver.com"
               onChange={(e) => setEmail(e.target.value)}
               required
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+            /> */}
+            <Input
+              id="email"
+              type="email"
+              placeholder="example@naver.com"
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
           <div>
@@ -46,16 +54,22 @@ export default function LoginPage({
               <Label
                 htmlFor="password"
                 value="비밀번호"
-                className="font-semibold"
+                className="text-lg font-semibold"
               />
             </div>
-            <input
+            <Input
+              id="password"
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            {/* <input
               id="password"
               type="password"
               onChange={(e) => setPassword(e.target.value)}
               required
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
-            />
+            /> */}
             {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
           </div>
           <button

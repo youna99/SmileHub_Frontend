@@ -83,6 +83,14 @@ const ProductDetail = () => {
     }
   };
   const handlePayment = () => {
+    console.log('handlePayment');
+
+    if (!currentUser.userId) {
+      setIsModalOpen(true);
+      setModalMessage('로그인이 필요합니다.');
+      return;
+    }
+
     navigate('/mypage/payment', { state: { productId, product } });
   };
 
@@ -208,7 +216,7 @@ const ProductDetail = () => {
               <span className="text-lg font-semibold">
                 가격: {product.price} 원
               </span>
-              <span className="bg-green-500 text-white px-4 py-1 rounded">
+              <span className="bg-blue-500 text-white px-4 py-1 rounded">
                 {product.status}
               </span>
             </div>
@@ -225,50 +233,51 @@ const ProductDetail = () => {
             <div className="flex justify-between items-center space-x-4 sm:space-x-2">
               <div className="flex items-center">
                 <button
-                  className="text-red-500 hover:text-red-700 transition duration-300"
+                  className="items-center text-red-500 hover:text-red-700 transition duration-300"
                   onClick={checkLikes}
                 >
                   <FontAwesomeIcon
                     icon={likes ? solidHeart : regularHeart}
-                    size="1x"
+                    size="2x"
                   />
                 </button>
                 <span className="ml-1">{product.totalLikes}</span>
               </div>
+              {/* 버튼 부분 */}
+              <div className="flex space-x-2">
+                {product.sellerId === currentUser.userId ? (
+                  <>
+                    <button
+                      className="bg-[#FEE715] text-black font-semibold px-4 py-2 rounded hover:bg-black hover:text-[#FEE715] transition"
+                      onClick={updateClick}
+                    >
+                      수정
+                    </button>
+                    <button
+                      className="bg-gray-200 text-black px-4 py-2 rounded hover:bg-red-500 hover:text-white transition"
+                      onClick={deleteClick}
+                    >
+                      삭제
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      className="bg-[#FEE715] text-black px-4 py-2 rounded hover:bg-black hover:text-[#FEE715] transition"
+                      onClick={handleClickChat}
+                    >
+                      채팅
+                    </button>
+                    <button
+                      className="bg-[#f3b105] text-white px-4 py-2 rounded hover:bg-red-600 transition"
+                      onClick={handlePayment}
+                    >
+                      안전구매
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
-
-            {/* 버튼 부분 */}
-            {product.sellerId === currentUser.userId ? (
-              <div className="flex space-x-2 mt-7 ml-44 sm:ml-48">
-                <button
-                  className="bg-[#FEE715] text-black font-semibold px-4 py-2 rounded hover:bg-black hover:text-[#FEE715] transition"
-                  onClick={updateClick}
-                >
-                  수정
-                </button>
-                <button
-                  className="bg-gray-200 text-black px-4 py-2 rounded hover:bg-red-500 hover:text-white transition"
-                  onClick={deleteClick}
-                >
-                  삭제
-                </button>
-              </div>
-            ) : (
-              <div className="flex space-x-2 mt-7 ml-36 sm:ml-40">
-                <button
-                  className="bg-[#FEE715] text-black px-4 py-2 rounded hover:bg-black hover:text-[#FEE715] transition"
-                  onClick={handleClickChat}
-                >
-                  채팅
-                </button>
-                <button
-                  className="bg-[#f3b105] text-white px-4 py-2 rounded hover:bg-red-600 transition"
-                  onClick={handlePayment}
-                >
-                  안전구매
-                </button>
-              </div>
-            )}
           </div>
         </div>
       </section>

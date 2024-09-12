@@ -15,8 +15,9 @@ const ProductTab = (newItem) => {
 
   return (
     <div className="container mx-auto">
+      <hr />
       <div
-        className="flex justify-evenly flex-wrap gap-5 sm:gap-10 px-5 sm:px-7 py-4 sm:py-8 mt-5 cursor-pointer text-xl font-semibold sm:text-2xl text-[#FEE715] hover:text-black bg-black hover:bg-[#FEE715] rounded-lg"
+        className="flex justify-evenly flex-wrap gap-5 sm:gap-10 px-5 sm:px-7 py-4 sm:py-8 mt-5 cursor-pointer text-xl font-semibold sm:text-2xl text-black "
         onClick={() => handleScrollTo(newProductPriceRef)}
       >
         <div>새상품 최저가</div>
@@ -59,7 +60,7 @@ const ProductTab = (newItem) => {
                       ) : null}
                     </td>
                     <td className="p-4 text-gray-800 w-1/4">
-                      <span className="font-bold block sm:whitespace-normal sm:overflow-visible whitespace-nowrap overflow-hidden text-ellipsis max-w-[10ch] sm:max-w-[15ch]">
+                      <span className="font-semibold block sm:whitespace-normal sm:overflow-visible whitespace-nowrap overflow-hidden text-ellipsis max-w-[10ch] sm:max-w-[15ch]">
                         {item.title
                           .split('<b>')
                           .join('')
@@ -71,7 +72,7 @@ const ProductTab = (newItem) => {
                           .join('')}
                       </span>
                     </td>
-                    <td className="p-4 text-red-500 w-1/4 text-center">
+                    <td className="p-4 text-gray-900 w-1/4 text-center">
                       {item.lprice} 원
                     </td>
                     <td className="p-4 w-1/4">
