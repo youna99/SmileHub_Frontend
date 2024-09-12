@@ -14,9 +14,7 @@ const AddProduct = () => {
     setImageFiles(event.target.files); // 선택된 파일 목록
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault(); // 기본 제출 이벤트 방지
-
+  function formDataFunc() {
     // FormData 객체 생성
     const formData = new FormData();
     formData.append('productName', title);
@@ -29,6 +27,14 @@ const AddProduct = () => {
       console.log('formData >> ', index, file);
       formData.append(`productImg`, file);
     });
+
+    return formData;
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // 기본 제출 이벤트 방지
+
+    const formData = formDataFunc();
 
     try {
       const token = localStorage.getItem('token');
@@ -59,7 +65,7 @@ const AddProduct = () => {
       <div className="flex justify-center items-center">
         <form
           onSubmit={handleSubmit}
-          className="bg-white p-8 rounded-lg w-full max-w-3xl space-y-4"
+          className="bg-white p-8 rounded-xl w-full max-w-3xl space-y-4"
         >
           <div>
             <label className="block text-lg font-semibold  text-gray-700  mb-2">
@@ -71,7 +77,7 @@ const AddProduct = () => {
                 multiple
                 onChange={handleFileChange}
                 required
-                className="mt-1 block w-full focus:border-none  focus:ring-yellow-300 focus:ring-2  text-gray-800 border border-gray-300 rounded p-2"
+                className="mt-1 block w-full focus:border-none   focus:ring-yellow-300 focus:ring-2  text-gray-800 border border-gray-300 rounded-xl "
               />
             </label>
           </div>
@@ -80,7 +86,7 @@ const AddProduct = () => {
               제목
               <input
                 type="text"
-                className="mt-1 block w-full focus:border-none  focus:ring-yellow-300 focus:ring-2  rounded p-2"
+                className="mt-1 block w-full focus:border-none  focus:ring-yellow-300 focus:ring-2  rounded-xl p-2"
                 id="productName"
                 name="productName"
                 value={title}
@@ -93,7 +99,7 @@ const AddProduct = () => {
             <label className="block text-gray-700 text-lg font-semibold mb-2">
               내용
               <textarea
-                className="mt-1 block w-full border border-gray-300 rounded p-2 h-40 resize-none focus:border-none  focus:ring-yellow-300 focus:ring-2 "
+                className="mt-1 block w-full border border-gray-300 rounded-xl p-2 h-40 resize-none focus:border-none  focus:ring-yellow-300 focus:ring-2 "
                 id="content"
                 name="content"
                 value={description}
@@ -118,7 +124,7 @@ const AddProduct = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-[#FEE715] text-black p-2 py-4 text-xl font-semibold rounded hover:bg-black hover:text-[#FEE715] focus:outline-none focus:ring-2 focus:ring-[#FEE715]"
+            className="w-full bg-[#FEE715] text-black p-2 py-4 text-xl font-semibold rounded-xl hover:bg-black hover:text-[#FEE715] focus:outline-none focus:ring-2 focus:ring-[#FEE715]"
           >
             상품 추가
           </button>
