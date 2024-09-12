@@ -25,6 +25,12 @@ export default function LoginPage({
           className="flex flex-col gap-4 w-full max-w-lg mx-auto"
           onSubmit={handleSubmit}
         >
+          <Link to="/">
+            <div className="flex flex-col items-center justify-center">
+              <img src="/images/logo.png" alt="" className="w-1/4 flex " />
+              <p className="text-4xl font-bold">Smile Hub</p>
+            </div>
+          </Link>
           <div>
             <div className="mb-2 block">
               <Label
