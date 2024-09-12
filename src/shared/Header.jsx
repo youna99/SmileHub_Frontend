@@ -1,19 +1,31 @@
-import React from 'react';
-import { Avatar, Dropdown, Navbar } from 'flowbite-react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Navbar } from 'flowbite-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../features/User/store/userSlice';
 import { persistor, store } from '../app/rootStore';
 
-export default function Header() {
+function Header() {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 프로필 이미지 토글 상태
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // 메뉴 토글 상태
   const profileImage = useSelector(
     (state) => state.user.currentUser.profileImage,
   );
+  const currentUser = useSelector((state) => state.user.currentUser);
   const isAuthenticated = useSelector(
     (state) => state.user.currentUser.isAuthenticated,
   );
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev);
+  };
 
   // 로그아웃
   const handleLogout = async () => {
@@ -39,60 +51,124 @@ export default function Header() {
   const defaultUrl =
     'https://sesac-2nd-pro-bucket.s3.ap-northeast-2.amazonaws.com/null';
 
+  useEffect(() => {
+    if ((location.pathname === '/mypage', '/logout', '/', '/product/write')) {
+      setIsDropdownOpen(false);
+      setIsMobileMenuOpen(false);
+    }
+  }, [location]);
+
   return (
     <nav>
-      <Navbar fluid rounded>
+      <Navbar fluid rounded className="bg-gray-50">
         <Navbar.Brand href="/">
-          <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-            SeSAC-2st
+          <span className="flex flex-col self-center whitespace-nowrap dark:text-white">
+            <img src="/images/logo.png" alt="logo" className="w-10 sm:w-12" />
           </span>
         </Navbar.Brand>
-        <div className="flex md:order-2">
+
+        {/* 데스크탑 메뉴를 가운데로 옮기기 */}
+        <div className="hidden md:flex justify-center flex-1 space-x-4">
+          <Link
+            to="/"
+            className="font-semibold text-gray-700 hover:text-yellow-500"
+          >
+            홈
+          </Link>
+          <Link
+            to="/product/write"
+            className="font-semibold text-gray-700 hover:text-yellow-500"
+          >
+            판매글쓰기
+          </Link>
+        </div>
+
+        <div className="flex md:order-2 relative ml-auto">
           {isAuthenticated ? (
             <>
-              <Dropdown
-                arrowIcon={false}
-                inline
-                label={
-                  <Avatar
-                    alt="User profile"
-                    img={
-                      profileImage === defaultUrl
-                        ? '/images/profile.png'
-                        : profileImage
-                    }
-                    rounded
-                  />
-                }
-              >
-                <Dropdown.Header>
-                  <span className="block text-sm">UserName</span>
-                </Dropdown.Header>
-                <Dropdown.Item>
-                  <Link to="/mypage">마이페이지</Link>
-                </Dropdown.Item>
-                <Dropdown.Item>
-                  <button onClick={handleLogout}>로그아웃</button>
-                </Dropdown.Item>
-              </Dropdown>
+              <button className="flex items-center" onClick={toggleDropdown}>
+                <img
+                  alt="User profile"
+                  src={
+                    profileImage === defaultUrl
+                      ? '/images/profile.png'
+                      : profileImage
+                  }
+                  rounded
+                  className="w-12 sm:w-16"
+                />
+              </button>
+              {isDropdownOpen && (
+                <div className="absolute right-0 mt-11 sm:mt-14 w-40 bg-white rounded-md shadow-lg z-10">
+                  <div className="px-4 py-2">
+                    <span className="block text-sm">
+                      {currentUser.nickname}
+                    </span>
+                    <hr className="mt-2" />
+                  </div>
+
+                  {/* 관리자 페이지 링크 추가 */}
+                  {currentUser.isAdmin && (
+                    <Link
+                      to="/admin"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      관리자 페이지
+                    </Link>
+                  )}
+
+                  <Link
+                    to="/mypage"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    마이페이지
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    로그아웃
+                  </button>
+                </div>
+              )}
             </>
           ) : (
             <Link
               to="/login"
-              className="text-sm text-gray-700 hover:text-gray-900"
+              className="font-semibold text-gray-700 hover:text-yellow-500"
             >
               로그인/회원가입
             </Link>
           )}
-          <Navbar.Toggle />
         </div>
-        <Navbar.Collapse>
-          <Navbar.Link href="/" active>
-            홈
-          </Navbar.Link>
-          <Navbar.Link href="/product/write">판매글쓰기</Navbar.Link>
-        </Navbar.Collapse>
+
+        {/* 모바일 메뉴 아이콘 */}
+        <div className="md:hidden flex items-center">
+          <button onClick={toggleMobileMenu}>
+            <img src="/images/nav.png" alt="Menu" className="w-8 h-8" />
+          </button>
+        </div>
+
+        {/* 모바일 메뉴 토글 */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden absolute right-0 mt-28 mr-2 w-40 bg-white rounded-md border z-10">
+            <Link
+              to="/"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            >
+              홈
+            </Link>
+            <Link
+              to="/product/write"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            >
+              판매글쓰기
+            </Link>
+          </div>
+        )}
       </Navbar>
     </nav>
   );
 }
+
+export default Header;
