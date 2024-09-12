@@ -9,12 +9,15 @@ import { useNavigate } from 'react-router-dom';
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
 import { useSelector } from 'react-redux';
+import { Modal } from '../../../shared/Modal';
 
 const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
   const [error, setError] = useState(null); // 오류 상태 추가
   const [likes, setLikes] = useState(false); // 찜 상태 관리
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
 
   const productId = new URLSearchParams(window.location.search).get(
     'productId',
@@ -82,8 +85,54 @@ const ProductDetail = () => {
   const handlePayment = () => {
     navigate('/mypage/payment', { state: { productId, product } });
   };
-  const handleClickChat = () => {
-    navigate('/chat', { state: { productId } });
+
+  const handleClickChat = async () => {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      // 토큰이 없을 때 로그인 모달을 띄움
+      setModalMessage('로그인이 필요합니다.');
+      setIsModalOpen(true);
+    } else {
+      try {
+        const buyerId = product.userId;
+        const sellerId = product.sellerId;
+        const productId = product.productId;
+
+        const response = await axios.post(
+          'http://localhost:8000/room',
+          {
+            productId,
+            buyerId,
+            sellerId,
+          },
+          {
+            headers: {
+              Authorization: token,
+            },
+          },
+        );
+
+        const { roomId } = response.data;
+
+        const width = 1000;
+        const height = 600;
+        const left = (window.innerWidth - width) / 2;
+        const top = (window.innerHeight - height) / 2;
+
+        window.open(
+          `/chat/${roomId}`,
+          '_blank',
+          `width=${width},height=${height},left=${left},top=${top}`,
+        );
+      } catch (error) {
+        console.error('채팅방을 생성하는 중 오류 발생:', error);
+      }
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false); // 모달 닫기
   };
 
   useEffect(() => {
@@ -231,6 +280,14 @@ const ProductDetail = () => {
       </section>
 
       <ProductTab newItem={product.newItem} />
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onConfirm={handleCloseModal}
+        message={modalMessage}
+        showCancelButton={false} // 취소 버튼 숨김
+      />
     </div>
   );
 };
