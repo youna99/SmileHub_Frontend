@@ -97,11 +97,11 @@ export default function MainPage() {
                     {productInfo.price}
                   </span>
                   <span className="font-medium text-gray-400 text-sm w-1/2">
-                    <div>
+                    {/* <div>
                       {productInfo.Location
                         ? `${productInfo.Location.depth1}, ${productInfo.Location.depth2}, ${productInfo.Location.depth3}`
                         : '주소 정보가 없습니다.'}
-                    </div>
+                    </div> */}
                   </span>
                   <span className="font-medium text-gray-400 text-sm w-1/2">
                     {productInfo.nickname}
