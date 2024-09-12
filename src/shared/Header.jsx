@@ -65,6 +65,7 @@ function Header() {
           <span className="flex flex-col self-center whitespace-nowrap dark:text-white">
             <img src="/images/logo.png" alt="logo" className="w-10 sm:w-12" />
           </span>
+          <span className="text-xl font-bold mx-2">Smile Hub</span>
         </Navbar.Brand>
 
         {/* 데스크탑 메뉴를 가운데로 옮기기 */}
