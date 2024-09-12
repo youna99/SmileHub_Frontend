@@ -50,10 +50,10 @@ const SearchResults = () => {
   };
 
   return (
-    <>
-      <h1 className="text-2xl font-bold mb-4">검색 결과</h1>
+    <main className="min-w-80">
+      <h1 className="text-2xl text-center font-bold mb-4">검색 결과</h1>
       {/* 검색창 */}
-      <section className="flex justify-center items-center mb-8">
+      <section className="flex justify-center items-center  mb-4 ">
         <select
           value={searchType}
           onChange={handleSearchTypeChange}
@@ -77,62 +77,68 @@ const SearchResults = () => {
         </button>
       </section>
       {/* 검색 결과 섹션 */}
-      <section className="mx-5">
-        {results.length > 0 ? (
-          results.map((productInfo) => (
-            <div
-              key={productInfo.productId}
-              className="flexcard back w-full mt-3 p-3"
-            >
-              <Link to={`/product/read?productId=${productInfo.productId}`}>
-                <div
-                  className="flex md:w-80 w-full flex-col bg-white border border-coolGray-100 shadow-dashboard rounded-md 
-                h-auto hover:border-yellow-300 hover:border-2 hover:duration-200 overflow-hidden transform origin-bottom transition duration-400 ease-in 
-                min-w-60 relative"
-                >
-                  <h2 className="tracking-tight text-gray-900 text-lg font-bold hover:underline block mb-2">
-                    {productInfo.productId}번
-                  </h2>
-                  <div>{productInfo.images}</div>
-                  <div className="flex flex-col justify-center items-start px-4 pt-4 pb-4">
-                    <h2 className="tracking-tight text-gray-900 text-lg font-bold hover:underline block mb-2">
-                      {productInfo.productName}
+
+      <section className="flex px-16 py-2 bg-gray-50 min-h-screen justify-center">
+        <div className="flex flex-col items-center mx-3 w-full ">
+          {results.length > 0 ? (
+            results.map((productInfo) => (
+              <div key={productInfo.productId} className="w-4/5 mt-3 p-3">
+                <Link to={`/product/read?productId=${productInfo.productId}`}>
+                  <div
+                    className=" bg-white border border-coolGray-100 shadow-dashboard rounded-md 
+              h-auto hover:border-yellow-300 hover:border-2 hover:duration-200 overflow-hidden transform origin-bottom transition duration-400 ease-in 
+              min-w-80"
+                  >
+                    {/* productID 구분용 태그 */}
+                    <h2 className="tracking-tight text-gray-900 text-lg font-bold hover:underline  mb-2 ">
+                      {/* {productInfo.productId}번 */}
                     </h2>
-                    <h3 className="mt-2 text-sm text-gray-700 line-clamp-3">
-                      {productInfo.content.length > 100
-                        ? `${productInfo.content.slice(0, 100)}...`
-                        : productInfo.content}
-                    </h3>
-                    <div className="border-t border-gray-300 pt-2 mt-2 w-full">
-                      <div className="flex flex-wrap items-center text-gray-400 text-xs mt-1">
-                        <span className="font-medium text-gray-400 text-sm w-1/2">
-                          {productInfo.price}
-                        </span>
-                        <span className="font-medium text-gray-400 text-sm w-1/2">
-                          <div>
-                            {productInfo.Location
-                              ? `${productInfo.Location.depth1}, ${productInfo.Location.depth2}, ${productInfo.Location.depth3}`
-                              : '주소 정보가 없습니다.'}
-                          </div>
-                        </span>
-                        <span className="font-medium text-gray-400 text-sm w-1/2">
-                          {productInfo.nickname}
-                        </span>
-                        <span className="font-medium text-gray-400 text-sm w-1/2">
-                          {new Date(productInfo.updatedAt).toLocaleDateString()}
-                        </span>
+
+                    <div className="flex justify-center">
+                      {productInfo.images}
+                    </div>
+                    <div className="flex flex-col px-4 pt-4 pb-4">
+                      <h2 className="tracking-tight text-gray-900 text-lg font-bold hover:underline block mb-2 text-center">
+                        {productInfo.productName}
+                      </h2>
+                      <h3 className="mt-2 text-sm text-gray-700 line-clamp-3 text-center">
+                        {productInfo.content.length > 100
+                          ? `${productInfo.content.slice(0, 100)}...`
+                          : productInfo.content}
+                      </h3>
+                      <div className="border-t border-gray-300 pt-2 mt-2">
+                        <div className="flex items-center text-gray-400 text-xs mt-1">
+                          <span className="font-medium text-gray-400 text-sm w-1/2 text-center">
+                            {productInfo.price}
+                          </span>
+                          <span className="font-medium text-gray-400 text-sm w-1/2 text-center">
+                            <div>
+                              {productInfo.Location
+                                ? `${productInfo.Location.depth1}, ${productInfo.Location.depth2}, ${productInfo.Location.depth3}`
+                                : ''}
+                            </div>
+                          </span>
+                          <span className="font-medium text-gray-400 text-sm w-1/2 text-center">
+                            {productInfo.nickname}
+                          </span>
+                          <span className="font-medium text-gray-400 text-sm w-1/2 text-center">
+                            {new Date(
+                              productInfo.updatedAt,
+                            ).toLocaleDateString()}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </Link>
-            </div>
-          ))
-        ) : (
-          <p>검색 결과가 없습니다.</p>
-        )}
+                </Link>
+              </div>
+            ))
+          ) : (
+            <p>검색 결과가 없습니다.</p>
+          )}
+        </div>
       </section>
-    </>
+    </main>
   );
 };
 export default SearchResults;

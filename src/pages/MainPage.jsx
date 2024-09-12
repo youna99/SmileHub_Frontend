@@ -76,9 +76,10 @@ export default function MainPage() {
           h-auto hover:border-yellow-300  hover:border-2 hover:duration-200 overflow-hidden transform origin-bottom transition duration-400 ease-in 
           min-w-60 relative"
           >
-            <h2 className="tracking-tight text-gray-900 text-lg font-bold hover:underline block mb-2">
+            {/* productID 구분용 태그 */}
+            {/* <h2 className="tracking-tight text-gray-900 text-lg font-bold hover:underline block mb-2">
               {productInfo.productId}번
-            </h2>
+            </h2> */}
             <div>{productInfo.images}</div>
             <div className="flex flex-col justify-center items-start px-4 pt-4 pb-4">
               <h2 className="tracking-tight text-gray-900 text-lg font-bold hover:underline block mb-2">

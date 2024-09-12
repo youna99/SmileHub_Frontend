@@ -35,7 +35,7 @@ const ChatButton = () => {
     <>
       <button
         onClick={openChatPage}
-        className="fixed bottom-16 right-16 bg-blue-500 text-white px-8 py-3 rounded-full shadow-lg text-lg tracking-widest hover:bg-blue-600"
+        className="fixed z-10 bottom-16 right-16 bg-blue-500 text-white px-8 py-3 rounded-full shadow-lg text-lg tracking-widest hover:bg-blue-600"
       >
         Chat
       </button>
