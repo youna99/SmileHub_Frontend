@@ -18,10 +18,13 @@ export const ImageDropZone = ({ images, setImages }) => {
 
           const imageUrl = URL.createObjectURL(file);
           newImages.push(imageUrl); // 새 이미지 URL 추가
+          console.log('newImages files', newImages);
+
           setImages((prevImages) => [...prevImages, imageUrl]); // 상태 업데이트
         };
 
-        reader.readAsArrayBuffer(file);
+        reader.readAsArrayBuffer('하위 컴포넌트 file ->', file);
+        // console.log('하위 컴포넌트 file ->', file);
       });
     },
     [setImages],

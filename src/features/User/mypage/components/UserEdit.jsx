@@ -25,24 +25,30 @@ const UserEdit = ({
 }) => {
   return (
     <>
-      <div className="flex justify-between items-center px-5 py-3 bg-gray-100">
-        <button onClick={() => navigate(-1)}>뒤로가기</button>
+      <div className="flex justify-between items-center px-2 pt-4 sm:px-5 sm:pt-4">
+        <img
+          src="/images/back.png"
+          alt="back"
+          onClick={() => navigate(-1)}
+          className="w-5"
+        />
       </div>
       <section className="max-w-3xl mx-auto p-6">
         <h1 className="text-3xl font-bold mb-4">내 정보 수정</h1>
         <div className="border-b-2 border-gray-300 mb-4" />
-        <form
-          className="flex flex-col gap-4 w-full"
-          onSubmit={handleSubmit(onSubmit)}
-        >
+        <form className="flex flex-col gap-4 w-full">
           {/* 기존 비밀번호 확인 입력 */}
           {!isOldPasswordCorrect && (
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="password" value="기존 비밀번호 확인" />
+                <Label
+                  htmlFor="password"
+                  value="기존 비밀번호 확인"
+                  className="font-semibold"
+                />
               </div>
-              <div className="flex">
-                <TextInput
+              <div className="flex justify-between">
+                <input
                   id="password"
                   type="password"
                   value={oldPassword}
@@ -51,15 +57,15 @@ const UserEdit = ({
                     onChange: (e) => setOldPassword(e.target.value), // 상태 업데이트
                   })}
                   shadow
-                  className="w-3/4"
+                  className="w-full sm:w-3/4 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                 />
-                <Button
+                <button
                   type="button"
                   onClick={handlePasswordCheck}
-                  className="w-1/4 ml-3"
+                  className="w-1/4 ml-3 p-3 bg-gray-400 text-white rounded-lg hover:bg-gray-600 transition"
                 >
                   확인
-                </Button>
+                </button>
               </div>
             </div>
           )}
@@ -69,17 +75,25 @@ const UserEdit = ({
             <>
               <div>
                 <div className="mb-2 block">
-                  <Label htmlFor="email" value="아이디(이메일)" />
+                  <Label
+                    htmlFor="email"
+                    value="아이디(이메일)"
+                    className="font-semibold"
+                  />
                 </div>
                 <p>{currentUser.email}</p>
               </div>
 
               <div>
                 <div className="mb-2 block">
-                  <Label htmlFor="old-password" value="기존 비밀번호 확인" />
+                  <Label
+                    htmlFor="old-password"
+                    value="기존 비밀번호 확인"
+                    className="font-semibold"
+                  />
                 </div>
                 <div className="flex">
-                  <TextInput
+                  <input
                     id="old-password"
                     type="password"
                     value={oldPassword}
@@ -87,13 +101,14 @@ const UserEdit = ({
                       required: '기존 비밀번호를 입력해 주세요.',
                     })}
                     shadow
-                    className="w-3/4"
+                    className="w-full sm:w-4/5 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                   />
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
-                <Checkbox
+                <input
+                  type="checkbox"
                   id="changePassword"
                   checked={isChangingPassword}
                   onChange={(e) => setIsChangingPassword(e.target.checked)}
@@ -108,9 +123,10 @@ const UserEdit = ({
                       <Label
                         htmlFor="newPassword"
                         value="변경할 비밀번호 (최소 하나의 대문자, 소문자, 숫자, 특수문자 포함 필수)"
+                        className="font-semibold"
                       />
                     </div>
-                    <TextInput
+                    <input
                       id="newPassword"
                       type="password"
                       {...register('newPassword', {
@@ -135,6 +151,7 @@ const UserEdit = ({
                         },
                       })}
                       shadow
+                      className="w-full sm:w-4/5 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                     />
                     {errors.password && (
                       <p className="text-red-500">
@@ -147,9 +164,10 @@ const UserEdit = ({
                       <Label
                         htmlFor="repeat-password"
                         value="변경할 비밀번호 확인"
+                        className="font-semibold"
                       />
                     </div>
-                    <TextInput
+                    <input
                       id="repeat-password"
                       type="password"
                       {...register('confirmPassword', {
@@ -159,6 +177,7 @@ const UserEdit = ({
                           '비밀번호가 일치하지 않습니다.',
                       })}
                       shadow
+                      className="w-full sm:w-3/4 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                     />
                     {errors.confirmPassword && (
                       <p className="text-red-500">
@@ -170,25 +189,32 @@ const UserEdit = ({
               )}
               <div>
                 <div className="mb-2 block">
-                  <div>현재 닉네임: {currentUser.nickname}</div>
-                  <Label htmlFor="nickname" value="변경할 닉네임" />
+                  <div className="font-bold text-xl mb-2">
+                    현재 닉네임: {currentUser.nickname}
+                  </div>
+                  <Label
+                    htmlFor="nickname"
+                    value="닉네임"
+                    className="font-semibold"
+                  />
                 </div>
                 <div className="flex flex-col sm:flex-row sm:justify-between gap-2">
-                  <TextInput
-                    className="w-full sm:w-4/5"
+                  <input
                     id="nickname"
                     type="text"
-                    placeholder="변경할 닉네임을 입력해 주세요" // placeholder로 빈값 표시
+                    {...register('nickname')}
                     value={checkNickname} // 상태와 연결
                     onChange={(e) => setCheckNickname(e.target.value)} // 상태 업데이트
                     shadow
+                    className="w-full sm:w-3/4 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                   />
-                  <Button
-                    className="w-full sm:w-auto"
+                  <button
+                    type="button"
+                    className="w-full sm:w-auto p-3 bg-gray-400 text-white rounded-lg hover:bg-gray-600 transition"
                     onClick={handleCheckNickname} // 중복 확인 버튼
                   >
                     중복 확인
-                  </Button>
+                  </button>
                 </div>
                 {errors.nickname && (
                   <p className="text-red-500">{errors.nickname.message}</p>
@@ -197,15 +223,16 @@ const UserEdit = ({
 
               <div>
                 <div className="mb-2 block">
-                  <Label htmlFor="age" value="나이" />
+                  <Label htmlFor="age" value="나이" className="font-semibold" />
                 </div>
-                <TextInput
+                <input
                   id="age"
                   type="number"
                   {...register('age', {
                     valueAsNumber: true,
                   })}
                   shadow
+                  className="w-full sm:w-3/4 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                 />
                 {errors.age && (
                   <p className="text-red-500">{errors.age.message}</p>
@@ -218,35 +245,38 @@ const UserEdit = ({
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="flex items-center">
-                    <Radio
+                    <input
+                      type="radio"
                       id="default"
                       value=""
                       {...register('gender')}
-                      checked={
+                      defaultChecked={
                         currentUser.gender === '' || currentUser.gender === null
-                      } // '선택안함'일 때 체크
+                      }
                     />
                     <Label htmlFor="default" className="ml-2">
                       선택안함
                     </Label>
                   </div>
                   <div className="flex items-center">
-                    <Radio
+                    <input
+                      type="radio"
                       id="male"
                       value="male"
                       {...register('gender')}
-                      checked={currentUser.gender === true} // 남성일 때 체크
+                      defaultChecked={currentUser.gender === true}
                     />
                     <Label htmlFor="male" className="ml-2">
                       남성
                     </Label>
                   </div>
                   <div className="flex items-center">
-                    <Radio
+                    <input
+                      type="radio"
                       id="female"
                       value="female"
                       {...register('gender')}
-                      checked={currentUser.gender === false} // 여성일 때 체크
+                      defaultChecked={currentUser.gender === false}
                     />
                     <Label htmlFor="female" className="ml-2">
                       여성
@@ -257,36 +287,47 @@ const UserEdit = ({
 
               <div>
                 <div className="mb-2 block">
-                  <div>
+                  <div className="text-xl font-semibold">
                     현재주소: {currentUser.address.sido}{' '}
                     {currentUser.address.sigungu} {currentUser.address.bname}{' '}
                     {currentUser.address.detailAddress}
                   </div>
-                  <Label htmlFor="address" value="변경할 주소" />
+                  <Label
+                    htmlFor="address"
+                    value="변경할 주소"
+                    className="font-semibold"
+                  />
                 </div>
                 <div className="flex justify-between">
-                  <TextInput
-                    className="w-1/2"
+                  <input
+                    className="w-1/2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                     type="text"
                     id="postcode"
                     placeholder="우편번호"
                     {...register('address.postcode')}
                   />
-                  <Button onClick={() => setIsModalOpen(true)}>주소검색</Button>
+                  <button
+                    type="button"
+                    className="p-3 bg-gray-400 text-white rounded-lg hover:bg-gray-600s transition"
+                    onClick={() => setIsModalOpen(true)}
+                  >
+                    주소검색
+                  </button>
                 </div>
-                <TextInput
+                <input
                   placeholder="주소"
                   {...register('address.address')}
+                  className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black pb-2"
                 />
                 <div className="flex">
-                  <TextInput
-                    className="w-1/2"
+                  <input
+                    className="w-1/2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                     placeholder="상세주소"
                     {...register('address.detailAddress')}
                   />
 
-                  <TextInput
-                    className="w-1/2"
+                  <input
+                    className="w-1/2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                     placeholder="참고항목"
                     {...register('address.extraAddress')}
                   />
@@ -297,7 +338,13 @@ const UserEdit = ({
                 )}
               </div>
 
-              <Button type="submit">수정하기</Button>
+              <button
+                type="button"
+                className="p-3 rounded-lg font-semibold bg-[#FEE715] text-[#101820] hover:bg-[#101820] hover:text-[#FEE715] transition"
+                onClick={handleSubmit(onSubmit)}
+              >
+                수정하기
+              </button>
 
               {/* 주소 검색 Modal */}
               <AddressSearch
