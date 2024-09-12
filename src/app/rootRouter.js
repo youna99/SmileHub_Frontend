@@ -23,6 +23,7 @@ export const RootRouter = () => {
     '/mypage',
     '/product/write',
     '/product/read',
+    '/product/update',
     '/admin',
     '/search',
   ];
