@@ -41,10 +41,8 @@ React, JavaScript, Tailwind-css
 
 
 ## 모바일 뷰
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/b5128eaa-df07-4741-ae4b-3be13671fc3b" width="200" heigth="400"/>
-  <img src="https://github.com/user-attachments/assets/6ee53f61-000f-4f95-a855-2f5d5e908a8b" width="200" heigth="400"/>
-  <img src="https://github.com/user-attachments/assets/44db6744-e38b-4665-a913-72553150bc31" width="200" heigth="350"/>
-  <img src="https://github.com/user-attachments/assets/710203d1-a450-4644-8ba9-f08e900fdb5d" width="200" heigth="500"/>
-</div>
+
+| **로그인**                                                                                                                   | **회원가입**                                                                                                                    | **마이페이지**                                                                                                                   | **결제**                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| <img src="https://github.com/user-attachments/assets/b5128eaa-df07-4741-ae4b-3be13671fc3b" width="250" heigth="400"/> | <img src="https://github.com/user-attachments/assets/6ee53f61-000f-4f95-a855-2f5d5e908a8b" width="250" heigth="400"/> | <img src="https://github.com/user-attachments/assets/44db6744-e38b-4665-a913-72553150bc31" width="250" heigth="350"/> | <img src="https://github.com/user-attachments/assets/710203d1-a450-4644-8ba9-f08e900fdb5d" width="250" heigth="500"/> |
 
